@@ -170,53 +170,89 @@ th.var i{font-style:normal;font-family:'DM Sans',sans-serif;font-size:9.5px;text
 </section>
 
 <section>
-<span class="tag">Pass by pass &middot; Day 2, three briefcases</span>
-<h2>The tally, the champion, the battery</h2>
+<span class="tag">Pass by pass &middot; Day 2, the Cipher Room</span>
+<h2>The slot search, the wrap, the tally</h2>
 <div class="grid2">
   <div>
-    <p style="margin:8px 0 0;font-size:13px"><strong>The tally.</strong> <code>clues = [12, 7, 20]</code>, <code>total = 0</code>, then <code>total = total + c</code> each pass.</p>
+    <p style="margin:8px 0 0;font-size:13px"><strong>The slot search</strong> (Drill 2) for <code>letter = "H"</code>, <code>slot = 0</code>, and the gate <code>if rack[i] == letter:</code>. Show passes 5 to 9 only; the rest look like pass 5.</p>
     <table>
-      <tr><th class="ln">Pass</th><th class="var">c</th><th class="var">total <i>after the pass</i></th></tr>
-      <tr><td class="ln">0</td><td>&ndash;</td><td>0 (before the loop)</td></tr>
-      <tr class="blank"><td class="ln">1</td><td></td><td></td></tr>
-      <tr class="blank"><td class="ln">2</td><td></td><td></td></tr>
-      <tr class="blank"><td class="ln">3</td><td></td><td></td></tr>
+      <tr><th class="ln">Pass i</th><th class="var">rack[i]</th><th>Gate says</th><th class="var">slot <i>after</i></th></tr>
+      <tr class="blank"><td class="ln">5</td><td></td><td></td><td></td></tr>
+      <tr class="blank"><td class="ln">6</td><td></td><td></td><td></td></tr>
+      <tr class="blank"><td class="ln">7</td><td></td><td></td><td></td></tr>
+      <tr class="blank"><td class="ln">8</td><td></td><td></td><td></td></tr>
+      <tr class="blank"><td class="ln">9</td><td></td><td></td><td></td></tr>
     </table>
   </div>
   <div>
-    <p style="margin:8px 0 0;font-size:13px"><strong>Best-so-far.</strong> <code>signals = [14, 6, 22, 9]</code>, <code>strongest = 0</code>, and the gate <code>if s &gt; strongest:</code>.</p>
+    <p style="margin:8px 0 0;font-size:13px"><strong>The shift and the wrap</strong> (Drill 3) with <code>shift = 5</code>: <code>slot = slot + shift</code>, then <code>if slot &gt; 26: slot = slot - 27</code>.</p>
     <table>
-      <tr><th class="ln">Pass</th><th class="var">s</th><th class="var">strongest <i>after</i></th><th>Changed?</th></tr>
-      <tr class="blank"><td class="ln">1</td><td></td><td></td><td></td></tr>
-      <tr class="blank"><td class="ln">2</td><td></td><td></td><td></td></tr>
-      <tr class="blank"><td class="ln">3</td><td></td><td></td><td></td></tr>
-      <tr class="blank"><td class="ln">4</td><td></td><td></td><td></td></tr>
+      <tr><th class="var">Letter</th><th class="var">slot</th><th class="var">+ shift</th><th>Gate?</th><th class="var">Final slot</th><th class="var">Comes out as</th></tr>
+      <tr class="blank"><td>C</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="blank"><td>Y</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="blank"><td>Z</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="blank"><td>space</td><td></td><td></td><td></td><td></td><td></td></tr>
     </table>
   </div>
 </div>
-<p style="margin:12px 0 0;font-size:13px"><strong>The charging battery.</strong> <code>battery = 10</code>, then <code>while battery &lt; 50:</code> with <code>battery = battery + 10</code> and <code>print(battery)</code> inside. One row per <em>check</em>, including the check that fails.</p>
+<p style="margin:12px 0 0;font-size:13px"><strong>The tally on text</strong> (Drill 4): <code>result = ""</code>, then <code>result = result + rack[i]</code> for <code>range(5)</code>. Write what <code>result</code> holds after each pass.</p>
 <table>
-  <tr><th class="ln">Check</th><th class="var" style="width:160px">battery <i>at the check</i></th><th style="width:120px">Yes or no?</th><th>What prints this pass</th></tr>
+  <tr><th class="ln">Pass i</th><th class="var">rack[i]</th><th class="var">result <i>after the pass</i></th></tr>
+  <tr><td class="ln">&ndash;</td><td>&ndash;</td><td>"" (empty, before the loop)</td></tr>
+  <tr class="blank"><td class="ln">0</td><td></td><td></td></tr>
+  <tr class="blank"><td class="ln">1</td><td></td><td></td></tr>
+  <tr class="blank"><td class="ln">2</td><td></td><td></td></tr>
+  <tr class="blank"><td class="ln">3</td><td></td><td></td></tr>
+  <tr class="blank"><td class="ln">4</td><td></td><td></td></tr>
+</table>
+<p style="margin:12px 0 0;font-size:13px"><strong>The big shift</strong> (Drill 8): <code>slot = 60</code>, then <code>while slot &gt; 26:</code> with <code>slot = slot - 27</code> and <code>print(slot)</code> inside. One row per <em>check</em>, including the check that fails.</p>
+<table>
+  <tr><th class="ln">Check</th><th class="var" style="width:160px">slot <i>at the check</i></th><th style="width:120px">Yes or no?</th><th>What prints this pass</th></tr>
   <tr class="blank"><td class="ln">1</td><td></td><td></td><td></td></tr>
   <tr class="blank"><td class="ln">2</td><td></td><td></td><td></td></tr>
   <tr class="blank"><td class="ln">3</td><td></td><td></td><td></td></tr>
-  <tr class="blank"><td class="ln">4</td><td></td><td></td><td></td></tr>
-  <tr class="blank"><td class="ln">5</td><td></td><td></td><td></td></tr>
 </table>
 <div class="noprint">
   <button class="reveal" onclick="reveal(this)">Check my answers</button>
   <div class="answer">
-    <strong>Tally:</strong> pass 1: c = 12, total = 12 &middot; pass 2: c = 7, total = 19 &middot; pass 3: c = 20, total = 39.<br>
-    <strong>Best-so-far:</strong> pass 1: s = 14, strongest = 14, changed &middot; pass 2: s = 6, strongest = 14, no change &middot; pass 3: s = 22, strongest = 22, changed &middot; pass 4: s = 9, strongest = 22, no change.<br>
-    <strong>Battery:</strong> check 1: 10, yes, prints 20 &middot; check 2: 20, yes, prints 30 &middot; check 3: 30, yes, prints 40 &middot; check 4: 40, yes, prints 50 &middot; check 5: 50, <strong>no</strong>, nothing prints and the loop ends. Five checks, four passes: the check that fails is how every while finishes.
+    <strong>Slot search:</strong> pass 5: F, no, slot 0 &middot; pass 6: G, no, 0 &middot; pass 7: H, <strong>yes</strong>, 7 &middot; pass 8: I, no, 7 &middot; pass 9: J, no, 7. The gate says yes once, and slot keeps 7 for the rest of the patrol.<br>
+    <strong>Shift and wrap:</strong> C: 2, 7, no gate, 7, H &middot; Y: 24, 29, gate fires, 2, C &middot; Z: 25, 30, gate fires, 3, D &middot; space: 26, 31, gate fires, 4, E.<br>
+    <strong>Tally on text:</strong> A, AB, ABC, ABCD, ABCDE.<br>
+    <strong>Big shift:</strong> check 1: 60, yes, prints 33 &middot; check 2: 33, yes, prints 6 &middot; check 3: 6, <strong>no</strong>, nothing prints and the loop ends. Three checks, two passes: the check that fails is how every while finishes.
   </div>
 </div>
 </section>
 
 <section>
-<span class="tag">Ordered pairs &middot; Day 2, the beacon rule</span>
+<span class="tag">Codebreaker's corner &middot; Day 2, the Dead Drop</span>
+<h2>Keys, counts, and the crack</h2>
+<div class="grid2">
+  <div>
+    <p style="margin:8px 0 0;font-size:13px">On a 27-slot wheel, the decoding shift is 27 minus the encoding shift. Fill the partner of each key.</p>
+    <table>
+      <tr><th class="var">Encoded with</th><th class="var">Decode with</th><th class="var">Encoded with</th><th class="var">Decode with</th></tr>
+      <tr class="blank"><td>3</td><td></td><td>12</td><td></td></tr>
+      <tr class="blank"><td>10</td><td></td><td>20</td><td></td></tr>
+      <tr class="blank"><td>1</td><td></td><td>26</td><td></td></tr>
+    </table>
+  </div>
+  <div>
+    <p style="margin:8px 0 0;font-size:13px">My dead drop: the message, the shift I used, and the coded text I wrote on the slip. Then the classmate's slip I cracked, and the shift I found on line ___ of Drill 11.</p>
+    <span class="rule"></span><span class="rule"></span><span class="rule"></span><span class="rule"></span>
+  </div>
+</div>
+<div class="noprint">
+  <button class="reveal" onclick="reveal(this)">Check my answers</button>
+  <div class="answer">
+    3 and 24 &middot; 10 and 17 &middot; 1 and 26 &middot; 12 and 15 &middot; 20 and 7 &middot; 26 and 1. Each pair adds to 27, one full turn. (The crack line in Drill 11 is the decoding shift: a slip made with shift 4 reads on line 23.)
+  </div>
+</div>
+</section>
+
+<section>
+<span class="tag">Ordered pairs &middot; Day 3, the beacon rule</span>
 <h2>Two rules, side by side</h2>
-<p style="margin:4px 0 0;font-size:13px">Drill 9 places beacons with <code>x = 70 + i * 100</code>. A second rule, <code>x = 70 + i * 50</code>, places a tighter row. Fill both columns for every pass of <code>range(6)</code>.</p>
+<p style="margin:4px 0 0;font-size:13px">Drill 6 places beacons with <code>x = 70 + i * 100</code>. A second rule, <code>x = 70 + i * 50</code>, places a tighter row. Fill both columns for every pass of <code>range(6)</code>.</p>
 <div class="grid2">
   <div>
     <table>
@@ -243,7 +279,7 @@ th.var i{font-style:normal;font-family:'DM Sans',sans-serif;font-size:9.5px;text
 </section>
 
 <section>
-<span class="tag">Doubled patterns &middot; Days 1&ndash;2, the signal bars</span>
+<span class="tag">Doubled patterns &middot; Days 1 and 3, the signal bars</span>
 <h2>Corresponding terms</h2>
 <div class="grid2">
   <div>
@@ -294,7 +330,7 @@ th.var i{font-style:normal;font-family:'DM Sans',sans-serif;font-size:9.5px;text
 </section>
 
 <section>
-<span class="tag">Bug Hunt Log &middot; Day 5, and any day a program misbehaves</span>
+<span class="tag">Bug Hunt Log &middot; Day 4, and any day a program misbehaves</span>
 <h2>Four columns, one change per run</h2>
 <p style="margin:4px 0 0;font-size:13px">One row per bug, loud or silent. Fill the first three columns <strong>before</strong> you touch the code; the fourth is the single change you made. If the re-run is still wrong, that's a new row, not a bigger change.</p>
 <table>
@@ -312,7 +348,7 @@ th.var i{font-style:normal;font-family:'DM Sans',sans-serif;font-size:9.5px;text
 <span class="tag">Field Notebook entries &middot; one per day, at the Mission Debrief</span>
 <h2>Exit tickets</h2>
 <table>
-  <tr><th class="ln" style="width:44px">Day</th><th style="width:38%">My hinge answer</th><th>One misfire I met, and the one change that fixed it</th></tr>
+  <tr><th class="ln" style="width:44px">Day</th><th style="width:38%">My hinge answer (Day 5: the what-if I was asked, and my answer)</th><th>One misfire I met, and the one change that fixed it</th></tr>
   <tr class="blank tall"><td class="ln">1</td><td></td><td></td></tr>
   <tr class="blank tall"><td class="ln">2</td><td></td><td></td></tr>
   <tr class="blank tall"><td class="ln">3</td><td></td><td></td></tr>
@@ -322,7 +358,7 @@ th.var i{font-style:normal;font-family:'DM Sans',sans-serif;font-size:9.5px;text
 </section>
 
 <p class="foot">
-Collected as evidence for <strong>E5-PRO-VD-??</strong> <span class="warnflag">&#9888; unverified; confirm the code at source before distributing</span> (Days 1&ndash;3 traces, the pass-by-pass tables, and the rack diagram), <strong>E5-PRO-TR-??</strong> <span class="warnflag">&#9888; unverified</span> (the Bug Hunt Log), <strong>5.OA.B.3</strong> (both ordered-pairs tables and the plotted grid), and <strong>5.G.A.2</strong> (coordinates corner), both mathematics codes verified via the Learning Commons CASE network.<br>
+Collected as evidence for <strong>E5-PRO-VD-??</strong> <span class="warnflag">&#9888; unverified; confirm the code at source before distributing</span> (Days 1&ndash;2 traces, the pass-by-pass tables, the codebreaker's corner, and the rack diagram), <strong>E5-PRO-TR-??</strong> <span class="warnflag">&#9888; unverified</span> (the Bug Hunt Log, Day 4), <strong>5.OA.B.3</strong> (both ordered-pairs tables and the plotted grid), and <strong>5.G.A.2</strong> (coordinates corner), both mathematics codes verified via the Learning Commons CASE network.<br>
 Mapped to: Computer Science Teachers Association. (2026). 2026 CSTA PK&ndash;12 computer science standards. https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. Mathematics standards &copy; 2010 NGA Center for Best Practices &amp; CCSSO. "Mapped to" is this document's claim; it is not a CSTA- or CCSS-reviewed designation.
 </p>
 <p class="back noprint"><a href="spy_academy_hub.html">Back to HQ</a></p>
