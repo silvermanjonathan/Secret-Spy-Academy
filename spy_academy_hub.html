@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secret Spy Academy — Grade 5 Python</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B1F26;--manila:#F2E9D3;--stamp:#B3261E;--phosphor:#7BE495;--green:#047857;--amber:#C98B1F;--ink-soft:rgba(27,31,38,.08);--ink-line:rgba(27,31,38,.18);--shadow:0 4px 0 rgba(27,31,38,.14);}
+*{box-sizing:border-box}
+body{margin:0;background:var(--manila);color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:16.5px}
+.wrap{max-width:820px;margin:0 auto;padding:0 20px 90px}
+.hero{background:var(--ink);color:var(--manila);padding:52px 24px 46px;text-align:center;border-bottom:3px dashed var(--phosphor)}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--phosphor);margin-bottom:10px}
+h1{font-family:'Special Elite',serif;font-weight:400;font-size:clamp(38px,7vw,64px);line-height:1.04;margin:.15em auto .3em;max-width:720px;letter-spacing:.01em}
+.hook{max-width:620px;margin:0 auto;font-size:18px;opacity:.94}
+#radar{margin:24px auto 0;display:block}
+.sweep{transform-origin:120px 120px;animation:sweep 4s linear infinite}
+@keyframes sweep{to{transform:rotate(360deg)}}
+.blip{animation:ping 4s linear infinite}
+@keyframes ping{0%{opacity:1;r:6}45%{opacity:.18;r:4}100%{opacity:.18;r:4}}
+.stamp{display:inline-block;margin:18px auto 0;padding:8px 18px;border:3px double var(--phosphor);border-radius:6px;color:var(--phosphor);font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.22em;font-size:12.5px;text-transform:uppercase;transform:rotate(-2deg)}
+@media (max-width:480px){.stamp{letter-spacing:.12em;font-size:11px}}
+h2{font-family:'Special Elite',serif;font-weight:400;font-size:23px;margin:0 0 4px}
+.daycard{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--ink-line);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;margin:22px 0;transition:transform .12s ease, box-shadow .12s ease}
+a.daycard:hover{transform:translateY(-2px);box-shadow:0 6px 0 rgba(27,31,38,.18)}
+a.daycard:focus-visible{outline:3px solid var(--stamp);outline-offset:3px}
+.daycard.sealed{background:rgba(255,255,255,.55);border-style:dashed;box-shadow:none}
+.dayrow{display:flex;gap:18px;align-items:flex-start}
+.daynum{flex:0 0 auto;width:58px;height:58px;border-radius:50%;background:var(--ink);color:var(--phosphor);display:flex;align-items:center;justify-content:center;font-family:'Special Elite',serif;font-size:26px}
+.sealed .daynum{background:var(--ink-soft);color:var(--ink)}
+.eq{font-size:15.5px;margin:4px 0 8px;opacity:.9}
+.meta{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--stamp)}
+.artifact{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--ink-soft);border-radius:999px;padding:3px 12px;display:inline-block;margin-top:2px}
+.go{font-weight:700;color:var(--stamp);white-space:nowrap;margin-left:auto;align-self:center;font-size:15px}
+.sealtag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stamp);border:1px dashed var(--stamp);border-radius:999px;padding:4px 12px;white-space:nowrap;margin-left:auto;align-self:center}
+.intro{background:#fff;border:1px solid var(--ink-line);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;margin:30px 0 26px}
+.law{margin:10px 0 0;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em}
+.teacher{background:var(--ink-soft);border:1px solid var(--ink-line);border-radius:14px;padding:6px 20px 16px;margin:34px 0;color:var(--ink);font-size:14.5px}
+.teacher summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px 0;font-weight:700;opacity:.85}
+.teacher h3{font-family:'Special Elite',serif;font-weight:400;font-size:18px;margin:18px 0 4px}
+.teacher table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+.teacher th,.teacher td{border:1px solid var(--ink-line);padding:7px 9px;text-align:left;vertical-align:top}
+.teacher th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.teacher code{font-family:'JetBrains Mono',monospace;font-size:12px}
+.warn{color:var(--stamp);font-family:'JetBrains Mono',monospace;font-size:11px}
+.attr{font-size:12px;opacity:.75;margin-top:12px}
+.foot{text-align:center;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin-top:40px}
+@media (prefers-reduced-motion: reduce){.sweep,.blip{animation:none}.blip{opacity:.85}}
+@media (max-width:560px){.dayrow{flex-wrap:wrap}.go,.sealtag{margin-left:76px}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Grade 5 Python &middot; A Five-Day Induction</div>
+  <h1>Secret Spy Academy</h1>
+  <p class="hook">You've been recruited. Your computer is now a field terminal, VS Code is your safe house, and Python is the language it obeys, exactly and only exactly. Five days from your first transmission to your own Commissioned Gadget at the final Mission Debrief.</p>
+  <svg id="radar" width="240" height="240" viewBox="0 0 240 240" aria-hidden="true">
+    <circle cx="120" cy="120" r="104" fill="none" stroke="#7BE495" stroke-opacity=".35" stroke-width="1.5"/>
+    <circle cx="120" cy="120" r="72" fill="none" stroke="#7BE495" stroke-opacity=".3" stroke-width="1"/>
+    <circle cx="120" cy="120" r="40" fill="none" stroke="#7BE495" stroke-opacity=".3" stroke-width="1"/>
+    <line x1="16" y1="120" x2="224" y2="120" stroke="#7BE495" stroke-opacity=".25"/>
+    <line x1="120" y1="16" x2="120" y2="224" stroke="#7BE495" stroke-opacity=".25"/>
+    <g class="sweep">
+      <path d="M120 120 L224 120 A104 104 0 0 0 193.5 46.5 Z" fill="#7BE495" fill-opacity=".16"/>
+      <line x1="120" y1="120" x2="224" y2="120" stroke="#7BE495" stroke-width="2.5" stroke-linecap="round"/>
+    </g>
+    <circle class="blip" cx="176" cy="166" r="5" fill="#7BE495" style="animation-delay:-3.56s"/>
+    <circle class="blip" cx="62" cy="152" r="5" fill="#7BE495" style="animation-delay:-2.33s"/>
+    <circle class="blip" cx="108" cy="54" r="5" fill="#7BE495" style="animation-delay:-1.11s"/>
+    <circle cx="120" cy="120" r="4" fill="#F2E9D3"/>
+  </svg>
+  <div class="stamp">Classified &middot; Recruits Only</div>
+</header>
+
+<main class="wrap">
+
+<section class="intro">
+  <h2>How the Academy week works</h2>
+  <p style="margin:6px 0 0">Each day opens with a <strong>Morning Briefing</strong>, runs two build blocks with a break in the Safe House, and closes with a <strong>Mission Debrief</strong> (show your work, running) and a <strong>Field Notebook entry</strong> (exit ticket). Your capstone, the <strong>Commissioned Gadget</strong>, must run by the end of Day 4. Day 5 is the Bug Hunt, then the final Debrief and the badge ceremony.</p>
+  <p class="law">HOUSE LAW: ONE CHANGE PER RUN &middot; READ IT, TRACE IT, THEN RUN IT</p>
+  <p style="margin:10px 0 0"><a href="field_notebook_handout.html" style="color:var(--stamp);font-weight:700">Print the Field Notebook</a>, one per agent. Every day writes in it.</p>
+  <p style="margin:10px 0 0">Pages open in order. A sealed card means that briefing hasn't been issued yet.</p>
+</section>
+
+<a class="daycard" href="day1_induction_day.html">
+  <div class="dayrow">
+    <div class="daynum">1</div>
+    <div>
+      <span class="meta">Monday &middot; Induction Day &amp; the Three Clearance Checks</span>
+      <h2>Transmit, Patrol, Checkpoint</h2>
+      <p class="eq">How do I make this terminal speak, repeat, and choose, exactly as I say?</p>
+      <span class="artifact">Builds: the Induction Terminal + a Division assignment</span>
+    </div>
+    <span class="go">Enter &rarr;</span>
+  </div>
+</a>
+
+<a class="daycard" href="day2_cipher_room.html">
+  <div class="dayrow">
+    <div class="daynum">2</div>
+    <div>
+      <span class="meta">Tuesday &middot; The Cipher Room</span>
+      <h2>Tally, Compare, Stake Out, Light Up</h2>
+      <p class="eq">Which small patterns hide inside every program, and how does one run until the right moment to stop?</p>
+      <span class="artifact">Builds: the Evidence Log + the Patrol Drone</span>
+    </div>
+    <span class="go">Enter &rarr;</span>
+  </div>
+</a>
+
+<a class="daycard" href="day3_gadget_blueprint.html">
+  <div class="dayrow">
+    <div class="daynum">3</div>
+    <div>
+      <span class="meta">Wednesday &middot; The Gadget Blueprint</span>
+      <h2>Name It, Grow It, Read It</h2>
+      <p class="eq">How do I file a routine under a name, and can I read the gadget engine like a dossier?</p>
+      <span class="artifact">Builds: the Blueprint Rehearsal + the initialed engine</span>
+    </div>
+    <span class="go">Enter &rarr;</span>
+  </div>
+</a>
+
+<a class="daycard" href="day4_gadget_commission.html">
+  <div class="dayrow">
+    <div class="daynum">4</div>
+    <div>
+      <span class="meta">Thursday &middot; The Gadget Commission</span>
+      <h2>Plan It, Then Build It</h2>
+      <p class="eq">Can I plan my gadget on paper and have it running before I leave the room?</p>
+      <span class="artifact">Builds: the signed Gadget Schematic + your Commissioned Gadget</span>
+    </div>
+    <span class="go">Enter &rarr;</span>
+  </div>
+</a>
+
+<a class="daycard" href="day5_bug_hunt.html">
+  <div class="dayrow">
+    <div class="daynum">5</div>
+    <div>
+      <span class="meta">Friday &middot; The Bug Hunt &amp; the Final Debrief</span>
+      <h2>Find the Bug, Free the Program</h2>
+      <p class="eq">When a program misbehaves, how does a calm agent track the bug down?</p>
+      <span class="artifact">Builds: the Bug Hunt Log + your Mission Debrief</span>
+    </div>
+    <span class="go">Enter &rarr;</span>
+  </div>
+</a>
+
+<div class="daycard sealed" style="border-color:var(--amber)">
+  <div class="dayrow">
+    <div class="daynum" style="background:var(--amber);color:var(--ink)">&#9670;</div>
+    <div>
+      <span class="meta">Bonus files &middot; issued after Days 2 and 3</span>
+      <h2>Side Missions</h2>
+      <p class="eq">The Cipher Grid (loops inside loops), the Safecracker's Ledger (a searching stakeout), the Remote (keys that steer), and a second gadget for agents who finish early.</p>
+      <span class="artifact">Sealed until their day is cleared</span>
+    </div>
+    <span class="sealtag">Sealed</span>
+  </div>
+</div>
+
+<details class="teacher">
+  <summary>Week map &amp; pacing model (teacher panel)</summary>
+
+  <h3>The shape of the week</h3>
+  <p style="margin:4px 0 8px">Novelty is front-loaded on purpose and decays to zero; integration rises to replace it, so total load stays roughly flat. The drill (chunk) is the pacing unit, so days are unequal by design. The rhythm is heavy, heavy, consolidate, build, clinic.</p>
+  <table>
+    <tr><th>Day</th><th>Page</th><th>Drills</th><th>New syntax (first owned here)</th><th>Builds</th></tr>
+    <tr><td>1</td><td>Induction Day &amp; the Three Clearance Checks</td><td>12</td><td><code>print</code>, tracebacks, variables, <code>input</code>/<code>int()</code>, f-strings, <code>for</code>/<code>range</code>, flat <code>if</code>/<code>elif</code>/<code>else</code> (comparing with <code>&lt;</code>, <code>&gt;</code>), lists with slot numbers and <code>len</code>, <code>random.choice</code>, <code>in</code>. About ten mechanics.</td><td>The Induction Terminal</td></tr>
+    <tr><td>2</td><td>The Cipher Room</td><td>11</td><td><code>==</code>/<code>!=</code>, <code>while</code> (every <code>while</code> names its exit), pygame's window vocabulary, the <code>while running</code> loop with the QUIT listener, the frame tally. The accumulator, the counter with a gate, best-so-far, and the sentinel gate are patterns named here; they add no new marks.</td><td>The Evidence Log + the Patrol Drone</td></tr>
+    <tr><td>3</td><td>The Gadget Blueprint (reading day)</td><td>8</td><td><code>def</code> with parameters, <code>append</code>. Exactly two. <code>random.randint</code> is introduced as <code>random.choice</code>'s sibling, a vocabulary word rather than a mark.</td><td>The Blueprint Rehearsal + the initialed engine</td></tr>
+    <tr><td>4</td><td>The Gadget Commission</td><td>4 + capstone</td><td>Zero. The page says so.</td><td>The Gadget Schematic + the Commissioned Gadget (a customized Tracker Scope)</td></tr>
+    <tr><td>5</td><td>The Bug Hunt</td><td>clinic: 4 planted bugs + the debugger ritual</td><td>Zero. The page says so.</td><td>The Bug Hunt Log + the final Mission Debrief</td></tr>
+  </table>
+  <p style="margin:6px 0 0"><strong>Decay schedule, new marks per day:</strong> 10 &rarr; 3 plus pygame vocabulary &rarr; 2 &rarr; 0 &rarr; 0. <strong>Integration per day:</strong> single mechanics &rarr; patterns that combine loop, gate, and variable &rarr; reading a sixty-line engine &rarr; arranging it &rarr; diagnosing it.</p>
+
+  <h3>Paced backward from the capstone</h3>
+  <p style="margin:4px 0 8px">The Day 4 engine is the Tracker Scope: a sweep line crossing a scope of drifting beacons whose batteries drain, die, and respawn. Every ingredient it uses is owned at least one full day earlier. Nothing debuts on build day.</p>
+  <table>
+    <tr><th>Capstone ingredient</th><th>First owned</th><th>Its costume in the engine</th></tr>
+    <tr><td>Flat <code>if</code>/<code>elif</code>/<code>else</code> ladder</td><td>Day 1, drills 9 and 10</td><td>the respawn gate; the beacon size ladder inside <code>draw_beacon</code></td></tr>
+    <tr><td>Lists, slot numbers, <code>len</code></td><td>Day 1, drill 11</td><td>four parallel racks: <code>xs[i]</code>, <code>ys[i]</code>, <code>batteries[i]</code>, <code>colors[i]</code></td></tr>
+    <tr><td><code>for i in range(N)</code> with the loop variable used</td><td>Day 1, drill 7</td><td>the per-beacon update loop</td></tr>
+    <tr><td><code>random.choice</code></td><td>Day 1, drill 12</td><td><code>colors.append(random.choice(BEACON_COLORS))</code></td></tr>
+    <tr><td>Accumulator</td><td>Day 2, drill 1</td><td>battery drain, the accumulator running in reverse; the frame tally</td></tr>
+    <tr><td>Window, caption, fill, circle, line, flip; the hold-open <code>while running</code> loop with its QUIT listener and <code>clock.tick</code></td><td>Day 2, drills 8 and 9</td><td>the scope and its sweep line; the watch loop every window sits on</td></tr>
+    <tr><td>A list feeds the window</td><td>Day 2, drill 10</td><td>sizes and colors read by slot number while drawing</td></tr>
+    <tr><td>The update beat inside the loop, the wrap gate, the frame tally</td><td>Day 2, drill 11</td><td>beacons rising; the sweep wrapping at the scope's right edge; Day 4's timed gate reads <code>frame</code></td></tr>
+    <tr><td><code>def</code> with parameters, arguments passed in order</td><td>Day 3, drills 1 to 3</td><td><code>draw_scope(surface)</code>, <code>draw_beacon(surface, x, y, battery, color)</code></td></tr>
+    <tr><td><code>append</code> in a loop, <code>random.randint</code></td><td>Day 3, drill 5</td><td>the four racks filled by one loop</td></tr>
+    <tr><td>Ops Panel constants</td><td>Day 3, drill 6 (first run)</td><td>the block the agent customizes on Day 4</td></tr>
+  </table>
+
+  <h3>Laws enforced on every page</h3>
+  <p style="margin:4px 0 0">One change per run. Read it, trace it, then run it. Flat gates only (loops may nest, gates may not). Every <code>while</code> names its exit. Graphics windows always use the <code>while running</code> loop with the QUIT listener; no <code>pygame.event.pump()</code>, no windows that close themselves. Words in the terminal, play in the window. Excluded from the whole week: <code>return</code> values, dictionaries, classes, <code>break</code>, <code>try</code>/<code>except</code>, file I/O, sprites and image files. Every day ends with floor / middle / stretch exit gates, and the floor is a complete, runnable program.</p>
+
+  <h3>Standards</h3>
+  <p style="margin:4px 0 0">At most three standards per day, at most two Mastery claims. Four grade-5 CSTA PRO-progression codes carry <code>??</code> and a <span class="warn">&#9888; Needs verification</span> flag; confirm them at the source viewer before distributing any page. Verified codes used by the unit: CSTA <code>E5-ALG-PS-01</code> (the Day 4 schematic); <code>E5-SYS-SE-13</code> was a candidate for Day 5 and is <em>not</em> claimed, because the CIA triad is not taught there. Math claims only where taught: CCSS-M 5.OA.B.3 on Day 2, 5.G.A.2 on Day 3 (Mastery) and Day 4 (reinforcement).</p>
+  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this project's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
+</details>
+
+<p class="foot">Secret Spy Academy &middot; Recruit Cohort &middot; keep your Field Notebook close</p>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 4 — The Gadget Commission</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B1F26;--manila:#F2E9D3;--stamp:#B3261E;--phosphor:#7BE495;--green:#047857;--amber:#C98B1F;--ink-soft:rgba(27,31,38,.08);--ink-line:rgba(27,31,38,.18);--shadow:0 4px 0 rgba(27,31,38,.14);}
+*{box-sizing:border-box}
+body{margin:0;background:var(--manila);color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:16.5px}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+.hero{background:var(--ink);color:var(--manila);padding:46px 24px 40px;text-align:center;border-bottom:3px dashed var(--phosphor)}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--phosphor);margin-bottom:10px}
+h1{font-family:'Special Elite',serif;font-weight:400;font-size:clamp(32px,5.6vw,50px);line-height:1.08;margin:.2em auto .35em;max-width:640px}
+.hook{max-width:560px;margin:0 auto 8px;font-size:17.5px;opacity:.94}
+.need{font-family:'JetBrains Mono',monospace;font-size:12.5px;opacity:.8;margin-top:14px}
+.need a{color:var(--phosphor)}
+.stamp{display:inline-block;margin:20px auto 0;padding:8px 18px;border:3px double var(--phosphor);border-radius:6px;color:var(--phosphor);font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.2em;font-size:clamp(11px,2.6vw,13px);text-transform:uppercase;transform:rotate(-2deg)}
+.due{display:inline-block;margin:14px 8px 0;padding:6px 14px;border:2px solid var(--stamp);border-radius:4px;color:#ff8a7a;font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.16em;font-size:11px;text-transform:uppercase;transform:rotate(2deg)}
+h2{font-family:'Special Elite',serif;font-weight:400;font-size:24px;margin:0 0 6px}
+.card{background:#fff;border:1px solid var(--ink-line);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px;margin:28px 0}
+.chunkhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chunklabel{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--stamp);font-weight:700}
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--ink-soft);color:var(--ink);border-radius:999px;padding:3px 11px;white-space:nowrap}
+.chip.unv{color:var(--stamp)}
+pre{background:var(--ink);color:#EDE5D0;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.6;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:14px 0}
+code{font-family:'JetBrains Mono',monospace;font-size:.92em}
+.predict{border-left:4px solid var(--amber);background:rgba(201,139,31,.14);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.ptag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:4px;color:#8a5a00}
+button.reveal{background:var(--ink);color:var(--manila);border:none;border-radius:999px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;margin-top:6px}
+button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
+.answer{display:none;background:var(--ink-soft);border-radius:10px;padding:14px 16px;margin-top:12px}
+.answer.open{display:block}
+.see{border:2px solid var(--green);background:rgba(4,120,87,.08);border-radius:12px;padding:13px 16px;margin:14px 0;display:none}
+.see.open{display:block}
+.see .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
+.see pre{background:#0b3a2e;margin:10px 0 2px}
+.hinge{border:2px solid var(--stamp)}
+.law{border:2px dashed var(--stamp);background:rgba(179,38,30,.07);border-radius:12px;padding:13px 16px;margin:14px 0}
+.law .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--stamp);font-weight:700;display:block;margin-bottom:4px}
+.exits{display:grid;gap:14px}
+.exit{border:1px solid var(--ink-line);border-radius:12px;padding:14px 16px}
+.lvl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.lvl small{opacity:.65;letter-spacing:.06em}
+.teacher{background:var(--ink-soft);border:1px solid var(--ink-line);border-radius:14px;padding:6px 20px 16px;margin:34px 0;color:var(--ink);font-size:14.5px}
+.teacher summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px 0;font-weight:700;opacity:.85}
+.teacher table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+.teacher th,.teacher td{border:1px solid var(--ink-line);padding:7px 9px;text-align:left;vertical-align:top}
+.teacher th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.warn{color:var(--stamp);font-family:'JetBrains Mono',monospace;font-size:11px}
+.attr{font-size:12px;opacity:.75;margin-top:12px}
+.tracker{display:flex;align-items:center;gap:8px;margin:6px 0 0;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--ink-line);background:transparent}
+.dot.done{background:var(--green);border-color:var(--green)}
+.tlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.foot{text-align:center;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin-top:40px}
+.foot a{color:var(--stamp)}
+@media (max-width:480px){.stamp{letter-spacing:.12em;font-size:11px}}
+@media print{.answer,.see{display:block}button.reveal{display:none}.card{box-shadow:none;break-inside:avoid}.teacher{break-before:page}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Secret Spy Academy &middot; Day 4</div>
+  <h1>The Gadget Commission</h1>
+  <p class="hook">You have read the engine and initialed every section. Today HQ commissions your gadget: plan it on paper, then bend the Tracker Scope to your own design. It runs before you leave this room.</p>
+  <div><span class="stamp">Plan &middot; Predict &middot; Change &middot; Run</span><span class="due">Due end of day</span></div>
+  <p class="need">YOU'LL NEED: VS Code open &middot; your running <a href="tracker_scope_pygame.py">tracker_scope_pygame.py</a> from Day 3 &middot; a blank schematic sheet &middot; <a href="field_notebook_handout.html">your Field Notebook</a></p>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h2>Today's target</h2>
+  <p><strong>I can draw a plan of my program (its steps, loop, decisions, and variables) and build what the plan says.</strong> <span class="chip">E5-ALG-PS-01</span></p>
+  <p><strong>I can predict what each change to the Ops Panel will do before I run it.</strong> <span class="chip unv">E5-PRO-PD-?? &#9888;</span></p>
+  <div class="tracker" aria-label="drill progress">
+    <span class="tlabel">Drills cleared</span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span>
+  </div>
+</section>
+
+<!-- DRILL 1 -->
+<section class="card" data-chunk="1">
+  <div class="chunkhead"><span class="chunklabel">Drill 1 &middot; Read the Ops Panel</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>Every constant is a promise</h2>
+  <p>The panel is the engine's contract. Before touching anything, say what each constant controls. This is Day 3's reading, aimed at today's changes.</p>
+  <pre>BEACON_COLORS = [(123, 228, 149), (242, 233, 211), (201, 139, 31)]
+BEACON_COUNT = 12
+DRIFT_SPEED = 1
+SWEEP_SPEED = 4
+DRAIN_RATE = 1
+FULL_BATTERY = 200
+
+SCOPE_LEFT = 120
+SCOPE_TOP = 40
+SCOPE_SIZE = 400
+CENTER_X = 320
+CENTER_Y = 240
+INK = (27, 31, 38)
+PHOSPHOR = (123, 228, 149)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Which constant changes how <em>crowded</em> the scope is, and which changes how fast beacons rise? Which one makes beacons die sooner if you raise it? The sweep takes 101 passes to cross the scope at speed 4: what would <code>SWEEP_SPEED = 8</code> do to that number?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">BEACON_COUNT sets the crowd, DRIFT_SPEED the rise, and DRAIN_RATE the dying: raise it to 2 and a full battery lasts 100 passes instead of 200. At speed 8 the sweep crosses in 51 passes, about half. The scope's center lives at (CENTER_X, CENTER_Y), Day 3's coordinates, and the panel has no length constant: the run lasts until the agent closes the window, and the <code>frame</code> briefcase counts upward inside it so timed gates can fire. If you can predict a constant's effect, you have permission to change it. That is the whole test.</div>
+</section>
+
+<!-- DRILL 2 -->
+<section class="card" data-chunk="2">
+  <div class="chunkhead"><span class="chunklabel">Drill 2 &middot; The Gadget Schematic</span><span class="chip">E5-ALG-PS-01</span></div>
+  <h2>Draw the engine before you bend it</h2>
+  <p>On your schematic sheet, draw the engine as boxes and arrows: setup at the top, the watched loop as a ring, and inside the ring the beats: <em>move the sweep</em> (with its wrap decision), <em>update the beacons</em> (with the respawn decision), <em>draw</em>. Label where BEACON_COUNT, SWEEP_SPEED, and batteries[i] live. Your teacher signs it. Only then do you customize.</p>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Before drawing: how many flat checkpoints live inside the ring, and which beat holds each? Where on your schematic will your own changes land: inside the ring, in the panel, or both?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Two checkpoints: the wrap decision in the sweep beat, and the respawn decision in the beacon beat, which sits inside the beacon loop, which sits inside the ring. And your Commission lands in <strong>both</strong> places: the color list, count, and speeds live in the panel; the alert-mode gate and your own gadget fire inside the ring. A plan that shows where each change lives is what turns customizing from guessing into engineering, and it's the artifact this page exists to collect.</div>
+</section>
+
+<!-- DRILL 3 -->
+<section class="card" data-chunk="3">
+  <div class="chunkhead"><span class="chunklabel">Drill 3 &middot; Worked change I: alert mode</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>A decision inside the ring</h2>
+  <p>Day 1's flat checkpoint, reading Day 2's frame tally. Inside the watch loop, find the sweep's <code>pygame.draw.line</code> call (the two lines ending in <code>3)</code>) and replace them with these five. Predict, then run.</p>
+  <pre>    sweep_color = PHOSPHOR                     # the default
+    if frame &gt; 600:                            # alert mode: ten seconds in
+        sweep_color = (201, 139, 31)
+    pygame.draw.line(screen, sweep_color,
+                     (sweep_x, SCOPE_TOP), (sweep_x, SCOPE_BOTTOM), 3)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    At 60 passes per second, how many seconds into the run does alert mode begin? What would <code>frame &gt; 900</code> do instead? And why does the gate have no <code>else</code>?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Ten seconds in: pass 600 at 60 passes per second. Move the gate to 900 and alert mode begins at fifteen seconds instead. No <code>else</code> is needed because the line above the gate already set the default; the gate only overrides it. One flat checkpoint reading the frame briefcase, and your gadget has an act two. Mark on your schematic where it fires.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>The green sweep for ten seconds, then an amber sweep
+that holds from then on. Beacons keep rising through both.</pre>
+  </div>
+</section>
+
+<!-- DRILL 4 -->
+<section class="card" data-chunk="4">
+  <div class="chunkhead"><span class="chunklabel">Drill 4 &middot; Worked change II: your own gadget</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>A def in the blueprint, a call in the ring</h2>
+  <p>Yesterday you wrote <code>draw_beacon</code>. The same move gives the scope a lock ring: define it right below <code>draw_scope</code>, and call it right after <code>draw_scope(screen)</code> inside the loop.</p>
+  <pre>def draw_lock_ring(surface):
+    pygame.draw.circle(surface, (201, 139, 31), (CENTER_X, CENTER_Y), 24, 2)
+
+# ...inside the watch loop, right after draw_scope(screen):
+    draw_lock_ring(screen)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    What will the ring look like, and where? What would happen if the call were placed <em>above</em> <code>screen.fill(INK)</code> instead of below it?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">A thin amber ring, radius 24, sitting on the crosshair at the scope's center. Placed above the fill, it would be drawn and then painted over by the ink on the very same pass, so you'd never see it: inside the ring, order is everything. Your own gadget should be <em>yours</em>: a ring, a row of circles, a box, whatever you can draw with circles, lines, and rects. Update the schematic to show where it fires.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>The scope as before, with a small amber ring at the center
+while the sweep passes through it.</pre>
+  </div>
+</section>
+
+<!-- HINGE -->
+<section class="card hinge">
+  <div class="chunkhead"><span class="chunklabel">Hinge question &middot; stop here until you're sure</span><span class="chip">E5-ALG-PS-01</span></div>
+  <h2>The count inside the ring</h2>
+  <p>Look at your schematic. The respawn decision sits inside the beacon loop, which sits inside the ring. The wrap decision sits in the ring, outside the beacon loop.<br>
+  Part 1: in <em>one pass</em>, how many times does the respawn decision run? And across the first ten seconds of a run, 600 passes?<br>
+  Part 2: in those same 600 passes, how many times does the wrap decision run?</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Part 1: 12 times per pass, once per beacon, and 7,200 times in those ten seconds</strong> (12 &times; 600). <strong>Part 2: 600 times, once per pass.</strong> If you said once for Part 1, your schematic is missing the loop inside the ring; redraw before the Commission. If you got both, you can see the whole machine at once, which is exactly what the schematic is for.</div>
+</section>
+
+<!-- THE COMMISSION -->
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">The Commission &middot; due before you leave today</span><span class="chip">E5-ALG-PS-01</span></div>
+  <h2>Your Commissioned Gadget: a customized Tracker Scope</h2>
+  <div class="law"><span class="tag">Deadline law</span>
+    Your gadget <strong>runs by the end of Day 4</strong>. Tomorrow's Bug Hunt fixes bugs; it doesn't host first runs. Worst case at day's end, revert to the clean engine plus your one safest change. Nobody walks into Day 5 with nothing running.
+  </div>
+  <p><strong>The four requirements.</strong> Each is a tool from this week, and house law holds: one change per run, predict before each.</p>
+  <p>1. <strong>Your colors.</strong> Rebuild <code>BEACON_COLORS</code> as your own list of 3&ndash;5 color tuples.<br>
+     2. <strong>Your numbers.</strong> Change <code>BEACON_COUNT</code> and one speed (<code>SWEEP_SPEED</code> or <code>DRIFT_SPEED</code>); predict each effect before the run.<br>
+     3. <strong>Your alert mode.</strong> Drill 3's gate, at a frame you choose and can defend.<br>
+     4. <strong>Your own gadget.</strong> Your own <code>def</code>, your own drawing, called in the ring, marked on the schematic.</p>
+  <p>At the Mission Debrief you present the gadget <em>with</em> its signed schematic: point to the ring, the two decisions, and your gadget as they fire.</p>
+</section>
+
+<!-- EXITS -->
+<section class="card">
+  <h2>Choose your exit gate</h2>
+  <div class="exits">
+    <div class="exit"><span class="lvl" style="color:#8a5a00">Floor <small>&middot; approaching the standard</small></span>
+      <p style="margin:6px 0 0">The clean engine runs, plus one predicted change from the Ops Panel, and your schematic shows the setup and the ring, teacher-signed.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
+      <p style="margin:6px 0 0">Your signed schematic shows sequence, the ring, both decisions, and your labeled variables, and your running gadget matches it: your color list, your numbers, and the alert-mode gate all wired in.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--stamp)">Stretch <small>&middot; exceeds the standard</small></span>
+      <p style="margin:6px 0 0">Your own <code>def</code> gadget fires in the ring and lives on the schematic, and you can point to the exact pass number when your gate flips and say why. Optional final flourish: grow the alert gate into a ladder with a stand-down rung, a second pass number you choose and can defend where the sweep turns green again.</p></div>
+  </div>
+</section>
+
+<!-- TEACHER PANEL -->
+<details class="teacher">
+  <summary>Standards, pacing &amp; evidence (teacher panel)</summary>
+  <p><strong>The pacing choice, stated plainly:</strong> no new syntax today, and that is the proudest line on the page. Everything the Commission asks for was owned at least a day ago: the panel constants are Day 1's briefcases, the alert gate is Day 1's flat checkpoint reading Day 2's frame tally, and the lock ring is Day 3's <code>def</code> with Day 2's drawing vocabulary. Load stays level because integration replaces novelty.</p>
+  <p><strong>Where recruits actually stall:</strong> Block A (Drills 1 and 2, about 35 minutes) is the schematic; the stall is drawing the beacon loop as a box instead of a loop inside the ring, which the hinge is built to catch. Sign schematics as they come, not at the end. Block B (Drills 3 and 4 plus the hinge, about 40 minutes): the common Drill 3 error is replacing only one of the two <code>draw.line</code> lines; the common Drill 4 error is calling the ring before the fill. Block C, the Commission and the Debrief, needs everything that is left, at least 60 minutes. The deadline law is real: a recruit with nothing running at the bell reverts to the clean engine plus one change, and that counts. For the stretch gate's question: the sweep wraps every 101 passes, so it wraps five times in the first 600.</p>
+  <table>
+    <tr><th>Code</th><th>Standard (verbatim)</th><th>Drill(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
+    <tr><td>E5-ALG-PS-01</td><td>Create a visual representation of an algorithm that includes variables and a combination of sequence, events, iteration, and selection to solve a problem or express an idea.</td><td>2, Commission; gated by the hinge</td><td>Mastery</td><td>The signed Gadget Schematic showing sequence, the watch ring, the wrap and respawn decisions, the alert-mode gate, and labeled variables, plus the built gadget that follows it.</td><td>Verified</td></tr>
+    <tr><td>5.G.A.2</td><td>Represent real world and mathematical problems by graphing points in the first quadrant of the coordinate plane, and interpret coordinate values of points in the context of the situation.</td><td>1, 4</td><td>Addressed (reinforcement; the Mastery claim lives on Day 3, where the inversion is taught and the hinge collects it)</td><td>Panel reading of the center pair; lock ring placed by coordinates at the center.</td><td>Verified &middot; CASE network</td></tr>
+    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>1, 3, 4, Commission</td><td>Addressed</td><td>The customized engine: color list, count and speed, gate, and own gadget, each landed one change per run with the prediction spoken first.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+  </table>
+  <p><strong>Deliberately not covered here:</strong> no new syntax at all; this page spends everything on planning and predicted change, building directly on Day 3's reading. <code>return</code> values remain excluded: every routine acts by drawing or printing, and recruits who reach for <code>return</code> get one-on-one support, by program-wide design. The run is Day 2's watched loop and ends only when the agent closes the window; <code>pygame.event.pump</code> and <code>pygame.time.wait</code> appear nowhere in this Academy's engines, because every window reads its mail. The <code>frame</code> tally keeps time inside the watch so gates can fire at chosen moments. Sprites, image files, and classes are excluded program-wide.</p>
+  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. Mathematics standards &copy; Copyright 2010 National Governors Association Center for Best Practices and Council of Chief State School Officers. All rights reserved. Statement text verified via the Learning Commons CASE network. "Mapped to" is this page's claim; it is not a CSTA- or CCSS-reviewed designation.</p>
+</details>
+
+<p class="foot"><a href="spy_academy_hub.html">Back to HQ</a> &middot; Read it, trace it, then run it</p>
+
+</main>
+<script>
+function reveal(btn){
+  if(!btn.dataset.label){ btn.dataset.label = btn.textContent; }
+  var a = btn.nextElementSibling;
+  var open = a.classList.toggle('open');
+  btn.textContent = open ? 'Hide' : btn.dataset.label;
+  var see = a.nextElementSibling;
+  if(see && see.classList.contains('see')){ see.classList.toggle('open', open); }
+  var card = btn.closest('[data-chunk]');
+  if(card){ var d = document.getElementById('d'+card.getAttribute('data-chunk')); if(d) d.classList.add('done'); }
+}
+</script>
+</body>
+</html>

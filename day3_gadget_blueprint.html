@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 3 — The Gadget Blueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B1F26;--manila:#F2E9D3;--stamp:#B3261E;--phosphor:#7BE495;--green:#047857;--amber:#C98B1F;--ink-soft:rgba(27,31,38,.08);--ink-line:rgba(27,31,38,.18);--shadow:0 4px 0 rgba(27,31,38,.14);}
+*{box-sizing:border-box}
+body{margin:0;background:var(--manila);color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:16.5px}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+.hero{background:var(--ink);color:var(--manila);padding:46px 24px 40px;text-align:center;border-bottom:3px dashed var(--phosphor);background-image:linear-gradient(rgba(123,228,149,.06) 1px, transparent 1px),linear-gradient(90deg, rgba(123,228,149,.06) 1px, transparent 1px);background-size:28px 28px}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--phosphor);margin-bottom:10px}
+h1{font-family:'Special Elite',serif;font-weight:400;font-size:clamp(32px,5.6vw,50px);line-height:1.08;margin:.2em auto .35em;max-width:640px}
+.hook{max-width:560px;margin:0 auto 8px;font-size:17.5px;opacity:.94}
+.need{font-family:'JetBrains Mono',monospace;font-size:12.5px;opacity:.8;margin-top:14px}
+.need a{color:var(--phosphor)}
+.stamp{display:inline-block;margin:20px auto 0;padding:10px 20px;border:3px double var(--phosphor);border-radius:6px;color:var(--phosphor);font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.06em;font-size:clamp(13px,3vw,18px);transform:rotate(-2deg);background:rgba(15,19,24,.7)}
+h2{font-family:'Special Elite',serif;font-weight:400;font-size:24px;margin:0 0 6px}
+.card{background:#fff;border:1px solid var(--ink-line);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px;margin:28px 0}
+.chunkhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chunklabel{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--stamp);font-weight:700}
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--ink-soft);color:var(--ink);border-radius:999px;padding:3px 11px;white-space:nowrap}
+.chip.unv{color:var(--stamp)}
+pre{background:var(--ink);color:#EDE5D0;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.6;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:14px 0}
+code{font-family:'JetBrains Mono',monospace;font-size:.92em}
+.predict{border-left:4px solid var(--amber);background:rgba(201,139,31,.14);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.ptag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:4px;color:#8a5a00}
+button.reveal{background:var(--ink);color:var(--manila);border:none;border-radius:999px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;margin-top:6px}
+button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
+.answer{display:none;background:var(--ink-soft);border-radius:10px;padding:14px 16px;margin-top:12px}
+.answer.open{display:block}
+.see{border:2px solid var(--green);background:rgba(4,120,87,.08);border-radius:12px;padding:13px 16px;margin:14px 0;display:none}
+.see.open{display:block}
+.see .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
+.see pre{background:#0b3a2e;margin:10px 0 2px}
+.hinge{border:2px solid var(--stamp)}
+.exits{display:grid;gap:14px}
+.exit{border:1px solid var(--ink-line);border-radius:12px;padding:14px 16px}
+.lvl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.lvl small{opacity:.65;letter-spacing:.06em}
+.teacher{background:var(--ink-soft);border:1px solid var(--ink-line);border-radius:14px;padding:6px 20px 16px;margin:34px 0;color:var(--ink);font-size:14.5px}
+.teacher summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px 0;font-weight:700;opacity:.85}
+.teacher table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+.teacher th,.teacher td{border:1px solid var(--ink-line);padding:7px 9px;text-align:left;vertical-align:top}
+.teacher th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.warn{color:var(--stamp);font-family:'JetBrains Mono',monospace;font-size:11px}
+.attr{font-size:12px;opacity:.75;margin-top:12px}
+.tracker{display:flex;align-items:center;gap:8px;margin:6px 0 0;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--ink-line);background:transparent}
+.dot.done{background:var(--green);border-color:var(--green)}
+.tlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.foot{text-align:center;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin-top:40px}
+.foot a{color:var(--stamp)}
+.filelink{color:var(--stamp);font-weight:700}
+@media print{.answer,.see{display:block}button.reveal{display:none}.card{box-shadow:none;break-inside:avoid}.teacher{break-before:page}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Secret Spy Academy &middot; Day 3</div>
+  <h1>The Gadget Blueprint</h1>
+  <p class="hook">Today you learn to file a routine under a <em>name</em> with <code>def</code>. Then HQ hands you the Tracker Scope engine, and you do something rarer than writing code: you read it, and find your own patterns living inside.</p>
+  <div><span class="stamp">def transmit(message):</span></div>
+  <p class="need">YOU'LL NEED: VS Code open &middot; day3.py and <a href="tracker_scope_pygame.py">tracker_scope_pygame.py</a> &middot; <a href="field_notebook_handout.html">your Field Notebook</a> &middot; pygame from Day 2</p>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h2>Today's target</h2>
+  <p><strong>I can write a routine once with def and run it anywhere, filling its briefcases at call time.</strong> <span class="chip unv">E5-PRO-RD-?? &#9888;</span></p>
+  <p><strong>I can read the engine and point to the Day 1 and Day 2 patterns it is made of, including which way a number moves a beacon.</strong> <span class="chip">5.G.A.2</span></p>
+  <div class="tracker" aria-label="drill progress">
+    <span class="tlabel">Drills cleared</span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span>
+  </div>
+</section>
+
+<!-- DRILL 1 -->
+<section class="card" data-chunk="1">
+  <div class="chunkhead"><span class="chunklabel">Drill 1 &middot; Write it once, run it twice</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
+  <h2>def: a routine filed, not yet run</h2>
+  <p><code>def</code> files a routine in the blueprint. Filing it runs <em>nothing</em>. The routine fires only when you call its name.</p>
+  <pre>def hq_banner():
+    print("= = = = = = = = =")
+    print("  HQ TRANSMISSION")
+    print("= = = = = = = = =")
+
+hq_banner()
+hq_banner()</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    How many banners print? And if you deleted the two calls at the bottom and ran only the <code>def</code> block, what would print?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Two banners, one per call. Delete the calls and <strong>nothing prints at all</strong>. A <code>def</code> is a page in the blueprint: nothing happens until you call it. Most recruits guess wrong here, which is exactly why we run the experiment.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>= = = = = = = = =
+  HQ TRANSMISSION
+= = = = = = = = =
+= = = = = = = = =
+  HQ TRANSMISSION
+= = = = = = = = =</pre>
+  </div>
+</section>
+
+<!-- DRILL 2 -->
+<section class="card" data-chunk="2">
+  <div class="chunkhead"><span class="chunklabel">Drill 2 &middot; The blank in the routine</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
+  <h2>A parameter, filled at call time</h2>
+  <p>A <strong>parameter</strong> is a briefcase that belongs to the routine: empty in the blueprint, filled the moment you call. It is Day 1's briefcase, filled by the call instead of by <code>=</code>.</p>
+  <pre>def transmit(message):
+    print(f"Transmitting: {message}")
+
+transmit("falcon is airborne")
+transmit("rendezvous at dawn")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Write both output lines exactly. During the <em>second</em> call, what value sits inside the briefcase <code>message</code>?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">During the second call, <code>message</code> holds <code>"rendezvous at dawn"</code>. Same routine, refilled briefcase. Write the def once and you can call it as many times as you like, which is the reason functions exist.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Transmitting: falcon is airborne
+Transmitting: rendezvous at dawn</pre>
+  </div>
+</section>
+
+<!-- DRILL 3 -->
+<section class="card" data-chunk="3">
+  <div class="chunkhead"><span class="chunklabel">Drill 3 &middot; Two blanks, filled in order</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
+  <h2>Position fills the briefcases</h2>
+  <p>With two parameters, the terminal fills them by <em>position</em>: first argument into the first briefcase, second into the second. Watch what the swapped call does.</p>
+  <pre>def requisition(gadget, count):
+    print(f"Issue {count} of {gadget}.")
+
+requisition("smoke pen", 3)
+requisition(3, "smoke pen")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Write both output lines exactly. Is the second call a misfire, or something quieter and worse?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">No misfire. The terminal happily puts <code>3</code> into <code>gadget</code> and the smoke pen into <code>count</code>, then prints nonsense with a straight face. Argument order carries the meaning. A program that's quietly wrong is more dangerous than one that crashes; remember this one at Friday's Bug Hunt.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Issue 3 of smoke pen.
+Issue smoke pen of 3.</pre>
+  </div>
+</section>
+
+<!-- DRILL 4 -->
+<section class="card" data-chunk="4">
+  <div class="chunkhead"><span class="chunklabel">Drill 4 &middot; The routine meets the loop</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>Transmit the whole rack</h2>
+  <p>Everything joins: Day 1's rack and loop, Day 2's patterns, the routine from ten minutes ago.</p>
+  <pre>def transmit(message):
+    print(f"Transmitting: {message}")
+
+dispatches = ["falcon is airborne", "rendezvous at dawn", "decoder secured"]
+for d in dispatches:
+    transmit(d)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    How many transmission lines print, and in what order? Which single line would you change to transmit every dispatch <em>twice</em>?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Three lines, in rack order. To double-transmit, add a second <code>transmit(d)</code> line inside the loop; the loop body runs whole on every pass. Three days of training in six lines.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Transmitting: falcon is airborne
+Transmitting: rendezvous at dawn
+Transmitting: decoder secured</pre>
+  </div>
+</section>
+
+<!-- DRILL 5 -->
+<section class="card" data-chunk="5">
+  <div class="chunkhead"><span class="chunklabel">Drill 5 &middot; Growing a rack</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>append: today's one new list move, and the Dispatcher's sibling</h2>
+  <p>Day 1's racks were written by hand. <code>append</code> adds a slot to the end of a rack, so a loop can <em>grow</em> one. The engine builds its beacon racks exactly this way. And <code>random.randint(1, 6)</code> is <code>random.choice</code>'s sibling: choice picks from a rack you wrote; randint picks a whole number between two ends, both ends included.</p>
+  <pre>import random
+
+rack = []
+for i in range(3):
+    rack.append(i * 15)
+print(rack)
+print(len(rack))
+
+rolls = []
+for i in range(3):
+    rolls.append(random.randint(1, 6))
+print(rolls)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    The rack starts empty. What exactly is inside after the first loop, and what does <code>len</code> report? What would <code>rack[0]</code> be? Could <code>rolls</code> ever contain a 7, or a 0?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><code>[0, 15, 30]</code>, and <code>len</code> reports 3. Each pass appends <code>i * 15</code>, so slot 0 holds 0, slot 1 holds 15, slot 2 holds 30; the slot numbers are Day 1's law, unchanged. <code>rolls</code> can never hold a 7 or a 0: <code>randint(1, 6)</code> stays inside its two ends, and unlike <code>range</code>, it <em>includes</em> the last one. An empty rack plus a loop of appends is how programs build collections they can't write by hand.</div>
+  <div class="see"><span class="tag">You should see (your rolls will differ)</span>
+    <pre>[0, 15, 30]
+3
+[2, 3, 1]</pre>
+  </div>
+</section>
+
+<!-- DRILL 6 -->
+<section class="card" data-chunk="6">
+  <div class="chunkhead"><span class="chunklabel">Drill 6 &middot; First run of the engine</span><span class="chip">5.G.A.2</span></div>
+  <h2>Tracker Scope: run it before you touch it</h2>
+  <p>Open <a class="filelink" href="tracker_scope_pygame.py">tracker_scope_pygame.py</a>, or copy every line below into a file with that exact name. <strong>Change nothing. Run it.</strong> That's the gate: the engine has to run unmodified on <em>your</em> machine before tomorrow's Commission begins. One new word inside: <code>pygame.draw.rect</code> draws a box from four numbers, left, top, width, height; a fifth number makes it an outline. The same trick on <code>circle</code> makes a ring.</p>
+  <pre>import pygame, random
+
+pygame.init()
+WIDTH = 640
+HEIGHT = 480
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Tracker Scope")
+clock = pygame.time.Clock()
+
+# ---------- THE OPS PANEL (your customizations live here) ----------
+BEACON_COLORS = [(123, 228, 149), (242, 233, 211), (201, 139, 31)]
+BEACON_COUNT = 12
+DRIFT_SPEED = 1
+SWEEP_SPEED = 4
+DRAIN_RATE = 1
+FULL_BATTERY = 200
+
+SCOPE_LEFT = 120
+SCOPE_TOP = 40
+SCOPE_SIZE = 400
+CENTER_X = 320
+CENTER_Y = 240
+INK = (27, 31, 38)
+PHOSPHOR = (123, 228, 149)
+# -------------------------------------------------------------------
+
+SCOPE_RIGHT = SCOPE_LEFT + SCOPE_SIZE
+SCOPE_BOTTOM = SCOPE_TOP + SCOPE_SIZE
+
+# Parallel lists: beacon number i is xs[i], ys[i], batteries[i], colors[i]
+xs = []
+ys = []
+batteries = []
+colors = []
+
+for i in range(BEACON_COUNT):
+    xs.append(random.randint(SCOPE_LEFT + 20, SCOPE_RIGHT - 20))
+    ys.append(random.randint(CENTER_Y, SCOPE_BOTTOM - 40))
+    batteries.append(random.randint(60, FULL_BATTERY))
+    colors.append(random.choice(BEACON_COLORS))
+
+def draw_scope(surface):
+    pygame.draw.rect(surface, PHOSPHOR,
+                     (SCOPE_LEFT, SCOPE_TOP, SCOPE_SIZE, SCOPE_SIZE), 2)
+    pygame.draw.circle(surface, PHOSPHOR, (CENTER_X, CENTER_Y), 140, 1)
+    pygame.draw.circle(surface, PHOSPHOR, (CENTER_X, CENTER_Y), 70, 1)
+    pygame.draw.line(surface, PHOSPHOR,
+                     (SCOPE_LEFT, CENTER_Y), (SCOPE_RIGHT, CENTER_Y), 1)
+    pygame.draw.line(surface, PHOSPHOR,
+                     (CENTER_X, SCOPE_TOP), (CENTER_X, SCOPE_BOTTOM), 1)
+
+def draw_beacon(surface, x, y, battery, color):
+    if battery &gt; 130:
+        size = 7
+    elif battery &gt; 50:
+        size = 5
+    else:
+        size = 3
+    pygame.draw.circle(surface, color, (x, y), size)
+
+sweep_x = SCOPE_LEFT
+frame = 0
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    sweep_x = sweep_x + SWEEP_SPEED            # the sweep: Day 2's drone, on duty
+    if sweep_x &gt; SCOPE_RIGHT:                  # past the right edge: wrap
+        sweep_x = SCOPE_LEFT
+
+    screen.fill(INK)
+    draw_scope(screen)
+    pygame.draw.line(screen, PHOSPHOR,
+                     (sweep_x, SCOPE_TOP), (sweep_x, SCOPE_BOTTOM), 3)
+
+    for i in range(BEACON_COUNT):
+        ys[i] = ys[i] - DRIFT_SPEED                 # rising: y gets SMALLER
+        xs[i] = xs[i] + random.randint(-1, 1)       # the wobble
+        batteries[i] = batteries[i] - DRAIN_RATE    # the drain: a tally in reverse
+        if batteries[i] &lt; 0:                        # dead: a fresh beacon takes the slot
+            xs[i] = random.randint(SCOPE_LEFT + 20, SCOPE_RIGHT - 20)
+            ys[i] = random.randint(CENTER_Y, SCOPE_BOTTOM - 40)
+            batteries[i] = FULL_BATTERY
+        draw_beacon(screen, xs[i], ys[i], batteries[i], colors[i])
+
+    pygame.display.flip()
+    frame = frame + 1          # counts the passes; timed gates read it
+    clock.tick(60)
+
+pygame.quit()</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Three predictions before you run. (1) What ends this run, and on which day did you learn that loop? (2) The scope's center sits at (320, 240). As a beacon <em>rises</em>, does its y value get bigger or smaller? (3) What happens to a beacon whose battery drops below 0?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">(1) You do, by closing the window: the QUIT event arrives, the listener flips <code>running</code>, and the watch question turns no. It is Day 2's five-beat loop, holding twelve beacons and a sweep. (2) <strong>Smaller.</strong> On a screen, y counts <em>downward</em> from the top edge, so rising means y shrinking toward 0. (3) It respawns: a fresh position in the lower half of the scope and a full battery, in the same slot. Reading what a coordinate pair means in this particular situation is the skill the hinge is about to check.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>A dark window titled "Tracker Scope": a square green scope with
+two range rings and a crosshair, a bright sweep line gliding left
+to right and wrapping, and twelve beacons in green, manila, and
+amber rising slowly, wobbling, shrinking as their batteries drain,
+and reappearing fresh when they die. On and on until you close
+the window yourself.</pre>
+  </div>
+</section>
+
+<!-- DRILL 7 -->
+<section class="card" data-chunk="7">
+  <div class="chunkhead"><span class="chunklabel">Drill 7 &middot; Reading I: the frame loop</span><span class="chip">5.G.A.2</span></div>
+  <h2>Find the patterns you already own</h2>
+  <p>Read the heart of the engine, the lines inside the watch loop. Don't run anything. Every marked line is a pattern you learned this week, wearing engine uniform.</p>
+  <pre>    sweep_x = sweep_x + SWEEP_SPEED            # line E
+    if sweep_x &gt; SCOPE_RIGHT:                  # line F
+        sweep_x = SCOPE_LEFT
+
+    for i in range(BEACON_COUNT):
+        ys[i] = ys[i] - DRIFT_SPEED                 # line A
+        xs[i] = xs[i] + random.randint(-1, 1)       # line B
+        batteries[i] = batteries[i] - DRAIN_RATE    # line C
+        if batteries[i] &lt; 0:                        # line D
+            xs[i] = random.randint(SCOPE_LEFT + 20, SCOPE_RIGHT - 20)
+            ys[i] = random.randint(CENTER_Y, SCOPE_BOTTOM - 40)
+            batteries[i] = FULL_BATTERY</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Name the pattern each line wears. Lines A and C: which Day 2 pattern, and what makes them unusual? Line B: whose trick from Day 1? Line D: which Day 1 clearance check? Lines E and F: which Day 2 drill, almost word for word?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Lines A and C are the <strong>tally</strong>, running in reverse: each takes a little <em>out</em> every pass. A shrinking y is a rising beacon, and a shrinking battery is a dying one. Line B is Day 1's <strong>Dispatcher</strong>, nudging x left or right: the wobble. Line D is Day 1's <strong>flat checkpoint</strong>, the respawn decision. Lines E and F are Day 2's <strong>Patrol Drone</strong>, the update beat and its wrap gate, with the drone renamed the sweep. Nothing in the engine's heart is new. You could have written every line of it; the engine's only trick is doing it twelve beacons at a time, sixty times a second.</div>
+</section>
+
+<!-- DRILL 8 -->
+<section class="card" data-chunk="8">
+  <div class="chunkhead"><span class="chunklabel">Drill 8 &middot; Reading II: the four racks and the ladder</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>How the engine builds its beacons, and how it sizes them</h2>
+  <p>Now read the setup, above the loop. Four empty racks, one growing loop. Beacon number i lives at slot i on <em>every</em> rack: that's the parallel-racks trick, and Day 2's beacons-from-a-list was its rehearsal. Then read <code>draw_beacon</code>: a routine with five parameters and a ladder inside.</p>
+  <pre>xs = []
+ys = []
+batteries = []
+colors = []
+
+for i in range(BEACON_COUNT):
+    xs.append(random.randint(SCOPE_LEFT + 20, SCOPE_RIGHT - 20))
+    ys.append(random.randint(CENTER_Y, SCOPE_BOTTOM - 40))
+    batteries.append(random.randint(60, FULL_BATTERY))
+    colors.append(random.choice(BEACON_COLORS))
+
+def draw_beacon(surface, x, y, battery, color):
+    if battery &gt; 130:
+        size = 7
+    elif battery &gt; 50:
+        size = 5
+    else:
+        size = 3
+    pygame.draw.circle(surface, color, (x, y), size)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    After the loop runs with BEACON_COUNT = 12: what is <code>len(colors)</code>? Is every <code>colors[i]</code> guaranteed to come from BEACON_COLORS, and why? Which drill today taught the growing move? And the ladder: which Day 1 drill is it, and what size does a beacon with battery 50 get?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><code>len(colors)</code> is 12, one append per pass, and every <code>colors[i]</code> must come from BEACON_COLORS because <code>random.choice</code> only ever hands back an item from the rack it's given, Day 1's law. The growing move is Drill 5's <code>append</code>. The ladder is Day 1's Drill 10, three lanes, flat; a battery of exactly 50 is not greater than 130 and not greater than 50, so the <code>else</code> lane opens and the beacon draws at size 3. Read the whole engine now, top to bottom, and initial every section you can explain; tomorrow's Commission begins where your initials stop.</div>
+</section>
+
+<!-- HINGE -->
+<section class="card hinge">
+  <div class="chunkhead"><span class="chunklabel">Hinge question &middot; stop here until you're sure</span><span class="chip">5.G.A.2</span></div>
+  <h2>The rising number and the ladder</h2>
+  <p>Part 1: one pass runs the line <code>ys[i] = ys[i] - DRIFT_SPEED</code>. After it, is the beacon drawn <em>higher</em> or <em>lower</em> on the screen, and is the number in <code>ys[i]</code> bigger or smaller than before?<br>
+  Part 2: the engine calls <code>draw_beacon(screen, 300, 200, 45, PHOSPHOR)</code>. Where is the beacon drawn, what size is it, and which line of the ladder decided?</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Part 1: higher on the screen; smaller in the briefcase.</strong> If you said "higher and bigger," you're using math-class axes on a screen that counts from the top. Re-read Drill 6's second reveal before the build. <strong>Part 2: at (300, 200), a little left of center and above the middle line, at size 3.</strong> 45 fails both questions, so the <code>else</code> lane decided. If you got both, you're ready to rehearse for the Commission.</div>
+</section>
+
+<!-- BUILD BRIEF -->
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">Field Mission &middot; The Blueprint Rehearsal</span></div>
+  <h2>Write routines, then draw with one</h2>
+  <p><strong>Part A, the blueprint (terminal):</strong> write two routines of your own, one with one parameter, one with two, and call them from a rack with a loop, the way Drill 4 did.</p>
+  <p><strong>Part B, the drawing routine (window):</strong> rebuild Day 2's beacon rule through a def: write <code>draw_beacon(surface, x, size)</code> and call it in a loop, then hold the window open with Day 2's loop. Tomorrow your Commission asks for exactly this move with a gadget of your own.</p>
+  <p><strong>Suggested start:</strong> Part A's one-parameter routine first. House law: <strong>one change per run</strong>.</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal a sample solution</button>
+  <div class="answer">
+<pre>import pygame
+
+# --- Part A: the blueprint ---
+def transmit(message):
+    print(f"Transmitting: {message}")
+
+def requisition(gadget, count):
+    print(f"Issue {count} of {gadget}.")
+
+dispatches = ["falcon is airborne", "rendezvous at dawn", "decoder secured"]
+for d in dispatches:
+    transmit(d)
+requisition("smoke pen", 2)
+
+# --- Part B: the drawing routine ---
+pygame.init()
+screen = pygame.display.set_mode((640, 480))
+pygame.display.set_caption("The Rehearsal")
+clock = pygame.time.Clock()
+
+def draw_beacon(surface, x, size):
+    pygame.draw.circle(surface, (123, 228, 149), (x, 240), size)
+
+screen.fill((27, 31, 38))
+for i in range(5):
+    draw_beacon(screen, 70 + i * 125, 12 + i * 6)
+pygame.display.flip()
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    clock.tick(60)
+pygame.quit()</pre>
+    Part B is Day 2's beacon rule handed to a routine: the def holds the how, the loop holds the where. Trace the sizes before you run: 12, 18, 24, 30, 36.
+  </div>
+  <div class="see"><span class="tag">You should see in the terminal, after pygame's two greeting lines; then a window of five beacons growing left to right</span>
+    <pre>Transmitting: falcon is airborne
+Transmitting: rendezvous at dawn
+Transmitting: decoder secured
+Issue 2 of smoke pen.</pre>
+  </div>
+</section>
+
+<!-- EXITS -->
+<section class="card">
+  <h2>Choose your exit gate</h2>
+  <div class="exits">
+    <div class="exit"><span class="lvl" style="color:#8a5a00">Floor <small>&middot; approaching the standard</small></span>
+      <p style="margin:6px 0 0">Your one-parameter routine runs from a loop, and the clean engine runs unmodified on your machine.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
+      <p style="margin:6px 0 0">Both routines run, your <code>draw_beacon</code> row draws and holds its window open, and on the engine you can point at the tally in reverse, the flat checkpoint, the Dispatcher's wobble, the drone's wrap gate, and the growing loop, and name each one.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--stamp)">Stretch <small>&middot; exceeds the standard</small></span>
+      <p style="margin:6px 0 0">Every section of the engine carries your initials, and you can explain the parallel-racks trick to a classmate using slot numbers: where does beacon 7 keep its battery, its height, its color?</p></div>
+  </div>
+</section>
+
+<!-- TEACHER PANEL -->
+<details class="teacher">
+  <summary>Standards, pacing &amp; evidence (teacher panel)</summary>
+  <p><strong>The pacing choice, stated plainly:</strong> Day 3 is the reading day. Exactly two new marks, <code>def</code> and <code>append</code>, arrive in the first five drills; the rest of the page is reading, and the reading is the point. Drills 7 and 8 ask recruits to name Day 1 and Day 2 patterns inside the engine (the tally in reverse, the flat checkpoint, the Dispatcher's wobble, the drone's wrap gate, the growing loop, the three-lane ladder), which is the comprehension move the whole week is built to produce. Tomorrow introduces nothing new on purpose.</p>
+  <p><strong>Where recruits actually stall:</strong> Block A (Drills 1 to 5) runs about 40 minutes; the stall is Drill 1's prediction, where most recruits expect the def to print on its own. Let them be wrong, then run it. Block B (Drills 6 to 8 plus the hinge) runs about 45 minutes; the engine must run unmodified on every machine before the Debrief, and the common failure is pasting it below the Part A code in day3.py. Keep it as its own file. Block C, the Rehearsal and the Mission Debrief, needs a full 45 minutes.</p>
+  <table>
+    <tr><th>Code</th><th>Standard (verbatim)</th><th>Drill(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
+    <tr><td>5.G.A.2</td><td>Represent real world and mathematical problems by graphing points in the first quadrant of the coordinate plane, and interpret coordinate values of points in the context of the situation.</td><td>6, 7; gated by the hinge</td><td>Mastery (interpretation note: the pygame screen counts y downward from the top-left; interpreting that inversion in context is the taught move, and the hinge collects it)</td><td>Field Notebook coordinates corner: the scope-center pair (320, 240), the rising-means-smaller reasoning, the battery-to-size reading, and the respawn condition read aloud at the Mission Debrief.</td><td>Verified &middot; CASE network</td></tr>
+    <tr><td>E5-PRO-RD-??</td><td>Grade-5 progression: students describe how code completes tasks and explain program steps. [Confirm exact code and wording at source.]</td><td>1&ndash;3, 7, 8</td><td>Mastery</td><td>The initialed engine printout plus the Reading drills: recruit names the pattern on lines A through F and explains the four-racks setup and the size ladder in their own words (collected).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>5, 8</td><td>Addressed</td><td>Field Notebook trace of the append loop (rack contents and len after each pass) and the len(colors) reading answer.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+  </table>
+  <p><strong>Deliberately not covered here:</strong> customization waits for Day 4; today the engine is read, not touched, and the gate is that it runs unmodified. <code>append</code> is today's one new list move, taught because the engine's setup uses it; no other list methods appear. <code>random.randint</code> is introduced beside <code>append</code> because the setup loop uses both. The sweep is a straight line crossing the scope, not a rotating one, by design: a rotating sweep needs sine and cosine, which sit outside Grade 5, while the straight sweep is Day 2's drone and every line of it is traceable. Screen centers are literal constants, so <code>//</code> never appears. The E5-PRO-RD claim is raised to Mastery on this page by design: the Reading drills and the initialed engine exist to collect it. <code>return</code> values, dictionaries, classes, <code>break</code>, and nested <code>if</code> gates remain excluded program-wide.</p>
+  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. Mathematics standards &copy; Copyright 2010 National Governors Association Center for Best Practices and Council of Chief State School Officers. All rights reserved. Statement text verified via the Learning Commons CASE network. "Mapped to" is this page's claim; it is not a CSTA- or CCSS-reviewed designation.</p>
+</details>
+
+<p class="foot"><a href="spy_academy_hub.html">Back to HQ</a> &middot; Read it, trace it, then run it</p>
+
+</main>
+<script>
+function reveal(btn){
+  if(!btn.dataset.label){ btn.dataset.label = btn.textContent; }
+  var a = btn.nextElementSibling;
+  var open = a.classList.toggle('open');
+  btn.textContent = open ? 'Hide' : btn.dataset.label;
+  var see = a.nextElementSibling;
+  if(see && see.classList.contains('see')){ see.classList.toggle('open', open); }
+  var card = btn.closest('[data-chunk]');
+  if(card){ var d = document.getElementById('d'+card.getAttribute('data-chunk')); if(d) d.classList.add('done'); }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 2 — The Cipher Room</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B1F26;--manila:#F2E9D3;--stamp:#B3261E;--phosphor:#7BE495;--green:#047857;--amber:#C98B1F;--ink-soft:rgba(27,31,38,.08);--ink-line:rgba(27,31,38,.18);--shadow:0 4px 0 rgba(27,31,38,.14);}
+*{box-sizing:border-box}
+body{margin:0;background:var(--manila);color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:16.5px}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+.hero{background:var(--ink);color:var(--manila);padding:46px 24px 40px;text-align:center;border-bottom:3px dashed var(--phosphor)}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--phosphor);margin-bottom:10px}
+h1{font-family:'Special Elite',serif;font-weight:400;font-size:clamp(32px,5.6vw,50px);line-height:1.08;margin:.2em auto .35em;max-width:640px}
+.hook{max-width:560px;margin:0 auto 8px;font-size:17.5px;opacity:.94}
+.need{font-family:'JetBrains Mono',monospace;font-size:12.5px;opacity:.8;margin-top:14px}
+.need a{color:var(--phosphor)}
+.strip{position:relative;display:block;width:340px;max-width:82vw;height:46px;margin:22px auto 4px;background:#0F1318;border:1px solid rgba(123,228,149,.35);border-radius:10px;overflow:hidden}
+.strip .tick{position:absolute;top:0;bottom:0;width:1px;background:rgba(123,228,149,.18)}
+.strip .drone{position:absolute;top:50%;left:42%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:var(--phosphor);box-shadow:0 0 10px var(--phosphor)}
+@media (prefers-reduced-motion: no-preference){.strip .drone{animation:patrol 4s linear infinite}}
+@keyframes patrol{from{left:-16px}to{left:100%}}
+.stamp{display:inline-block;margin:16px auto 0;padding:8px 18px;border:3px double var(--phosphor);border-radius:6px;color:var(--phosphor);font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.2em;font-size:clamp(11px,2.6vw,13px);text-transform:uppercase;transform:rotate(-2deg)}
+h2{font-family:'Special Elite',serif;font-weight:400;font-size:24px;margin:0 0 6px}
+.card{background:#fff;border:1px solid var(--ink-line);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px;margin:28px 0}
+.chunkhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chunklabel{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--stamp);font-weight:700}
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--ink-soft);color:var(--ink);border-radius:999px;padding:3px 11px;white-space:nowrap}
+.chip.unv{color:var(--stamp)}
+pre{background:var(--ink);color:#EDE5D0;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.6;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:14px 0}
+code{font-family:'JetBrains Mono',monospace;font-size:.92em}
+.predict{border-left:4px solid var(--amber);background:rgba(201,139,31,.14);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.ptag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:4px;color:#8a5a00}
+button.reveal{background:var(--ink);color:var(--manila);border:none;border-radius:999px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;margin-top:6px}
+button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
+.answer{display:none;background:var(--ink-soft);border-radius:10px;padding:14px 16px;margin-top:12px}
+.answer.open{display:block}
+.see{border:2px solid var(--green);background:rgba(4,120,87,.08);border-radius:12px;padding:13px 16px;margin:14px 0;display:none}
+.see.open{display:block}
+.see .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
+.see pre{background:#0b3a2e;margin:10px 0 2px}
+.hinge{border:2px solid var(--stamp)}
+.exits{display:grid;gap:14px}
+.exit{border:1px solid var(--ink-line);border-radius:12px;padding:14px 16px}
+.lvl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.lvl small{opacity:.65;letter-spacing:.06em}
+.teacher{background:var(--ink-soft);border:1px solid var(--ink-line);border-radius:14px;padding:6px 20px 16px;margin:34px 0;color:var(--ink);font-size:14.5px}
+.teacher summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px 0;font-weight:700;opacity:.85}
+.teacher table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+.teacher th,.teacher td{border:1px solid var(--ink-line);padding:7px 9px;text-align:left;vertical-align:top}
+.teacher th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.warn{color:var(--stamp);font-family:'JetBrains Mono',monospace;font-size:11px}
+.attr{font-size:12px;opacity:.75;margin-top:12px}
+.tracker{display:flex;align-items:center;gap:8px;margin:6px 0 0;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--ink-line);background:transparent}
+.dot.done{background:var(--green);border-color:var(--green)}
+.tlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.foot{text-align:center;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin-top:40px}
+.foot a{color:var(--stamp)}
+@media (max-width:480px){.stamp{letter-spacing:.12em;font-size:11px}}
+@media print{.answer,.see{display:block}button.reveal{display:none}.card{box-shadow:none;break-inside:avoid}.strip .drone{animation:none}.teacher{break-before:page}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Secret Spy Academy &middot; Day 2</div>
+  <h1>The Cipher Room</h1>
+  <p class="hook">Real programs are built from a handful of small patterns, and some programs shouldn't be counted at all. Today the Cipher Room opens twice: the tally patterns, then <code>while</code>, the loop that watches. And you open your first window.</p>
+  <div class="strip" aria-hidden="true"><span class="tick" style="left:20%"></span><span class="tick" style="left:40%"></span><span class="tick" style="left:60%"></span><span class="tick" style="left:80%"></span><span class="drone"></span></div>
+  <div><span class="stamp">Tally &middot; Compare &middot; Stake Out &middot; Light Up</span></div>
+  <p class="need">YOU'LL NEED: VS Code open &middot; a new file saved as day2.py &middot; in the terminal, run: pip install pygame &middot; <a href="field_notebook_handout.html">your Field Notebook</a></p>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h2>Today's target</h2>
+  <p><strong>I can use the tally, the counter with a gate, and best-so-far, and trace every briefcase pass by pass.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
+  <p><strong>I can write a while loop that names its exit, stop one that doesn't, and place beacons where a rule says.</strong> <span class="chip unv">E5-PRO-TR-?? &#9888;</span> <span class="chip">5.OA.B.3</span></p>
+  <div class="tracker" aria-label="drill progress">
+    <span class="tlabel">Drills cleared</span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span><span class="dot" id="d9"></span><span class="dot" id="d10"></span><span class="dot" id="d11"></span>
+  </div>
+</section>
+
+<!-- DRILL 1 -->
+<section class="card" data-chunk="1">
+  <div class="chunkhead"><span class="chunklabel">Drill 1 &middot; Pattern: the tally</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Add up the evidence</h2>
+  <p>The most useful pattern in programming: start a briefcase at 0, then let a loop add into it, one pass at a time. Programmers call it the <strong>accumulator</strong>; at this Academy it's the tally.</p>
+  <pre>clues = [12, 7, 20]
+total = 0
+for c in clues:
+    total = total + c
+print("Evidence points:", total)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Trace it in your Field Notebook: what does <code>total</code> hold after each pass? What prints at the end?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><code>total</code> goes 0, then 12, then 19, then 39. The line <code>total = total + c</code> reads strangely at first: put into the briefcase <em>its own contents plus one more clue</em>. Every running total you have ever seen, from game scores to shopping carts, is this exact pattern.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Evidence points: 39</pre>
+  </div>
+</section>
+
+<!-- DRILL 2 -->
+<section class="card" data-chunk="2">
+  <div class="chunkhead"><span class="chunklabel">Drill 2 &middot; The mirror and its shadow</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
+  <h2>== asks the same; != asks different</h2>
+  <p>One equals sign puts a value in. Two equals signs ask "are these the same?" The shadow twin <code>!=</code> asks "are these different?" The terminal answers <code>True</code> or <code>False</code>.</p>
+  <pre>word = "falcon"
+print(word == "falcon")
+print(word == "Falcon")
+print(word != "osprey")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Three answers will print. Write all three, and say why the second differs from the first.
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><code>True</code>, <code>False</code>, <code>True</code>. The terminal matches letters exactly, and a capital F is a different letter (Drill 12 yesterday, same rule). Read <code>!=</code> out loud as "is not" and it stops being slippery. Mixing up <code>=</code> and <code>==</code> is one of the most common misfires in programming; now you can name both halves.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>True
+False
+True</pre>
+  </div>
+</section>
+
+<!-- DRILL 3 -->
+<section class="card" data-chunk="3">
+  <div class="chunkhead"><span class="chunklabel">Drill 3 &middot; Pattern: the counter with a gate</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Count only the strong signals</h2>
+  <p>A tally that adds 1 instead of the value, and only when a gate says yes.</p>
+  <pre>signals = [14, 6, 22, 9]
+strong = 0
+for s in signals:
+    if s &gt; 10:
+        strong = strong + 1
+print("Strong signals:", strong)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Which signals pass the gate? What does <code>strong</code> hold at the end?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">14 and 22 pass; 6 and 9 don't. <code>strong</code> ends at <strong>2</strong>. Notice the shape: a loop, a gate inside it, a counter inside the gate. Three Day 1 tools (Drill 7's patrol, Drill 9's checkpoint, Drill 4's briefcase swap), one new pattern.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Strong signals: 2</pre>
+  </div>
+</section>
+
+<!-- DRILL 4 -->
+<section class="card" data-chunk="4">
+  <div class="chunkhead"><span class="chunklabel">Drill 4 &middot; Pattern: best-so-far</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>The strongest signal</h2>
+  <p>Keep a champion briefcase. Every pass, a challenger arrives; the gate decides whether the champion is replaced.</p>
+  <pre>signals = [14, 6, 22, 9]
+strongest = 0
+for s in signals:
+    if s &gt; strongest:
+        strongest = s
+print("Strongest signal:", strongest)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Trace <code>strongest</code> through all four passes. On which passes does it change, and what does it hold at the end?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">It changes on pass 1 (0 becomes 14) and pass 3 (14 becomes 22); passes 2 and 4 leave it alone because 6 and 9 lose the challenge. Final answer: <strong>22</strong>. Swap the <code>&gt;</code> for <code>&lt;</code> and the same pattern finds the weakest signal instead.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Strongest signal: 22</pre>
+  </div>
+</section>
+
+<!-- DRILL 5 -->
+<section class="card" data-chunk="5">
+  <div class="chunkhead"><span class="chunklabel">Drill 5 &middot; Meet while</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>The charging battery: watch, don't count</h2>
+  <p><code>for</code> counts. <code>while</code> watches: it checks its question at the top of every pass, and runs the indented lines only while the answer is yes.</p>
+  <pre>battery = 10
+while battery &lt; 50:
+    battery = battery + 10
+    print(battery)
+print("Battery charged.")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Trace it: what numbers print, and does 50 itself appear? When does the last line finally run?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">20, 30, 40, and yes, <strong>50 prints</strong>. The check happens at the top: 40 is still less than 50, so the loop runs once more, adds 10, and prints 50. Only then does the check fail. Notice the add is Drill 1's tally; a while is often a tally with a finish line.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>20
+30
+40
+50
+Battery charged.</pre>
+  </div>
+</section>
+
+<!-- DRILL 6 -->
+<section class="card" data-chunk="6">
+  <div class="chunkhead"><span class="chunklabel">Drill 6 &middot; Sabotage drill: the runaway loop</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
+  <h2>The loop that never stops, and how to stop it</h2>
+  <p>A <code>while</code> must move toward no. Break that law on purpose, once, so you know the fix. <strong>Before you run this, find the stop control:</strong> the square stop button in the terminal's corner, or click in the terminal and press <code>Ctrl</code>+<code>C</code>.</p>
+  <pre>battery = 10
+while battery &gt; 0:
+    battery = battery + 10
+    print(battery)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Read the question and the add. Will the answer ever become no? What is going to happen when you run this?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Never. <code>battery</code> starts above 0 and only grows, so the question stays yes forever and numbers pour down the terminal until <em>you</em> end it. Stop it now. This is the runaway loop, and every programmer sets one off by accident sometimes. The fix is a habit: before running any <code>while</code>, point at the line that moves it toward no. If you can't find one, don't run it.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>20, 30, 40, 50... climbing forever until you press stop.
+Then the terminal reports the program was interrupted.</pre>
+  </div>
+</section>
+
+<!-- DRILL 7 -->
+<section class="card" data-chunk="7">
+  <div class="chunkhead"><span class="chunklabel">Drill 7 &middot; Pattern: the sentinel gate</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
+  <h2>Ask until the passphrase is spoken</h2>
+  <p>The classic <code>while</code> pattern: keep asking while the answer is wrong. The exit is a word, not a count.</p>
+  <pre>passphrase = "nightjar"
+guess = input("Passphrase: ")
+while guess != passphrase:
+    print("The door stays shut.")
+    guess = input("Passphrase: ")
+print("The door unlocks. Come in.")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Guess wrong twice, then right. How many times does "The door stays shut." print? Which line moves the loop toward no?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Twice, once per wrong guess. The line that moves it toward no is the <em>second</em> <code>input()</code>, inside the loop: it refills <code>guess</code> so the question can change its answer. Delete that line and the door asks once and sulks forever. The same pattern with <code>while ask not in rack:</code> would guard a whole gadget rack; your Field Mission door guards one passphrase.</div>
+  <div class="see"><span class="tag">You should see (wrong, wrong, right)</span>
+    <pre>Passphrase: falcon
+The door stays shut.
+Passphrase: osprey
+The door stays shut.
+Passphrase: nightjar
+The door unlocks. Come in.</pre>
+  </div>
+</section>
+
+<!-- DRILL 8 -->
+<section class="card" data-chunk="8">
+  <div class="chunkhead"><span class="chunklabel">Drill 8 &middot; First Signal</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>Open a window and hold it open</h2>
+  <p>You installed pygame at the door. Now the moment: a real window, the Academy's ink, one phosphor beacon. Save this as its own file and run it. Two greeting lines from pygame appear in the terminal first; that's normal. The picture is drawn once; the loop at the bottom is what keeps the window open.</p>
+  <pre>import pygame
+
+pygame.init()
+screen = pygame.display.set_mode((640, 480))
+pygame.display.set_caption("First Signal")
+clock = pygame.time.Clock()
+
+screen.fill((27, 31, 38))
+pygame.draw.circle(screen, (123, 228, 149), (320, 240), 60)
+pygame.display.flip()
+
+running = True
+while running:                          # watch
+    for event in pygame.event.get():    # listen
+        if event.type == pygame.QUIT:
+            running = False
+    clock.tick(60)                      # breathe
+pygame.quit()</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    What keeps the window open, and what closes it? Which line moves this while toward no? The beacon sits at (320, 240) in a 640-by-480 window: where on the screen is that?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">The <code>while running</code> loop holds it open: Drill 5's watcher, with nothing to count. Clicking the window's close button sends a QUIT event, the listener catches it, <code>running = False</code> turns the question to no, and the program reaches <code>pygame.quit()</code>. And (320, 240) is dead center, half of 640 and half of 480. The three color numbers are red, green, and blue, 0 to 255; the dark one is ink and the bright one is phosphor. <code>clock.tick(60)</code> is the loop breathing: about sixty checks a second instead of as many as the computer can manage. Every window this week sits on this exact loop.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>A dark window titled "First Signal" with one green beacon
+in the center. It stays open until you close it yourself.</pre>
+  </div>
+</section>
+
+<!-- DRILL 9 -->
+<section class="card" data-chunk="9">
+  <div class="chunkhead"><span class="chunklabel">Drill 9 &middot; A rule places the beacons</span><span class="chip">5.OA.B.3</span></div>
+  <h2>The beacon rule</h2>
+  <p>Yesterday a rule drew signal bars in the terminal. The same idea places beacons in a window: the rule <code>70 + i * 100</code> turns the loop number into a position.</p>
+  <pre>import pygame
+
+pygame.init()
+screen = pygame.display.set_mode((640, 480))
+pygame.display.set_caption("The Beacon Rule")
+clock = pygame.time.Clock()
+
+screen.fill((27, 31, 38))
+for i in range(6):
+    pygame.draw.circle(screen, (123, 228, 149), (70 + i * 100, 240), 30)
+pygame.display.flip()
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    clock.tick(60)
+pygame.quit()</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Fill the ordered-pairs table in your Field Notebook: (i, x) for every pass. Where does the first beacon sit, and how far apart are neighbors?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">The pairs are (0, 70), (1, 170), (2, 270), (3, 370), (4, 470), (5, 570): start at 70, step by 100. Two patterns move together, the loop number and the position, and the rule is the bridge between them. Change the 100 and the whole row of beacons breathes in or out. The hold-open loop at the bottom is Drill 8's, unchanged.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Six green beacons in a level row across the middle
+of the window, evenly spaced.</pre>
+  </div>
+</section>
+
+<!-- DRILL 10 -->
+<section class="card" data-chunk="10">
+  <div class="chunkhead"><span class="chunklabel">Drill 10 &middot; A list feeds the window</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>Beacons sized by the rack</h2>
+  <p>A list holds the data, a loop reads it, and the window shows it. Beacon i gets size <code>sizes[i]</code>.</p>
+  <pre>import pygame
+
+pygame.init()
+screen = pygame.display.set_mode((640, 480))
+pygame.display.set_caption("The Log, Drawn")
+clock = pygame.time.Clock()
+
+sizes = [10, 25, 40, 25, 10]
+screen.fill((27, 31, 38))
+for i in range(5):
+    pygame.draw.circle(screen, (123, 228, 149), (70 + i * 125, 240), sizes[i])
+pygame.display.flip()
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    clock.tick(60)
+pygame.quit()</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Which beacon is biggest, and where does it sit? What one change makes the row shrink toward the middle instead?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">The middle beacon, at x = 320, because <code>sizes[2]</code> is 40. To flip the shape, reorder the list: <code>[40, 25, 10, 25, 40]</code>. One list drives the whole picture, which is exactly how the engine you'll read on Day 3 works: its beacons live in lists, and the loop reads them out.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Five green beacons in a row that swell toward
+the large center beacon, then shrink again.</pre>
+  </div>
+</section>
+
+<!-- DRILL 11 -->
+<section class="card" data-chunk="11">
+  <div class="chunkhead"><span class="chunklabel">Drill 11 &middot; The patrol loop</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
+  <h2>The real game loop: while running, five beats</h2>
+  <p>Drill 8's loop, grown up. The drawing moves <em>inside</em> the loop, because now something changes on every pass. This is the pattern under every game ever made, in five beats: watch, listen, update, draw, breathe. The drone drifts until you close the window; closing it is the exit.</p>
+  <pre>import pygame
+
+pygame.init()
+screen = pygame.display.set_mode((640, 480))
+pygame.display.set_caption("Patrol Drone")
+clock = pygame.time.Clock()
+
+x = 0
+frame = 0
+running = True
+while running:                          # 1. watch
+    for event in pygame.event.get():    # 2. listen
+        if event.type == pygame.QUIT:
+            running = False
+    x = x + 3                           # 3. update
+    if x &gt; 640:
+        x = 0
+    screen.fill((27, 31, 38))           # 4. draw
+    pygame.draw.circle(screen, (123, 228, 149), (x, 240), 20)
+    pygame.display.flip()
+    frame = frame + 1                   # the frame tally
+    clock.tick(60)                      # 5. breathe
+pygame.quit()</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Which line moves this while toward no, and what do <em>you</em> do to trigger it? What happens to the drone when x passes 640? And what is <code>frame</code> counting?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">The exit is <code>running = False</code>, and you trigger it by clicking the window's close button; that arrives as a QUIT event, the listener catches it, and the watch question turns no. Until then the drone drifts right 3 pixels per pass and wraps to 0 at the edge; that <code>if</code> is Drill 9 from yesterday, a flat gate. Notice <code>x = x + 3</code>: the tally again, now moving a light across the dark. And <code>frame</code> is a tally of passes, one per loop; nothing reads it yet, but on Day 4 a timed gate will. Every game you've played is this loop with more inside it.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>A green drone gliding left to right across the dark
+window, forever, wrapping at the edge. It stops only
+when you close the window yourself.</pre>
+  </div>
+</section>
+
+<!-- HINGE -->
+<section class="card hinge">
+  <div class="chunkhead"><span class="chunklabel">Hinge question &middot; stop here until you're sure</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>The overshooting battery</h2>
+  <p>Part 1: <code>clues = [5, 10, 2]</code> runs through the tally. What does <code>total</code> hold after each pass?<br>
+  Part 2: <code>charge = 5</code>, then <code>while charge &lt; 30: charge = charge + 10</code> with a <code>print(charge)</code> inside. What prints, and where does <code>charge</code> end?</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Part 1: 5, then 15, then 17.</strong> If you said 2, you traced a swap; the tally adds. <strong>Part 2: 15, 25, 35 print, and charge ends at 35.</strong> The check sees 25 &lt; 30, says yes one last time, and the add overshoots the finish line. If both parts landed, the Cipher Room is yours, counting loops and watching loops alike.</div>
+</section>
+
+<!-- BUILD BRIEF -->
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">Field Mission &middot; The Evidence Log</span></div>
+  <h2>Count it, guard it, set it patrolling</h2>
+  <p><strong>Part A, the Evidence Log (terminal):</strong> your own list of 5 or 6 evidence values, reported in one f-string: the total (tally), how many are over 15 (counter with a gate), and the strongest (best-so-far).</p>
+  <p><strong>Part B, the Safe House door (terminal):</strong> your own passphrase, a sentinel <code>while</code> gate, an attempts counter (Drill 3's pattern inside Drill 7's loop), and an f-string report when it unlocks.</p>
+  <p><strong>Part C, the Patrol Drone (window):</strong> your own drone in the patrol loop: your color, your speed. It must name its exit: closing the window ends it cleanly.</p>
+  <p><strong>Suggested start:</strong> A, then B, then C, one pattern per run. House law: <strong>one change per run</strong>, and point at every while's exit line before you run it.</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal a sample solution</button>
+  <div class="answer">
+<pre>import pygame
+
+# --- Part A: the evidence log ---
+evidence = [18, 9, 33, 21, 12]
+total = 0
+strong = 0
+strongest = 0
+for e in evidence:
+    total = total + e
+    if e &gt; 15:
+        strong = strong + 1
+    if e &gt; strongest:
+        strongest = e
+print(f"Total: {total}  Over 15: {strong}  Strongest: {strongest}")
+
+# --- Part B: the safe house door ---
+passphrase = "nightjar"
+attempts = 1
+guess = input("Passphrase: ")
+while guess != passphrase:
+    attempts = attempts + 1
+    guess = input("Passphrase: ")
+print(f"The door unlocks after {attempts} attempts. The patrol begins.")
+
+# --- Part C: the patrol drone ---
+pygame.init()
+screen = pygame.display.set_mode((640, 480))
+pygame.display.set_caption("Night Patrol")
+clock = pygame.time.Clock()
+x = 0
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    x = x + 4
+    if x &gt; 640:
+        x = 0
+    screen.fill((15, 19, 24))
+    pygame.draw.circle(screen, (201, 139, 31), (x, 240), 18)
+    pygame.display.flip()
+    clock.tick(60)
+pygame.quit()</pre>
+    Three patterns share Part A's loop; yours may use three separate loops, which is just as correct and easier to trace. Why does <code>attempts</code> start at 1 and not 0? Answer in your Field Notebook.
+  </div>
+  <div class="see"><span class="tag">You should see in the terminal, after pygame's two greeting lines (guessing falcon, then nightjar); then the patrol window opens</span>
+    <pre>Total: 93  Over 15: 3  Strongest: 33
+Passphrase: falcon
+Passphrase: nightjar
+The door unlocks after 2 attempts. The patrol begins.</pre>
+  </div>
+</section>
+
+<!-- EXITS -->
+<section class="card">
+  <h2>Choose your exit gate</h2>
+  <div class="exits">
+    <div class="exit"><span class="lvl" style="color:#8a5a00">Floor <small>&middot; approaching the standard</small></span>
+      <p style="margin:6px 0 0">Your Evidence Log reports the total with the tally, and your Safe House door unlocks on the passphrase; you can set off the runaway loop on purpose, stop it, and say which line was missing.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
+      <p style="margin:6px 0 0">All three log patterns run on your list, the door counts attempts, your Field Notebook ordered-pairs table for the beacon rule is complete, and for each while you can point at its exit line.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--stamp)">Stretch <small>&middot; exceeds the standard</small></span>
+      <p style="margin:6px 0 0">Your Patrol Drone glides with your own color and speed and you can narrate the five beats from memory while it runs. Then print the Log in phosphor ink: <code>pip install rich</code>, <code>from rich import print</code>, and <code>[bold green]</code> tags on the report line.</p></div>
+  </div>
+</section>
+
+<!-- TEACHER PANEL -->
+<details class="teacher">
+  <summary>Standards, pacing &amp; evidence (teacher panel)</summary>
+  <p><strong>The pacing choice, stated plainly:</strong> Day 2 names four patterns that add no marks (the tally, the counter with a gate, best-so-far, the sentinel gate) and introduces three marks (<code>==</code>, <code>!=</code>, <code>while</code>) plus the pygame vocabulary. The window loop arrives in Drill 8 already in its final shape, so Drill 11 adds only the update beat. Nothing on this page is thrown away later: the hold-open loop is the Day 4 engine's loop, the beacon rule is its <code>draw_beacon</code> call, the frame tally is what its timed gate reads, and the charging battery is its battery running the other way.</p>
+  <p><strong>Where recruits actually stall:</strong> Block A (Drills 1 to 7) runs about 50 minutes; the two predictable stalls are <code>=</code> against <code>==</code> (Drill 2) and "where does the while check?" (Drill 5, the 50-prints question). Have everyone run <code>pip install pygame</code> at the start of the day so the install finishes during Block A. Block B (Drills 8 to 11 plus the hinge) runs about 45 minutes; the window often opens behind VS Code, and a recruit who stops the terminal instead of closing the window sees a traceback about a display that no longer exists. Both are ten-second fixes once named. Block C, the Field Mission and the Mission Debrief, needs a full 40 minutes. Protect it.</p>
+  <table>
+    <tr><th>Code</th><th>Standard (verbatim)</th><th>Drill(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
+    <tr><td>5.OA.B.3</td><td>Generate two numerical patterns using two given rules. Identify apparent relationships between corresponding terms. Form ordered pairs consisting of corresponding terms from the two patterns, and graph the ordered pairs on a coordinate plane. <em>For example, given the rule "Add 3" and the starting number 0, and given the rule "Add 6" and the starting number 0, generate terms in the resulting sequences, and observe that the terms in one sequence are twice the corresponding terms in the other sequence. Explain informally why this is so.</em></td><td>9, 10, build; gated by the hinge</td><td>Mastery (partial: graphing the pairs on a coordinate plane is completed on the Field Notebook grid and revisited with screen coordinates on Day 3)</td><td>Completed Field Notebook ordered-pairs tables (loop number, position) for two beacon rules, with the start-and-step relationship written in the recruit's own words (collected).</td><td>Verified &middot; CASE network</td></tr>
+    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>1, 3, 4, 5; hinge</td><td>Mastery</td><td>Field Notebook pass-by-pass traces of the tally, best-so-far, and charging-battery briefcases (collected); two-part hinge answer in the Field Notebook entry.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-TR-??</td><td>Grade-5 progression: students identify and debug errors in simple programs. [Confirm exact code and wording at source.]</td><td>6, 7</td><td>Addressed</td><td>Recruit deliberately sets off and stops the runaway loop, names the missing exit line, and repairs the sulking-door variant of the sentinel gate.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+  </table>
+  <p><strong>Deliberately not covered here:</strong> nested loops are absent from the core day; they live in the bonus Cipher Grid, where grids get a full treatment. Self-closing windows are absent on purpose: every window on this page holds itself open with the same <code>while running</code> loop the Day 4 engine uses, and <code>pygame.time.wait</code> and <code>pygame.event.pump</code> never appear. Animation before Drill 11 is absent so the drawing rules stay traceable before anything moves. <code>pygame.font</code> is never used: words live in the terminal, play lives in the window. Every <code>while</code> on this page can point at the line that moves it toward no; a while that can't is treated as a misfire. <code>break</code>, <code>return</code> values, dictionaries, classes, and nested <code>if</code> gates remain excluded program-wide. The phosphor ink (rich) is stretch-tier only.</p>
+  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. Mathematics standards &copy; Copyright 2010 National Governors Association Center for Best Practices and Council of Chief State School Officers. All rights reserved. Statement text verified via the Learning Commons CASE network. "Mapped to" is this page's claim; it is not a CSTA- or CCSS-reviewed designation.</p>
+</details>
+
+<p class="foot"><a href="spy_academy_hub.html">Back to HQ</a> &middot; Read it, trace it, then run it</p>
+
+</main>
+<script>
+function reveal(btn){
+  if(!btn.dataset.label){ btn.dataset.label = btn.textContent; }
+  var a = btn.nextElementSibling;
+  var open = a.classList.toggle('open');
+  btn.textContent = open ? 'Hide' : btn.dataset.label;
+  var see = a.nextElementSibling;
+  if(see && see.classList.contains('see')){ see.classList.toggle('open', open); }
+  var card = btn.closest('[data-chunk]');
+  if(card){ var d = document.getElementById('d'+card.getAttribute('data-chunk')); if(d) d.classList.add('done'); }
+}
+</script>
+</body>
+</html>

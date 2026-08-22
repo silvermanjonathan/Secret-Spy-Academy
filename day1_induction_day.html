@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 1 — Induction Day &amp; the Three Clearance Checks</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B1F26;--manila:#F2E9D3;--stamp:#B3261E;--phosphor:#7BE495;--green:#047857;--amber:#C98B1F;--ink-soft:rgba(27,31,38,.08);--ink-line:rgba(27,31,38,.18);--shadow:0 4px 0 rgba(27,31,38,.14);}
+*{box-sizing:border-box}
+body{margin:0;background:var(--manila);color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:16.5px}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+.hero{background:var(--ink);color:var(--manila);padding:46px 24px 40px;text-align:center;border-bottom:3px dashed var(--phosphor)}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--phosphor);margin-bottom:10px}
+h1{font-family:'Special Elite',serif;font-weight:400;font-size:clamp(32px,5.6vw,50px);line-height:1.08;margin:.2em auto .35em;max-width:640px}
+.hook{max-width:560px;margin:0 auto 8px;font-size:17.5px;opacity:.94}
+.need{font-family:'JetBrains Mono',monospace;font-size:12.5px;opacity:.8;margin-top:14px}
+.term{display:inline-block;text-align:left;background:#0F1318;border:1px solid rgba(123,228,149,.35);border-radius:10px;padding:12px 18px;margin:22px auto 4px;font-family:'JetBrains Mono',monospace;font-size:12px;font-size:clamp(11.5px,2.6vw,14px);color:var(--phosphor);max-width:100%;overflow-x:auto}
+.term .cmd{opacity:.55;display:block;margin-bottom:2px}
+.term .out{display:inline-block;white-space:nowrap;overflow:hidden;vertical-align:bottom;width:37ch;border-right:.6em solid transparent}
+@media (prefers-reduced-motion: no-preference){.term .out{width:0;border-right-color:var(--phosphor);animation:type 2.6s steps(37,end) .8s forwards, blink .9s step-end infinite}}
+@keyframes type{to{width:37ch}}
+@keyframes blink{50%{border-color:transparent}}
+.stamp{display:inline-block;margin:16px auto 0;padding:8px 18px;border:3px double var(--phosphor);border-radius:6px;color:var(--phosphor);font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.2em;font-size:clamp(11px,2.6vw,13px);text-transform:uppercase;transform:rotate(-2deg)}
+h2{font-family:'Special Elite',serif;font-weight:400;font-size:24px;margin:0 0 6px}
+.card{background:#fff;border:1px solid var(--ink-line);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px;margin:28px 0}
+.chunkhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chunklabel{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--stamp);font-weight:700}
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--ink-soft);color:var(--ink);border-radius:999px;padding:3px 11px;white-space:nowrap}
+.chip.unv{color:var(--stamp)}
+pre{background:var(--ink);color:#EDE5D0;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.6;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:14px 0}
+code{font-family:'JetBrains Mono',monospace;font-size:.92em}
+.predict{border-left:4px solid var(--amber);background:rgba(201,139,31,.14);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.ptag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:4px;color:#8a5a00}
+button.reveal{background:var(--ink);color:var(--manila);border:none;border-radius:999px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;margin-top:6px}
+button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
+.answer{display:none;background:var(--ink-soft);border-radius:10px;padding:14px 16px;margin-top:12px}
+.answer.open{display:block}
+.see{border:2px solid var(--green);background:rgba(4,120,87,.08);border-radius:12px;padding:13px 16px;margin:14px 0;display:none}
+.see.open{display:block}
+.see .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
+.see pre{background:#0b3a2e;margin:10px 0 2px}
+.hinge{border:2px solid var(--stamp)}
+.exits{display:grid;gap:14px}
+.exit{border:1px solid var(--ink-line);border-radius:12px;padding:14px 16px}
+.lvl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.lvl small{opacity:.65;letter-spacing:.06em}
+.teacher{background:var(--ink-soft);border:1px solid var(--ink-line);border-radius:14px;padding:6px 20px 16px;margin:34px 0;color:var(--ink);font-size:14.5px}
+.teacher summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px 0;font-weight:700;opacity:.85}
+.teacher table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+.teacher th,.teacher td{border:1px solid var(--ink-line);padding:7px 9px;text-align:left;vertical-align:top}
+.teacher th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.warn{color:var(--stamp);font-family:'JetBrains Mono',monospace;font-size:11px}
+.attr{font-size:12px;opacity:.75;margin-top:12px}
+.tracker{display:flex;align-items:center;gap:8px;margin:6px 0 0;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--ink-line);background:transparent}
+.dot.done{background:var(--green);border-color:var(--green)}
+.tlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.foot{text-align:center;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin-top:40px}
+.foot a{color:var(--stamp)}
+@media (max-width:480px){.stamp{letter-spacing:.12em;font-size:11px}}
+@media print{.answer,.see{display:block}button.reveal{display:none}.card{box-shadow:none;break-inside:avoid}.term .out{animation:none;width:37ch;border-right-color:transparent}.teacher{break-before:page}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Secret Spy Academy &middot; Day 1</div>
+  <h1>Induction Day &amp; the Three Clearance Checks</h1>
+  <p class="hook">Your field terminal arrived today. It's obedient and completely literal: it does <em>exactly</em> what you type, which is not always what you meant. Get your codename on file, then pass the three clearance checks: Transmit, Patrol, Checkpoint.</p>
+  <div class="term" aria-hidden="true"><span class="cmd">$ python day1.py</span><span class="out">HQ to Recruit: your terminal is live.</span></div>
+  <div><span class="stamp">Transmit &middot; Patrol &middot; Checkpoint</span></div>
+  <p class="need">YOU'LL NEED: VS Code open &middot; a new file saved as day1.py &middot; <a href="field_notebook_handout.html" style="color:var(--phosphor)">your Field Notebook</a></p>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h2>Today's target</h2>
+  <p><strong>I can store and trace values, run a counted patrol, and write a checkpoint that opens one lane.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
+  <p><strong>I can sabotage a line on purpose and read the incident report last line first.</strong> <span class="chip unv">E5-PRO-TR-?? &#9888;</span></p>
+  <div class="tracker" aria-label="drill progress">
+    <span class="tlabel">Drills cleared</span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span><span class="dot" id="d9"></span><span class="dot" id="d10"></span><span class="dot" id="d11"></span><span class="dot" id="d12"></span>
+  </div>
+</section>
+
+<!-- DRILL 1 -->
+<section class="card" data-chunk="1">
+  <div class="chunkhead"><span class="chunklabel">Drill 1 &middot; First transmission</span></div>
+  <h2>Bring the terminal online</h2>
+  <p>Type this one line into <code>day1.py</code>, exactly as written. Press Run (the triangle, top right) and watch the terminal.</p>
+  <pre>print("HQ to Recruit: your terminal is live.")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    What exact characters appear? Will the quotation marks be part of it? Say your guess out loud, then run.
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">The words appear <strong>without</strong> the quotation marks. Quotes are instructions for the terminal: they mark where your message starts and ends. Everything between them is called a <strong>string</strong>.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>HQ to Recruit: your terminal is live.</pre>
+  </div>
+</section>
+
+<!-- DRILL 2 -->
+<section class="card" data-chunk="2">
+  <div class="chunkhead"><span class="chunklabel">Drill 2 &middot; Sabotage drill: the misfire</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
+  <h2>Break it, then read the incident report</h2>
+  <p>Every agent fumbles a transmission sooner or later. Do it on purpose now, so the error message can never rattle you again. Change <code>print</code> to <code>pritn</code> and run:</p>
+  <pre>pritn("HQ to Recruit: your terminal is live.")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Will anything print? What will the terminal say instead, and where on the screen will you look first?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Nothing prints. The terminal files an incident report instead, called a <strong>traceback</strong>. Read it <strong>last line first</strong>: the bottom line names the problem, and here it says the terminal knows no command called <code>pritn</code>. Fix the spelling, run again, and the transmission goes through.</div>
+  <div class="see"><span class="tag">You should see (last line of the traceback)</span>
+    <pre>NameError: name 'pritn' is not defined. Did you mean: 'print'?</pre>
+  </div>
+</section>
+
+<!-- DRILL 3 -->
+<section class="card" data-chunk="3">
+  <div class="chunkhead"><span class="chunklabel">Drill 3 &middot; The labeled briefcase</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Put a value inside, read the tag</h2>
+  <p>A <strong>variable</strong> is a labeled briefcase: the name on the tag, one value inside. Watch the two prints closely. One has quotes and one doesn't.</p>
+  <pre>codename = "Falcon"
+print(codename)
+print("codename")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Two lines will appear. What exactly does each one say? Write both in your Field Notebook before you run.
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">First <code>Falcon</code>, then <code>codename</code>. Without quotes, the terminal opens the briefcase and shows what's inside. With quotes, it just repeats those exact letters. This one difference explains half the misfires you'll see this week.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Falcon
+codename</pre>
+  </div>
+</section>
+
+<!-- DRILL 4 -->
+<section class="card" data-chunk="4">
+  <div class="chunkhead"><span class="chunklabel">Drill 4 &middot; One briefcase, one thing</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Swap the contents</h2>
+  <p>What happens when you put a second value into a briefcase that already holds one?</p>
+  <pre>clearance = 2
+clearance = 5
+print(clearance)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Will the terminal show <code>2</code>, <code>5</code>, both, or <code>7</code>? Trace it in your Field Notebook, one row per line.
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>5, and only 5.</strong> The <code>=</code> sign <em>swaps</em> the contents: whatever the briefcase held before is gone, and the most recent swap wins. Nothing adds up unless you ask for math on purpose.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>5</pre>
+  </div>
+</section>
+
+<!-- DRILL 5 -->
+<section class="card" data-chunk="5">
+  <div class="chunkhead"><span class="chunklabel">Drill 5 &middot; The intercom</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Make the terminal ask a question</h2>
+  <p><code>input()</code> makes the program <em>stop and listen</em>. Whatever gets typed lands in the briefcase on the left.</p>
+  <pre>codename = input("State your codename, Recruit: ")
+print("Welcome aboard,", codename)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Where exactly does the program pause and wait? After you type a codename and press Enter, what ends up inside <code>codename</code>?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">It pauses at line 1, right after printing the question. The blinking cursor in the terminal is the intercom listening. Whatever you type before pressing Enter becomes the value inside <code>codename</code>, and line 2 reads it back out. The comma inside <code>print</code> puts one space between the two pieces.</div>
+  <div class="see"><span class="tag">You should see (if the recruit is Nightjar)</span>
+    <pre>State your codename, Recruit: Nightjar
+Welcome aboard, Nightjar</pre>
+  </div>
+</section>
+
+<!-- DRILL 6 -->
+<section class="card" data-chunk="6">
+  <div class="chunkhead"><span class="chunklabel">Drill 6 &middot; The text trap, and decoding on arrival</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
+  <h2>Why 7 &times; 4 makes 7777, and how int() fixes it</h2>
+  <p>Ask for a number, multiply it, and watch closely. Type <code>7</code> when it asks. Then run the fixed version and type <code>7</code> again.</p>
+  <pre>missions = input("How many missions completed? ")
+print(missions * 4)
+
+# decode on arrival: the fix
+missions = int(input("How many missions completed? "))
+print(f"Field points: {missions * 4}")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    First run: <code>28</code>, or something stranger? Second run: what changes, and what does the <code>f</code> before the quotes do?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">First: <code>7777</code>. <code>input()</code> <strong>always</strong> hands you text, and text times 4 repeats the letters. The terminal did exactly what you said. Second: <code>int()</code> converts the text to a real number the moment it arrives, so the math works. The Academy calls this <strong>decoding on arrival</strong>. And the <code>f</code> makes an <strong>f-string</strong>: anything inside <code>{ }</code> gets swapped for its value.</div>
+  <div class="see"><span class="tag">You should see (typing 7 both times)</span>
+    <pre>How many missions completed? 7
+7777
+How many missions completed? 7
+Field points: 28</pre>
+  </div>
+</section>
+
+<!-- DRILL 7 -->
+<section class="card" data-chunk="7">
+  <div class="chunkhead"><span class="chunklabel">Drill 7 &middot; Patrol check: for and range</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>One rule, many rows</h2>
+  <p>A <strong>loop</strong> repeats your indented lines, and the briefcase <code>step</code> is refilled each pass. Hand it a rule and a shape appears. Here a tracker's signal climbs one bar per step.</p>
+  <pre>print("|" * 5)
+
+for step in range(1, 5):
+    print("|" * step)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Line 1 first: five bars, or the number 5? Then the loop: sketch every row in your Field Notebook. Where does <code>range(1, 5)</code> start, and where does it stop?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Five bars, then a staircase of 1 to 4. Text times a number repeats the text, and <code>range(1, 5)</code> deals 1, 2, 3, 4: it starts at the first number and stops <em>before</em> the second. One small rule made every row. The loop is a <strong>counted patrol</strong>: you can say in advance exactly how many passes it makes.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>|||||
+|
+||
+|||
+||||</pre>
+  </div>
+</section>
+
+<!-- DRILL 8 -->
+<section class="card" data-chunk="8">
+  <div class="chunkhead"><span class="chunklabel">Drill 8 &middot; Sabotage drill: the missing row</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
+  <h2>The off-by-one</h2>
+  <p>A recruit wants a four-row signal and writes this. Read it first. Something is short.</p>
+  <pre>for step in range(1, 4):
+    print("|" * step)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    How many rows will actually print, and which row is missing? Say why before you run.
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Three rows. The four-bar row never prints, because <code>range(1, 4)</code> stops <em>before</em> 4. This is the most famous misfire in programming, the <strong>off-by-one</strong>. The fix: to reach the number you want, write one past it, <code>range(1, 5)</code>.</div>
+  <div class="see"><span class="tag">You should see (one row short)</span>
+    <pre>|
+||
+|||</pre>
+  </div>
+</section>
+
+<!-- DRILL 9 -->
+<section class="card" data-chunk="9">
+  <div class="chunkhead"><span class="chunklabel">Drill 9 &middot; Checkpoint check: if and else</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
+  <h2>The two-lane checkpoint</h2>
+  <p>An <code>if</code> line asks a yes-or-no question. The indented lines below it run only when the answer is yes, and <code>else</code> catches every no.</p>
+  <pre>signal = 80
+if signal &gt; 75:
+    print("Lock acquired. Tracker on target.")
+else:
+    print("No lock. Move closer.")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Which one line prints at 80? Change <code>signal</code> to <code>60</code> and predict again before the second run. Could both lines ever print on the same run?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">At 80, the lock. At 60, no lock. And no: <strong>exactly one</strong> lane opens per run. The terminal takes one lane through the checkpoint and moves on.</div>
+  <div class="see"><span class="tag">You should see (with signal = 80)</span>
+    <pre>Lock acquired. Tracker on target.</pre>
+  </div>
+</section>
+
+<!-- DRILL 10 -->
+<section class="card" data-chunk="10">
+  <div class="chunkhead"><span class="chunklabel">Drill 10 &middot; Three lanes, flat</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
+  <h2>elif: the middle lane</h2>
+  <p>Three outcomes, one flat ladder. The terminal checks each question in order and takes the first true lane.</p>
+  <pre>threat = 90
+if threat &lt; 30:
+    print("All quiet. Proceed.")
+elif threat &gt; 80:
+    print("Abort. Get out now.")
+else:
+    print("Caution. Keep your head down.")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    At 90: how many of the three lines print, and which one? What about at exactly 80?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Exactly one line, always. At 90 it's <em>Abort</em>. At 80 both questions are false (80 is not less than 30, and 80 is not greater than 80), so the <code>else</code> lane opens: <em>Caution</em>. Notice the ladder stays flat, three lanes side by side, none hiding inside another. That's how checkpoints are written at this Academy.</div>
+  <div class="see"><span class="tag">You should see (with threat = 90)</span>
+    <pre>Abort. Get out now.</pre>
+  </div>
+</section>
+
+<!-- DRILL 11 -->
+<section class="card" data-chunk="11">
+  <div class="chunkhead"><span class="chunklabel">Drill 11 &middot; The gadget rack</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>A list: one briefcase, many slots</h2>
+  <p>A <strong>list</strong> is a rack of numbered slots, and the numbering starts at <strong>0</strong>. Then reach for a slot that isn't there, on purpose.</p>
+  <pre>rack = ["grapple", "decoder", "smoke pen"]
+print(rack[0])
+print(rack[2])
+print(len(rack))
+print(rack[3])</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Three lines will print, and then something else happens. Which gadget comes out of slot 0? What does <code>len</code> report? And slot 3: the last gadget, or a misfire?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><code>grapple</code>, <code>smoke pen</code>, then <code>3</code>, and then the terminal misfires. The slots are numbered 0, 1, 2, so slot 3 doesn't exist. On a three-slot rack the last slot is number 2. <strong>The last number is always one less than the count.</strong> Counting from zero feels strange at first; draw the rack in your Field Notebook with the slot numbers on it and it sticks.</div>
+  <div class="see"><span class="tag">You should see (then the traceback's last line)</span>
+    <pre>grapple
+smoke pen
+3
+IndexError: list index out of range</pre>
+  </div>
+</section>
+
+<!-- DRILL 12 -->
+<section class="card" data-chunk="12">
+  <div class="chunkhead"><span class="chunklabel">Drill 12 &middot; The Dispatcher and the checkpoint</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>random.choice and in: the rack comes alive</h2>
+  <p>Import the Dispatcher once, at the top of the file. <code>random.choice</code> picks a slot for you, and the word <code>in</code> asks the rack a yes-or-no question. Run it twice: request <code>decoder</code>, then <code>jetpack</code>.</p>
+  <pre>import random
+
+rack = ["grapple", "decoder", "smoke pen"]
+print("The Dispatcher issues:", random.choice(rack))
+
+ask = input("Which gadget do you request? ")
+if ask in rack:
+    print("Approved. Sign it out at the rack.")
+else:
+    print("Denied. That gadget is not on the rack.")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    What lands in the Dispatcher's pick: a gadget, or a slot number? Which lane opens for <code>decoder</code>, and which for <code>jetpack</code>? What would typing <code>Decoder</code> with a capital D do?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">A gadget. The Dispatcher hands you the word itself, and slot numbers stay on the rack. The pick can repeat across runs; each one is fresh and forgetful. <code>decoder</code> opens the approved lane, <code>jetpack</code> hits the denied lane, and <code>Decoder</code> is denied too: the terminal matches letters exactly, and a capital D is a different letter.</div>
+  <div class="see"><span class="tag">You should see (two runs; the Dispatcher's pick may differ)</span>
+    <pre>The Dispatcher issues: smoke pen
+Which gadget do you request? decoder
+Approved. Sign it out at the rack.
+
+The Dispatcher issues: grapple
+Which gadget do you request? jetpack
+Denied. That gadget is not on the rack.</pre>
+  </div>
+</section>
+
+<!-- HINGE -->
+<section class="card hinge">
+  <div class="chunkhead"><span class="chunklabel">Hinge question &middot; stop here until you're sure</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>The two-part clearance check</h2>
+  <p>Part 1: a program runs <code>fuel = 40</code> and then <code>fuel = 25</code>. What does <code>fuel</code> hold now?<br>
+  Part 2: without running it, how many lines does <code>for step in range(2, 5): print("|" * step)</code> print, and how many bars are on the last line?</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Part 1: 25, and only 25.</strong> A briefcase holds one value, and <code>=</code> swaps out whatever was there. <strong>Part 2: three lines, and the last holds four bars.</strong> <code>range(2, 5)</code> deals 2, 3, 4. If either part surprised you, re-trace Drills 4 and 7 before the build. If you got both, you're cleared for the Field Mission.</div>
+</section>
+
+<!-- BUILD BRIEF -->
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">Field Mission &middot; The Induction Terminal</span></div>
+  <h2>Register, get scored, get assigned</h2>
+  <p>Build an Induction Terminal program that:</p>
+  <p>1. Prints the HQ banner (2&ndash;3 lines, or a loop of one banner line).<br>
+     2. Asks the recruit's codename with <code>input()</code>.<br>
+     3. Asks how many missions they've completed, converting with <code>int()</code>.<br>
+     4. Computes their field points (each mission is worth 15) and prints one f-string report line.<br>
+     5. Gates the result: over 45 points earns one message, otherwise another.<br>
+     6. Lets the Dispatcher assign a Division with <code>random.choice</code>.</p>
+  <p><strong>Useful pieces:</strong> <code>print()</code> &middot; <code>input()</code> &middot; <code>int()</code> &middot; <code>f"..."</code> &middot; <code>for</code> / <code>range()</code> &middot; <code>if</code> / <code>else</code> &middot; <code>random.choice()</code></p>
+  <p><strong>Suggested start:</strong> banner first, then one question at a time. House law: <strong>one change per run</strong>.</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal a sample solution</button>
+  <div class="answer">
+<pre>import random
+
+# --- HQ banner ---
+for row in range(3):
+    print("= = = = = = = = = = =")
+
+# --- Induction desk ---
+codename = input("State your codename, Recruit: ")
+missions = int(input("How many missions completed? "))
+points = missions * 15
+print(f"{codename}, your file shows {points} field points.")
+
+# --- The clearance checkpoint ---
+if points &gt; 45:
+    print("Seasoned already. HQ will be watching you.")
+else:
+    print("A clean slate. Every mission adds to it.")
+
+# --- The Dispatcher assigns ---
+division = random.choice(["Surveillance", "Cryptography", "Field Ops"])
+print(f"The Dispatcher assigns you to {division}.")</pre>
+    Yours doesn't have to match this. It has to run, and you have to be able to say what each line does.
+  </div>
+  <div class="see"><span class="tag">You should see (Nightjar, 4 missions; the Division may differ)</span>
+    <pre>= = = = = = = = = = =
+= = = = = = = = = = =
+= = = = = = = = = = =
+State your codename, Recruit: Nightjar
+How many missions completed? 4
+Nightjar, your file shows 60 field points.
+Seasoned already. HQ will be watching you.
+The Dispatcher assigns you to Field Ops.</pre>
+  </div>
+</section>
+
+<!-- EXITS -->
+<section class="card">
+  <h2>Choose your exit gate</h2>
+  <div class="exits">
+    <div class="exit"><span class="lvl" style="color:#8a5a00">Floor <small>&middot; approaching the standard</small></span>
+      <p style="margin:6px 0 0">Your banner prints, your terminal asks for a codename and a mission count with <code>int()</code>, and you can sabotage <code>print</code> on purpose and fix it by reading the incident report last line first.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
+      <p style="margin:6px 0 0">Your full Induction Terminal runs, checkpoint and Division assignment included, and your Field Notebook trace of the codename, missions, and points program is complete and correct.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--stamp)">Stretch <small>&middot; exceeds the standard</small></span>
+      <p style="margin:6px 0 0">Requisition the big banner: in the VS Code terminal run <code>pip install pyfiglet</code>, then crown your terminal with <code>import pyfiglet</code> and <code>print(pyfiglet.figlet_format("SPY HQ"))</code>. Then add the signal staircase from Drill 7 with the mission count as the number of rows, and let the recruit request a gadget with the <code>in</code> checkpoint from Drill 12.</p></div>
+  </div>
+</section>
+
+<!-- TEACHER PANEL -->
+<details class="teacher">
+  <summary>Standards, pacing &amp; evidence (teacher panel)</summary>
+  <p><strong>The pacing choice, stated plainly:</strong> Day 1 is a deliberate fire-hose, about ten mechanics in twelve drills. Small self-confirming moves (printing, assigning, indexing) compress and hold; abstraction doesn't, so Day 3 is a reading day and Days 4 and 5 introduce nothing new. Total load stays roughly flat across the week because integration rises as novelty falls. The floor tier here is a complete, runnable program.</p>
+  <p><strong>Where recruits actually stall:</strong> Block A (Drills 1 to 6) runs about 45 minutes, and the text trap in Drill 6 is the first real stall, usually a recruit who typed the number with quotes or dropped the <code>int()</code> wrapper. Block B (Drills 7 to 12 plus the hinge) runs about 50 minutes; zero-indexing in Drill 11 and the exact-boundary case in Drill 10 (80 is not greater than 80) are the two predictable stalls. Block C, the Field Mission and the Mission Debrief, needs a full 40 minutes. Protect it.</p>
+  <table>
+    <tr><th>Code</th><th>Standard (verbatim)</th><th>Drill(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
+    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>3, 4, 5, 7, 11, 12; gated by the hinge</td><td>Mastery</td><td>Completed Field Notebook traces (the Induction Terminal program and the patrol passes) plus the rack diagram with slot numbers; hinge answer in the Field Notebook entry.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-TR-??</td><td>Grade-5 progression: students identify and debug errors in simple programs. [Confirm exact code and wording at source.]</td><td>2, 6, 8, 11</td><td>Addressed</td><td>Recruit fixes their own sabotaged print; class incident list naming the text trap, the off-by-one, and the slot-3 IndexError.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-RD-??</td><td>Grade-5 progression: students describe how code completes tasks and explain program steps. [Confirm exact code and wording at source.]</td><td>9, 10</td><td>Addressed</td><td>Recruit narrates the three-lane checkpoint at the Mission Debrief: which lane opens at 20, 80, and 90, and why exactly one.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+  </table>
+  <p><strong>Deliberately not covered here:</strong> <code>==</code> arrives on Day 2 as the identity check; today's checkpoints compare with <code>&lt;</code> and <code>&gt;</code> and ask the rack with <code>in</code>. <code>while</code> loops arrive on Day 2 among the patterns. Functions wait until Day 3. Nested <code>if</code> gates are treated as an anti-pattern for this age band; <code>elif</code> ladders carry all multi-lane logic. <code>return</code> values, dictionaries, classes, <code>break</code>, and <code>try</code>/<code>except</code> are excluded from the whole week. No mathematics standard is claimed on this page; CCSS-M claims live on Days 2 and 4, where they are taught.</p>
+  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
+</details>
+
+<p class="foot"><a href="spy_academy_hub.html">Back to HQ</a> &middot; Read it, trace it, then run it</p>
+
+</main>
+<script>
+function reveal(btn){
+  if(!btn.dataset.label){ btn.dataset.label = btn.textContent; }
+  var a = btn.nextElementSibling;
+  var open = a.classList.toggle('open');
+  btn.textContent = open ? 'Hide' : btn.dataset.label;
+  var see = a.nextElementSibling;
+  if(see && see.classList.contains('see')){ see.classList.toggle('open', open); }
+  var card = btn.closest('[data-chunk]');
+  if(card){ var d = document.getElementById('d'+card.getAttribute('data-chunk')); if(d) d.classList.add('done'); }
+}
+</script>
+</body>
+</html>
