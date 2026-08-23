@@ -67,14 +67,14 @@ button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
   <h1>The Final Debrief</h1>
   <p class="hook">No new tools today. Your gadget is finished. Today you run it for the Academy, show where its loop turns and its gates decide, tell one thing you chose and one bug you fixed, and earn your badge.</p>
   <div><span class="stamp">Run &middot; Point &middot; Tell</span><span class="badge">Field<br>Agent</span></div>
-  <p class="need">YOU'LL NEED: your finished gadget, started fresh &middot; your signed Gadget Schematic &middot; <a href="field_notebook_handout.html">your Field Notebook</a>, open to the Bug Hunt Log &middot; a slip of paper for the Dead Drop</p>
+  <p class="need">YOU'LL NEED: your finished Edition of Target Lock, started fresh &middot; your signed Gadget Schematic &middot; <a href="field_notebook_handout.html">your Field Notebook</a>, open to the Bug Hunt Log &middot; a slip of paper for the Dead Drop</p>
 </header>
 
 <main class="wrap">
 
 <section class="card">
   <h2>Today's target</h2>
-  <p><strong>I can present my gadget: run it, point to the ring and the decisions on my schematic, and tell one design choice and one bug I fixed.</strong> <span class="chip">E5-ALG-PS-01</span> <span class="chip unv">E5-PRO-PD-?? &#9888;</span></p>
+  <p><strong>I can present my edition of Target Lock: run it, point to the ring and the decisions on my schematic, and tell one design choice and one bug I fixed.</strong> <span class="chip">E5-ALG-PS-01</span> <span class="chip unv">E5-PRO-PD-?? &#9888;</span></p>
   <div class="tracker" aria-label="drill progress">
     <span class="tlabel">Drills cleared</span>
     <span class="dot" id="d1"></span><span class="dot" id="d2"></span>
@@ -86,29 +86,29 @@ button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
   <div class="chunkhead"><span class="chunklabel">Drill 1 &middot; The three-part debrief</span><span class="chip">E5-ALG-PS-01</span></div>
   <h2>Two minutes, in this order</h2>
   <div class="law"><span class="tag">The debrief order</span>
-    <strong>(1) Run.</strong> Start your gadget from a fresh start and let it run while you talk. <strong>(2) Point.</strong> On your signed schematic, show where the watch loop turns, where the wrap decision and the respawn decision sit, and where your alert gate and your own routine fire. <strong>(3) Tell.</strong> Name one design choice you made and why, then read one row of your Bug Hunt Log aloud: the symptom, and the one change that fixed it.
+    <strong>(1) Run.</strong> Start your edition from a fresh start and play while you talk. <strong>(2) Point.</strong> On your signed schematic, show where the watch loop turns, where the lock test's four checkpoints feed their counter, and where your streak gate, your winning condition, and your own routine fire. <strong>(3) Tell.</strong> Name one design choice you made (a knob, a color, the banner, your gadget) and why, then read one row of your Bug Hunt Log aloud: the symptom, and the one change that fixed it.
   </div>
-  <p>A gadget that crashed on Thursday and runs on Friday is the <em>better</em> story. The log proves you can hunt bugs; read from it proudly. Rehearse once with a partner before your turn: the partner times you and holds up a hand at two minutes.</p>
+  <p>An edition that crashed on Thursday and runs on Friday is the <em>better</em> story. The log proves you can hunt bugs; read from it proudly. Rehearse once with a partner before your turn: the partner times you and holds up a hand at two minutes.</p>
   <div class="predict">
     <span class="ptag">Predict</span>
-    Before you rehearse: the respawn decision and the wrap decision both live inside the ring, but one of them sits inside a second loop. Which one, and where on your schematic will your finger land when you point to it?
+    Before you rehearse: the lock test's checkpoint line and the streak gate both live inside the ring, but they run a different number of times per pass. How many times each, and where will your finger land on the schematic when you point to them?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">The respawn decision sits inside the beacon loop, which sits inside the ring: your finger lands two layers deep, on the loop-inside-the-loop. The wrap decision sits one layer deep, in the ring but outside the beacon loop. Thursday's hinge counted them: 12 respawn checks per pass, one wrap check per pass. If your schematic shows both decisions side by side at the same depth, redraw that corner before your turn; it's the one place the schematic most often lies.</div>
+  <div class="answer">The checkpoint line runs up to <strong>four</strong> times per pass, once per side of the box, so your finger lands inside the lock-test beat on four gates feeding one counter. The streak gate runs exactly <strong>once</strong> per pass, reading the verdict. Thursday's hinge counted them; if your schematic shows the checkpoints and the streak gate at the same depth in one box, redraw that corner before your turn, because it's the one place the schematic most often lies.</div>
 </section>
 
 <!-- DRILL 2 -->
 <section class="card" data-chunk="2">
   <div class="chunkhead"><span class="chunklabel">Drill 2 &middot; The audience's what-if</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
   <h2>One question per agent, answered by prediction</h2>
-  <p>After each debrief, the audience asks exactly one question, and it has to be a <em>what-if</em> about the Ops Panel or a gate: "What happens if you set DRIFT_SPEED to 0?" The presenter predicts aloud. Nobody runs the change; the prediction <em>is</em> the answer, the way it has been all week. Try the format on the clean engine first.</p>
-  <pre>WHAT-IF: "What happens if DRIFT_SPEED = 0?"</pre>
+  <p>After each debrief, the audience asks exactly one question, and it has to be a <em>what-if</em> about the Ops Panel or a gate: "What happens if TARGET_DARTS is just [0]?" The presenter predicts aloud. Nobody runs the change; the prediction <em>is</em> the answer, the way it has been all week. Try the format on the clean game first.</p>
+  <pre>WHAT-IF: "What happens if TARGET_DARTS = [0]?"</pre>
   <div class="predict">
     <span class="ptag">Predict</span>
-    Answer it as a presenter would, in one breath: what stops, what keeps happening, and which line decides each.
+    Answer it as a presenter would, in one breath: what does the target do, which line decides it, and what is the winning strategy now?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">The beacons stop rising, because <code>ys[i] = ys[i] - DRIFT_SPEED</code> now subtracts nothing. Everything else keeps going: the wobble still nudges x (the Dispatcher's line reads no constant), the batteries still drain and the beacons still shrink and respawn (the drain line has its own constant, DRAIN_RATE), and the sweep still crosses and wraps. A good what-if answer names the line, not just the effect. Good audience questions for today: the sweep at speed 0, the alert gate at frame 0, BEACON_COUNT at 1, FULL_BATTERY at 10.</div>
+  <div class="answer">The target never moves again: the reroll gate still fires on schedule, but <code>random.choice([0])</code> can only ever hand back 0, Day 1's law that the Dispatcher picks from the rack and nothing else, so both darts stay 0 and the movement lines add nothing. The game stops being a chase: park the lock on the target once and the streak gate pays a point every fifty passes until the banner. A good what-if answer names the line, not just the effect. Other good audience questions: LOCK_SPEED at 0, TURN_EVERY at 500, LOCK_RANGE at 200, WIN_SCORE at 1.</div>
 </section>
 
 <!-- WHILE YOU WAIT -->
@@ -126,9 +126,9 @@ button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
   <h2>Choose your exit gate</h2>
   <div class="exits">
     <div class="exit"><span class="lvl" style="color:#8a5a00">Floor <small>&middot; approaching the standard</small></span>
-      <p style="margin:6px 0 0">You run your gadget for the room (the clean engine plus your one change counts) and point to the ring on your signed schematic.</p></div>
+      <p style="margin:6px 0 0">You run your edition for the room (the clean game plus your one change counts) and point to the ring on your signed schematic.</p></div>
     <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
-      <p style="margin:6px 0 0">All three parts, in order, inside two minutes: the gadget runs, both decisions and your own routine are pointed to on the schematic, one design choice is told, and one log row is read aloud with all four columns.</p></div>
+      <p style="margin:6px 0 0">All three parts, in order, inside two minutes: the edition runs, the lock test, the streak gate, the winning condition, and your own routine are pointed to on the schematic, one design choice is told, and one log row is read aloud with all four columns.</p></div>
     <div class="exit"><span class="lvl" style="color:var(--stamp)">Stretch <small>&middot; exceeds the standard</small></span>
       <p style="margin:6px 0 0">You answer the audience's what-if by naming the exact line that decides it, and you crack at least one dead drop before your turn comes.</p></div>
   </div>
@@ -148,10 +148,10 @@ button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
   <p><strong>Time plan:</strong> two and a half minutes per agent including the what-if, so fifty minutes for twenty agents; ten minutes of setup so every gadget starts fresh and every window is visible; ten minutes for badges. The Dead Drop exchange absorbs every minute in between and needs no teaching. If the day is shorter than that, cut the what-if first and the exchange second; never cut Run, Point, Tell.</p>
   <table>
     <tr><th>Code</th><th>Standard (verbatim)</th><th>Drill(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
-    <tr><td>E5-ALG-PS-01</td><td>Create a visual representation of an algorithm that includes variables and a combination of sequence, events, iteration, and selection to solve a problem or express an idea.</td><td>1, Debrief</td><td>Addressed (reinforcement; the Mastery claim lives on Day 4, where the schematic is drawn and signed)</td><td>The schematic, pointed to in public, with both decisions located at the correct depth.</td><td>Verified</td></tr>
-    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>2, Debrief</td><td>Addressed</td><td>The finished gadget presented with its log row, and the what-if answered by naming the deciding line.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-ALG-PS-01</td><td>Create a visual representation of an algorithm that includes variables and a combination of sequence, events, iteration, and selection to solve a problem or express an idea.</td><td>1, Debrief</td><td>Addressed (reinforcement; the Mastery claim lives on Day 4, where the schematic is drawn and signed)</td><td>The schematic, pointed to in public, with the lock test's checkpoints and the streak gate located at the correct depth.</td><td>Verified</td></tr>
+    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>2, Debrief</td><td>Addressed</td><td>The finished edition presented with its log row, and the what-if answered by naming the deciding line.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
   </table>
-  <p><strong>Deliberately not covered here:</strong> no new syntax, no new drills with code, no fixing. A recruit whose gadget fails on stage presents the clean engine plus one change, which Day 4's deadline law told them to keep ready; the failure is named in the Tell as a bug they met, and that is a legitimate debrief. The VS Code debugger is not taught anywhere in the week; the candidate security standard E5-SYS-SE-13 is not claimed, because the CIA triad is not taught.</p>
+  <p><strong>Deliberately not covered here:</strong> no new syntax, no new drills with code, no fixing. A recruit whose edition fails on stage presents the clean game plus one change, which Day 4's deadline law told them to keep ready; the failure is named in the Tell as a bug they met, and that is a legitimate debrief. The VS Code debugger is not taught anywhere in the week; the candidate security standard E5-SYS-SE-13 is not claimed, because the CIA triad is not taught.</p>
   <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
 </details>
 

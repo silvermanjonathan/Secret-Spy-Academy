@@ -78,7 +78,7 @@ a.daycard:focus-visible{outline:3px solid var(--stamp);outline-offset:3px}
 
 <section class="intro">
   <h2>How the Academy week works</h2>
-  <p style="margin:6px 0 0">Each day opens with a <strong>Morning Briefing</strong>, runs two build blocks with a break in the Safe House, and closes with a <strong>Mission Debrief</strong> (show your work, running) and a <strong>Field Notebook entry</strong> (exit ticket). Your capstone, the <strong>Commissioned Gadget</strong>, must be finished by the end of Day 4. Day 5 is the Final Debrief: presentations and the badge ceremony, nothing else.</p>
+  <p style="margin:6px 0 0">Each day opens with a <strong>Morning Briefing</strong>, runs two build blocks with a break in the Safe House, and closes with a <strong>Mission Debrief</strong> (show your work, running) and a <strong>Field Notebook entry</strong> (exit ticket). Your capstone, a <strong>Commissioned Edition of Target Lock</strong> (a playable chase-and-score game you redesign), must be finished by the end of Day 4. Day 5 is the Final Debrief: presentations and the badge ceremony, nothing else.</p>
   <p class="law">HOUSE LAW: ONE CHANGE PER RUN &middot; READ IT, TRACE IT, THEN RUN IT</p>
   <p style="margin:10px 0 0"><a href="field_notebook_handout.html" style="color:var(--stamp);font-weight:700">Print the Field Notebook</a>, one per agent. Every day writes in it.</p>
   <p style="margin:10px 0 0">Pages open in order. A sealed card means that briefing hasn't been issued yet.</p>
@@ -115,9 +115,9 @@ a.daycard:focus-visible{outline:3px solid var(--stamp);outline-offset:3px}
     <div class="daynum">3</div>
     <div>
       <span class="meta">Wednesday &middot; The Gadget Blueprint</span>
-      <h2>Name It, Grow It, Read It</h2>
-      <p class="eq">How do I file a routine under a name, and can I read the gadget engine like a dossier?</p>
-      <span class="artifact">Builds: the Blueprint Rehearsal + the initialed engine</span>
+      <h2>Name It, Play It, Read It</h2>
+      <p class="eq">How do I file a routine under a name, and can I read the Target Lock game like a dossier?</p>
+      <span class="artifact">Builds: the Blueprint Rehearsal + the initialed game</span>
     </div>
     <span class="go">Enter &rarr;</span>
   </div>
@@ -130,7 +130,7 @@ a.daycard:focus-visible{outline:3px solid var(--stamp);outline-offset:3px}
       <span class="meta">Thursday &middot; The Gadget Commission</span>
       <h2>Plan It, Then Build It</h2>
       <p class="eq">Can I plan my gadget on paper and have it running before I leave the room?</p>
-      <span class="artifact">Builds: the signed Gadget Schematic + your Commissioned Gadget</span>
+      <span class="artifact">Builds: the signed Gadget Schematic + your Commissioned Edition of Target Lock</span>
     </div>
     <span class="go">Enter &rarr;</span>
   </div>
@@ -149,13 +149,14 @@ a.daycard:focus-visible{outline:3px solid var(--stamp);outline-offset:3px}
   </div>
 </a>
 
+
 <div class="daycard sealed" style="border-color:var(--amber)">
   <div class="dayrow">
     <div class="daynum" style="background:var(--amber);color:var(--ink)">&#9670;</div>
     <div>
-      <span class="meta">Bonus files &middot; issued after Day 3</span>
-      <h2>Side Missions</h2>
-      <p class="eq">The Cipher Grid (a substitution cipher on two parallel racks, and a message written into a grid and read out by columns), the Safecracker's Ledger (a searching stakeout), the Remote (keys that steer), and a second gadget for agents who finish early.</p>
+      <span class="meta">Bonus files &middot; for agents who finish early</span>
+      <h2>More Side Missions</h2>
+      <p class="eq">The Cipher Grid (a substitution cipher on two parallel racks, and a message written into a grid and read out by columns), the Safecracker's Ledger (a searching stakeout), and the Beacon Field (a twelve-contact scope of drifting, draining beacons, the capstone's bigger cousin).</p>
       <span class="artifact">Sealed until their day is cleared</span>
     </div>
     <span class="sealtag">Sealed</span>
@@ -171,29 +172,29 @@ a.daycard:focus-visible{outline:3px solid var(--stamp);outline-offset:3px}
     <tr><th>Day</th><th>Page</th><th>Drills</th><th>New syntax (first owned here)</th><th>Builds</th></tr>
     <tr><td>1</td><td>Induction Day &amp; the Three Clearance Checks</td><td>12</td><td><code>print</code>, tracebacks, variables, <code>input</code>/<code>int()</code>, f-strings, <code>for</code>/<code>range</code>, flat <code>if</code>/<code>elif</code>/<code>else</code> (comparing with <code>&lt;</code>, <code>&gt;</code>), lists with slot numbers and <code>len</code>, <code>random.choice</code>, <code>in</code>. About ten mechanics.</td><td>The Induction Terminal</td></tr>
     <tr><td>2</td><td>The Cipher Room (cryptography day)</td><td>11</td><td><code>==</code>/<code>!=</code>, <code>while</code> (every <code>while</code> names its exit), <code>for letter in message</code>, and loops inside loops. The tally, the counter with a gate, the wrap gate, and the sentinel gate are patterns named here; they add no new marks. No windows.</td><td>The Dead Drop + the Safe House door</td></tr>
-    <tr><td>3</td><td>The Gadget Blueprint (heaviest day)</td><td>10</td><td><code>def</code> with parameters, <code>append</code>, then pygame's window vocabulary, the <code>while running</code> loop with the QUIT listener, and the frame tally, wrapped around Day 2's loops. <code>random.randint</code> is introduced as <code>random.choice</code>'s sibling, a vocabulary word rather than a mark.</td><td>The Blueprint Rehearsal + the initialed engine</td></tr>
-    <tr><td>4</td><td>The Gadget Commission</td><td>4 + capstone</td><td>Zero. The page says so. Debugging is collected here (the Bug Hunt protocol and the log), and the deadline is finished, not merely running.</td><td>The Gadget Schematic + the Commissioned Gadget (a customized Tracker Scope) + the Bug Hunt Log</td></tr>
+    <tr><td>3</td><td>The Gadget Blueprint (heaviest day)</td><td>10</td><td><code>def</code> with parameters, then pygame's window vocabulary, the <code>while running</code> loop with the QUIT listener, the frame tally, and the keyboard read as a rack, all wrapped around Day 2's loops. Drill 5 loads the Dispatcher's dice; it adds no new mark.</td><td>The Blueprint Rehearsal + the initialed game</td></tr>
+    <tr><td>4</td><td>The Gadget Commission</td><td>4 + capstone</td><td>Zero. The page says so. Debugging is collected here (the Bug Hunt protocol and the log), and the deadline is finished, not merely running.</td><td>The Gadget Schematic + the Commissioned Edition of Target Lock + the Bug Hunt Log</td></tr>
     <tr><td>5</td><td>The Final Debrief</td><td>2 rehearsal drills</td><td>Zero. Presentations only.</td><td>The three-part Debrief + the badge ceremony</td></tr>
   </table>
   <p style="margin:6px 0 0"><strong>Decay schedule, new marks per day:</strong> 10 &rarr; 3 &rarr; 2 plus pygame vocabulary &rarr; 0 &rarr; 0. <strong>Integration per day:</strong> single mechanics &rarr; patterns that combine loop, gate, and variable into a cipher &rarr; opening windows and reading a sixty-line engine &rarr; arranging and repairing it &rarr; presenting it. The cipher day pushed the windows onto Day 3, which is why Day 3 is the heaviest day rather than a quiet reading day; the trade was made on purpose.</p>
 
   <h3>Paced backward from the capstone</h3>
-  <p style="margin:4px 0 8px">The Day 4 engine is the Tracker Scope: a sweep line crossing a scope of drifting beacons whose batteries drain, die, and respawn. Every ingredient it uses is owned at least one full day earlier. Nothing debuts on build day.</p>
+  <p style="margin:4px 0 8px">The capstone is <strong>Target Lock</strong>: a coral target darts and pauses around the scope, the agent steers the lock with the arrow keys, holding it on target scores, and the first to ten sees the banner. Every ingredient it uses is owned at least one full day earlier. Nothing debuts on build day.</p>
   <table>
-    <tr><th>Capstone ingredient</th><th>First owned</th><th>Its costume in the engine</th></tr>
-    <tr><td>Flat <code>if</code>/<code>elif</code>/<code>else</code> ladder</td><td>Day 1, drills 9 and 10</td><td>the respawn gate; the beacon size ladder inside <code>draw_beacon</code></td></tr>
-    <tr><td>Lists, slot numbers, <code>len</code></td><td>Day 1, drill 11</td><td>four parallel racks: <code>xs[i]</code>, <code>ys[i]</code>, <code>batteries[i]</code>, <code>colors[i]</code></td></tr>
-    <tr><td><code>for i in range(N)</code> with the loop variable used</td><td>Day 1, drill 7</td><td>the per-beacon update loop</td></tr>
-    <tr><td><code>random.choice</code></td><td>Day 1, drill 12</td><td><code>colors.append(random.choice(BEACON_COLORS))</code></td></tr>
-    <tr><td>The tally (accumulator)</td><td>Day 2, drill 4</td><td>battery drain, the tally running in reverse; the frame tally</td></tr>
-    <tr><td><code>==</code>, <code>!=</code>, <code>while</code> with a named exit</td><td>Day 2, drills 1, 8, and 10</td><td>the QUIT listener's comparison; the watch loop that holds the window open</td></tr>
-    <tr><td>The wrap gate</td><td>Day 2, drill 3 (the cipher wheel's wrap)</td><td>the sweep snapping back to the left edge</td></tr>
-    <tr><td>Window, caption, fill, circle, line, flip; the hold-open <code>while running</code> loop with its QUIT listener and <code>clock.tick</code></td><td>Day 3, drill 6</td><td>the scope and its sweep line; the watch loop every window sits on</td></tr>
-    <tr><td>A rule, then a list, feeds the window</td><td>Day 3, drill 6 and the Rehearsal</td><td>sizes and colors read by slot number while drawing</td></tr>
-    <tr><td>The update beat inside the loop, the frame tally</td><td>Day 3, drill 7</td><td>beacons rising; the sweep crossing; Day 4's timed gate reads <code>frame</code></td></tr>
-    <tr><td><code>def</code> with parameters, arguments passed in order</td><td>Day 3, drills 1 to 3</td><td><code>draw_scope(surface)</code>, <code>draw_beacon(surface, x, y, battery, color)</code></td></tr>
-    <tr><td><code>append</code> in a loop, <code>random.randint</code></td><td>Day 3, drill 5</td><td>the four racks filled by one loop</td></tr>
-    <tr><td>Ops Panel constants</td><td>Day 3, drill 8 (first run)</td><td>the block the agent customizes on Day 4</td></tr>
+    <tr><th>Capstone ingredient</th><th>First owned</th><th>Its costume in the game</th></tr>
+    <tr><td>Briefcases (variables) and the Ops Panel constants</td><td>Day 1, drills 3 and 4</td><td>the six knobs the agent redesigns on Day 4</td></tr>
+    <tr><td>Racks, slot numbers, <code>len</code></td><td>Day 1, drill 11</td><td>the keyboard read as a rack (<code>keys[pygame.K_LEFT]</code>); the banner's rows</td></tr>
+    <tr><td><code>random.choice</code> from a rack</td><td>Day 1, drill 12</td><td>the target's darts, drawn off the loaded TARGET_DARTS rack (Day 3, drill 5)</td></tr>
+    <tr><td>Flat gates; <code>if</code>/<code>else</code></td><td>Day 1, drills 9 and 10</td><td>steering, the fence, the walls, the lock verdict, the winning condition</td></tr>
+    <tr><td>The tally (accumulator)</td><td>Day 2, drill 4</td><td><code>streak</code>, <code>locked</code>, <code>score</code>, and the frame tally</td></tr>
+    <tr><td>The counter with a gate</td><td>Day 2, drill 7</td><td>the four-checkpoint lock test, standing in for a word the week never teaches</td></tr>
+    <tr><td>The wrap gate</td><td>Day 2, drill 3 (the cipher wheel's wrap)</td><td>the fence and the walls are its cousins: one holds the edge, one flips the dart</td></tr>
+    <tr><td><code>==</code>, <code>!=</code>, <code>while</code> with a named exit</td><td>Day 2, drills 1, 8, and 10</td><td>the QUIT listener; the watch loop that holds the window open</td></tr>
+    <tr><td>Strings as racks; loops inside loops</td><td>Day 2, drills 1 and 5</td><td>the victory banner: every X in a row of text becomes one square</td></tr>
+    <tr><td>Window, caption, fill, circle, line, rect, flip; <code>clock.tick</code></td><td>Day 3, drills 6 to 8</td><td>the scope, the crosshair, the target, the pips, the banner</td></tr>
+    <tr><td>The update beat inside the loop, the frame tally</td><td>Day 3, drill 7</td><td>the target's motion; the timed reroll gate reads <code>frame</code></td></tr>
+    <tr><td>A rule places a row</td><td>Day 3, drill 6 (First Signal)</td><td>the score pips: one square per point at <code>left + p * 14</code></td></tr>
+    <tr><td><code>def</code> with parameters, arguments passed in order</td><td>Day 3, drills 1 to 3</td><td><code>draw_scope</code>, <code>draw_lock</code>, <code>draw_target</code>, <code>draw_score</code>, <code>draw_banner</code></td></tr>
   </table>
 
   <h3>Laws enforced on every page</h3>

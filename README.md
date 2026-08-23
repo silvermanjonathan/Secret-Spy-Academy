@@ -18,11 +18,13 @@ All course links in this README are absolute `github.io` addresses on purpose. T
 |---|---|---|---|
 | 1 | [Induction Day & the Three Clearance Checks](https://silvermanjonathan.github.io/Secret-Spy-Academy/day1_induction_day.html) | `print`, tracebacks, variables, `input`/`int()`, f-strings, `for`/`range`, `if`/`elif`/`else`, lists, `random.choice`, `in` | The Induction Terminal + a Division assignment |
 | 2 | [The Cipher Room](https://silvermanjonathan.github.io/Secret-Spy-Academy/day2_cipher_room.html) | cryptography day: the cipher rack, `==`/`!=`, the slot search, the shift and the wrap, the tally, the Caesar wheel (encode and decode), frequency analysis, `while` & the sentinel gate, cracking by brute force | The Dead Drop + the Safe House door |
-| 3 | [The Gadget Blueprint](https://silvermanjonathan.github.io/Secret-Spy-Academy/day3_gadget_blueprint.html) | `def` & parameters, `append`, `random.randint`; first pygame windows, the `while running` loop and the frame tally; reading the engine's patterns | The Blueprint Rehearsal + the initialed engine |
-| 4 | [The Gadget Commission](https://silvermanjonathan.github.io/Secret-Spy-Academy/day4_gadget_commission.html) | zero new syntax: the Gadget Schematic, two worked changes (alert mode, the lock ring), the Bug Hunt protocol & log | Your Commissioned Gadget, finished: a customized [Tracker Scope](https://silvermanjonathan.github.io/Secret-Spy-Academy/tracker_scope_pygame.py) |
+| 3 | [The Gadget Blueprint](https://silvermanjonathan.github.io/Secret-Spy-Academy/day3_gadget_blueprint.html) | `def` & parameters, the loaded dice; first pygame windows, the `while running` loop and the frame tally, the keyboard as a rack; playing and reading the capstone game | The Blueprint Rehearsal + the initialed game |
+| 4 | [The Gadget Commission](https://silvermanjonathan.github.io/Secret-Spy-Academy/day4_gadget_commission.html) | zero new syntax: the Gadget Schematic, the knobs, the banner, your own def, the Bug Hunt protocol & log | Your Commissioned Edition, finished: a redesigned [Target Lock](https://silvermanjonathan.github.io/Secret-Spy-Academy/target_lock_pygame.py) |
 | 5 | [The Final Debrief](https://silvermanjonathan.github.io/Secret-Spy-Academy/day5_final_debrief.html) | zero new syntax: presentations only (Run, Point, Tell), the audience's what-if, the Dead Drop exchange | The Final Debrief + the Field Agent badge |
 
-The Commission is **finished by the end of Day 4**, debugging included. Day 5 is presentations only. Side missions (the Cipher Grid, the Safecracker's Ledger, the Remote, a second gadget) are listed on the hub and sealed until they ship.
+The Commission is **finished by the end of Day 4**, debugging included. Day 5 is presentations only.
+
+The capstone is **Target Lock**, a playable game: a coral target darts and pauses around the scope, the agent steers the lock with the arrow keys, holding it on target scores, and the first to ten points sees the MISSION FINISHED banner (drawn without `pygame.font`, from racks of strings). Day 3 plays and reads the clean game; Day 4 commissions each agent's own edition: a kid mode and a pro mode, their colors, their banner, and one routine of their own. Side missions (the Cipher Grid, the Safecracker's Ledger, the Beacon Field) stay sealed on the hub until they ship.
 
 ## Files
 
@@ -36,7 +38,7 @@ day2_cipher_room.html
 day3_gadget_blueprint.html
 day4_gadget_commission.html
 day5_final_debrief.html
-tracker_scope_pygame.py          ← the Day 4 engine, byte-identical to the Day 3 in-page listing
+target_lock_pygame.py            ← the capstone game, byte-identical to the Day 3 in-page listing
 field_notebook_handout.html      ← the printable Field Notebook (trace sheets, the codebreaker's corner, and the Bug Hunt Log, one per agent)
 ```
 
@@ -56,12 +58,12 @@ field_notebook_handout.html      ← the printable Field Notebook (trace sheets,
 - **One change per run.**
 - **Read it, trace it, then run it.**
 - Loops stay traceable: `for` loops are counted, and every `while` can point at the line that moves it toward no. A `while` with no visible exit is treated as a bug.
-- Every window holds itself open with the same `while running` loop the engine uses. No self-closing windows, no `pygame.time.wait`, no `pygame.event.pump`, no `pygame.font`: words live in the terminal, play lives in the window.
+- Every window holds itself open with the same `while running` loop the game uses. No self-closing windows, no `pygame.time.wait`, no `pygame.event.pump`, no `pygame.font`: words live in the terminal, play lives in the window (the victory banner is drawn from racks of strings, square by square, precisely to keep that law).
 - Excluded from the whole week by design: `return` values, dictionaries, classes, sprites/image files, file I/O, `try`/`except`, `break`, nested `if` gates.
 
 ## Pacing model
 
-Novelty is front-loaded and decays to zero: Day 1 carries about ten mechanics in twelve drills, Day 2 adds three marks and builds a working cipher out of four named patterns, Day 3 adds two marks plus the pygame vocabulary and then reads the engine, and Days 4 and 5 add nothing. Day 3 is the heaviest day; that is the price of a cipher day, paid on purpose. The Day 4 engine is paced backward: every ingredient it uses is owned at least one full day earlier, and the hub's teacher panel lists each one with the drill that taught it.
+Novelty is front-loaded and decays to zero: Day 1 carries about ten mechanics in twelve drills, Day 2 adds three marks and builds a working cipher out of four named patterns, Day 3 adds one mark plus the pygame vocabulary and then plays and reads the capstone game, and Days 4 and 5 add nothing. Day 3 is the heaviest day; that is the price of a cipher day, paid on purpose. The Day 4 engine is paced backward: every ingredient it uses is owned at least one full day earlier, and the hub's teacher panel lists each one with the drill that taught it.
 
 ## Standards
 

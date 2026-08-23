@@ -58,6 +58,9 @@ button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
 .foot a{color:var(--stamp)}
 @media (max-width:480px){.stamp{letter-spacing:.12em;font-size:11px}}
 @media print{.answer,.see{display:block}button.reveal{display:none}.card{box-shadow:none;break-inside:avoid}.teacher{break-before:page}}
+.knobs{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
+.knobs th,.knobs td{border:1px solid var(--ink-line);padding:8px 10px;text-align:left;vertical-align:top}
+.knobs th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
 </style>
 </head>
 <body>
@@ -65,17 +68,17 @@ button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
 <header class="hero">
   <div class="eyebrow">Secret Spy Academy &middot; Day 4</div>
   <h1>The Gadget Commission</h1>
-  <p class="hook">You have read the engine and initialed every section. Today HQ commissions your gadget: plan it on paper, bend the Tracker Scope to your own design, hunt down whatever breaks, and rehearse. It is finished before you leave this room; tomorrow you present it.</p>
+  <p class="hook">You have played Target Lock and initialed every section. Today HQ commissions your own edition: plan it on paper, redesign the game (its difficulty, its colors, its banner, one gadget of your own), hunt down whatever breaks, and rehearse. It is finished before you leave this room; tomorrow you present it.</p>
   <div><span class="stamp">Plan &middot; Predict &middot; Change &middot; Run</span><span class="due">Finished by end of day</span></div>
-  <p class="need">YOU'LL NEED: VS Code open &middot; your running <a href="tracker_scope_pygame.py">tracker_scope_pygame.py</a> from Day 3 &middot; a blank schematic sheet &middot; <a href="field_notebook_handout.html">your Field Notebook</a>, open to the Bug Hunt Log</p>
+  <p class="need">YOU'LL NEED: VS Code open &middot; your running <a href="target_lock_pygame.py">target_lock_pygame.py</a> from Day 3 &middot; a blank schematic sheet &middot; <a href="field_notebook_handout.html">your Field Notebook</a>, open to the Bug Hunt Log</p>
 </header>
 
 <main class="wrap">
 
 <section class="card">
   <h2>Today's target</h2>
-  <p><strong>I can draw a plan of my program (its steps, loop, decisions, and variables) and build what the plan says.</strong> <span class="chip">E5-ALG-PS-01</span></p>
-  <p><strong>I can predict what each change to the Ops Panel will do before I run it, and when a change misbehaves, find the bug with the protocol and fix it with one change.</strong> <span class="chip unv">E5-PRO-PD-?? &#9888;</span> <span class="chip unv">E5-PRO-TR-?? &#9888;</span></p>
+  <p><strong>I can draw a plan of my game (its steps, loop, decisions, and variables) and build what the plan says.</strong> <span class="chip">E5-ALG-PS-01</span></p>
+  <p><strong>I can predict what each knob in the Ops Panel will do before I run it, and when a change misbehaves, find the bug with the protocol and fix it with one change.</strong> <span class="chip unv">E5-PRO-PD-?? &#9888;</span> <span class="chip unv">E5-PRO-TR-?? &#9888;</span></p>
   <div class="tracker" aria-label="drill progress">
     <span class="tlabel">Drills cleared</span>
     <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span>
@@ -85,14 +88,15 @@ button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
 <!-- DRILL 1 -->
 <section class="card" data-chunk="1">
   <div class="chunkhead"><span class="chunklabel">Drill 1 &middot; Read the Ops Panel</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
-  <h2>Every constant is a promise</h2>
-  <p>The panel is the engine's contract. Before touching anything, say what each constant controls. This is Day 3's reading, aimed at today's changes.</p>
-  <pre>BEACON_COLORS = [(123, 228, 149), (242, 233, 211), (201, 139, 31)]
-BEACON_COUNT = 12
-DRIFT_SPEED = 1
-SWEEP_SPEED = 4
-DRAIN_RATE = 1
-FULL_BATTERY = 200
+  <h2>Every knob is a promise</h2>
+  <p>The panel is the game's contract, and today it is your design surface. Before touching anything, say what each knob controls. This is Day 3's reading, aimed at today's changes.</p>
+  <pre># ---------- THE OPS PANEL (your customizations live here) ----------
+LOCK_SPEED = 5             # how far the arrow keys move the lock each pass
+TARGET_DARTS = [-2, -1, -1, 0, 0, 1, 1, 2]  # the target's possible darts; repeat a number to make it likelier
+TURN_EVERY = 25            # the target picks a new direction every 25 passes
+LOCK_RANGE = 26            # how close counts as on target (the dot inside the ring)
+POINT_EVERY = 50           # hold the lock this many passes in a row to score
+WIN_SCORE = 10             # first to this many points wins; keep it 28 or fewer so the pips fit
 
 SCOPE_LEFT = 120
 SCOPE_TOP = 40
@@ -100,99 +104,122 @@ SCOPE_SIZE = 400
 CENTER_X = 320
 CENTER_Y = 240
 INK = (27, 31, 38)
-PHOSPHOR = (123, 228, 149)</pre>
+PHOSPHOR = (123, 228, 149)
+AMBER = (201, 139, 31)
+CORAL = (255, 120, 90)
+# -------------------------------------------------------------------</pre>
   <div class="predict">
     <span class="ptag">Predict</span>
-    Which constant changes how <em>crowded</em> the scope is, and which changes how fast beacons rise? Which one makes beacons die sooner if you raise it? The sweep takes 101 passes to cross the scope at speed 4: what would <code>SWEEP_SPEED = 8</code> do to that number?
+    At LOCK_SPEED 5, how far does one full second of held RIGHT carry the lock? Which knob makes each <em>point</em> take longer to earn, and which makes the <em>target</em> jumpier? What would LOCK_RANGE 30 feel like, and LOCK_RANGE 18?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">BEACON_COUNT sets the crowd, DRIFT_SPEED the rise, and DRAIN_RATE the dying: raise it to 2 and a full battery lasts 100 passes instead of 200. At speed 8 the sweep crosses in 51 passes, about half. The scope's center lives at (CENTER_X, CENTER_Y), Day 3's coordinates, and the panel has no length constant: the run lasts until the agent closes the window, and the <code>frame</code> briefcase counts upward inside it so timed gates can fire. If you can predict a constant's effect, you have permission to change it. That is the whole test.</div>
+  <div class="answer">Three hundred pixels: 60 passes of plus 5, most of the scope in one second, which is why the lock feels quick. POINT_EVERY sets the price of a point, TURN_EVERY sets the jumpiness (lower is jumpier), and LOCK_RANGE is the forgiveness dial: 30 reads as generous, 18 as cruel, because the box test opens only inside that distance on <em>both</em> axes. The dice rack is the target's whole personality: more 0s and it lies low, an extra 3 and -3 and it dashes. If you can predict a knob's effect, you have permission to change it. That is the whole test.</div>
 </section>
 
 <!-- DRILL 2 -->
 <section class="card" data-chunk="2">
   <div class="chunkhead"><span class="chunklabel">Drill 2 &middot; The Gadget Schematic</span><span class="chip">E5-ALG-PS-01</span></div>
-  <h2>Draw the engine before you bend it</h2>
-  <p>On your schematic sheet, draw the engine as boxes and arrows: setup at the top, the watched loop as a ring, and inside the ring the beats: <em>move the sweep</em> (with its wrap decision), <em>update the beacons</em> (with the respawn decision), <em>draw</em>. Label where BEACON_COUNT, SWEEP_SPEED, and batteries[i] live. Your teacher signs it. Only then do you customize.</p>
+  <h2>Draw the game before you bend it</h2>
+  <p>On your schematic sheet, draw the game as boxes and arrows: setup at the top, the watched loop as a ring, and inside the ring the beats in order: <em>listen</em> (the QUIT decision), <em>steer</em> (four key gates and the fence), <em>move the target</em> (the timed reroll decision and the four walls), <em>the lock test</em> (four checkpoints and the verdict), <em>score</em> (the streak gate and the winning condition), <em>draw</em>. Label where LOCK_RANGE, <code>streak</code>, and TARGET_DARTS live. Your teacher signs it. Only then do you customize.</p>
   <div class="predict">
     <span class="ptag">Predict</span>
-    Before drawing: how many flat checkpoints live inside the ring, and which beat holds each? Where on your schematic will your own changes land: inside the ring, in the panel, or both?
+    Before drawing: which beat holds the most checkpoints, and how many? Where on your schematic will your own changes land: inside the ring, in the panel, or both?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">Two checkpoints: the wrap decision in the sweep beat, and the respawn decision in the beacon beat, which sits inside the beacon loop, which sits inside the ring. And your Commission lands in <strong>both</strong> places: the color list, count, and speeds live in the panel; the alert-mode gate and your own gadget fire inside the ring. A plan that shows where each change lives is what turns customizing from guessing into engineering, and it's the artifact this page exists to collect.</div>
+  <div class="answer">The lock test: four checkpoints feeding the counter, plus the verdict gate that reads it, five decisions in one beat, which is why it gets its own box. And your Commission lands in <strong>both</strong> places: the difficulty, the colors, and the banner racks live in the panel and the setup; your own gadget fires inside the ring. A plan that shows where each change lives is what turns customizing from guessing into engineering, and it's the artifact this page exists to collect.</div>
 </section>
 
 <!-- DRILL 3 -->
 <section class="card" data-chunk="3">
-  <div class="chunkhead"><span class="chunklabel">Drill 3 &middot; Worked change I: alert mode</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
-  <h2>A decision inside the ring</h2>
-  <p>Day 1's flat checkpoint, reading Day 2's frame tally. Inside the watch loop, find the sweep's <code>pygame.draw.line</code> call (the two lines ending in <code>3)</code>) and replace them with these five. Predict, then run.</p>
-  <pre>    sweep_color = PHOSPHOR                     # the default
-    if frame &gt; 600:                            # alert mode: ten seconds in
-        sweep_color = (201, 139, 31)
-    pygame.draw.line(screen, sweep_color,
-                     (sweep_x, SCOPE_TOP), (sweep_x, SCOPE_BOTTOM), 3)</pre>
+  <div class="chunkhead"><span class="chunklabel">Drill 3 &middot; Points and the win</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
+  <h2>The streak, the score, and the stand-down</h2>
+  <p>Hold the lock for POINT_EVERY passes in a row and the streak gate fires: a point, a pip, a terminal line. Reach WIN_SCORE and the winning condition flips <code>mission_complete</code>; from the next pass, one flat gate zeroes the target's dart and another zeroes the streak, so the world freezes and the score stays put. The window stays open until you close it, by house law.</p>
+  <pre>    if streak == POINT_EVERY:
+        score = score + 1
+        streak = 0
+        print(f"Point! Score: {score} of {WIN_SCORE}")
+    if score == WIN_SCORE:                      # the winning condition
+        mission_complete = True</pre>
   <div class="predict">
     <span class="ptag">Predict</span>
-    At 60 passes per second, how many seconds into the run does alert mode begin? What would <code>frame &gt; 900</code> do instead? And why does the gate have no <code>else</code>?
+    In a full game, exactly how many Point lines print, and what does the last one say? On the pass <em>after</em> the tenth point, what does the target do, and why doesn't the window close?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">Ten seconds in: pass 600 at 60 passes per second. Move the gate to 900 and alert mode begins at fifteen seconds instead. No <code>else</code> is needed because the line above the gate already set the default; the gate only overrides it. One flat checkpoint reading the frame briefcase, and your gadget has an act two. Mark on your schematic where it fires.</div>
-  <div class="see"><span class="tag">You should see</span>
-    <pre>The green sweep for ten seconds, then an amber sweep
-that holds from then on. Beacons keep rising through both.</pre>
+  <div class="answer">Exactly ten lines, and the last says <code>Point! Score: 10 of 10</code>. The next pass, the stand-down gate zeroes the dart and the target freezes where it was caught; the streak gate is starved, so no eleventh point can ever print. The window stays open because no window in this Academy closes itself: you close it, and the terminal answers with <code>MISSION COMPLETE: 10 points.</code> and your on-target count.</div>
+  <div class="see"><span class="tag">You should see in the terminal, across a winning game</span>
+    <pre>Point! Score: 1 of 10
+Point! Score: 2 of 10
+        ...
+Point! Score: 10 of 10
+MISSION COMPLETE: 10 points. On target for 743 of 2120 passes.
+(your two counts will differ)</pre>
   </div>
 </section>
 
 <!-- DRILL 4 -->
 <section class="card" data-chunk="4">
-  <div class="chunkhead"><span class="chunklabel">Drill 4 &middot; Worked change II: your own gadget</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
-  <h2>A def in the blueprint, a call in the ring</h2>
-  <p>Yesterday you wrote <code>draw_beacon</code>. The same move gives the scope a lock ring: define it right below <code>draw_scope</code>, and call it right after <code>draw_scope(screen)</code> inside the loop.</p>
-  <pre>def draw_lock_ring(surface):
-    pygame.draw.circle(surface, (201, 139, 31), (CENTER_X, CENTER_Y), 24, 2)
+  <div class="chunkhead"><span class="chunklabel">Drill 4 &middot; The victory banner</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>Words in the window, without breaking the law</h2>
+  <p>The law says words live in the terminal, and <code>pygame.font</code> is banned all week. So how does MISSION FINISHED get on screen? The same way everything else does: a rack, a loop, a gate, a rectangle. Each row of the banner is a string; every X in it becomes one small square, placed by the pips' rule.</p>
+  <pre>MISSION_ROWS = [
+"X   X XXXXX  XXXX  XXXX XXXXX  XXX  X   X",
+"XX XX   X   X     X       X   X   X XX  X",
+"X X X   X    XXX   XXX    X   X   X X X X",
+"X   X   X       X     X   X   X   X X  XX",
+"X   X XXXXX XXXX  XXXX  XXXXX  XXX  X   X",
+]
 
-# ...inside the watch loop, right after draw_scope(screen):
-    draw_lock_ring(screen)</pre>
+def draw_banner(surface, rows, left, top):
+    for r in range(5):
+        row = rows[r]
+        for c in range(len(row)):
+            if row[c] == "X":
+                pygame.draw.rect(surface, PHOSPHOR,
+                                 (left + c * 8, top + r * 8, 7, 7))</pre>
   <div class="predict">
     <span class="ptag">Predict</span>
-    What will the ring look like, and where? What would happen if the call were placed <em>above</em> <code>screen.fill(INK)</code> instead of below it?
+    Count the Xs in the letter I alone (columns 7 to 11 of the rack). How many squares is it drawn from? And if you wanted the banner to say something else, which part of the program would you edit, and which part would you leave alone?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">A thin amber ring, radius 24, sitting on the crosshair at the scope's center. Placed above the fill, it would be drawn and then painted over by the ink on the very same pass, so you'd never see it: inside the ring, order is everything. Your own gadget should be <em>yours</em>: a ring, a row of circles, a box, whatever you can draw with circles, lines, and rects. Update the schematic to show where it fires.</div>
-  <div class="see"><span class="tag">You should see</span>
-    <pre>The scope as before, with a small amber ring at the center
-while the sweep passes through it.</pre>
-  </div>
+  <div class="answer">Thirteen: five across the top, five across the bottom, and three down the middle. To change the message you edit only the <em>racks</em>, drawing your letters in Xs; <code>draw_banner</code> never changes, because the routine holds the how and the rack holds the what, Day 3's whole lesson in one def. Keep each row 48 characters or fewer so it fits the scope, and recenter with left = 320 minus 4 times the row's length.</div>
 </section>
 
 <!-- HINGE -->
 <section class="card hinge">
   <div class="chunkhead"><span class="chunklabel">Hinge question &middot; stop here until you're sure</span><span class="chip">E5-ALG-PS-01</span></div>
   <h2>The count inside the ring</h2>
-  <p>Look at your schematic. The respawn decision sits inside the beacon loop, which sits inside the ring. The wrap decision sits in the ring, outside the beacon loop.<br>
-  Part 1: in <em>one pass</em>, how many times does the respawn decision run? And across the first ten seconds of a run, 600 passes?<br>
-  Part 2: in those same 600 passes, how many times does the wrap decision run?</p>
+  <p>Look at your schematic.<br>
+  Part 1: in <em>one pass</em>, how many times does the lock test's counter line <code>close = close + 1</code> run at most, and how many times does the streak gate run?<br>
+  Part 2: across the first ten seconds of a run, 600 passes, what is the greatest number of <em>points</em> a perfect agent could earn at POINT_EVERY 50, and why?</p>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer"><strong>Part 1: 12 times per pass, once per beacon, and 7,200 times in those ten seconds</strong> (12 &times; 600). <strong>Part 2: 600 times, once per pass.</strong> If you said once for Part 1, your schematic is missing the loop inside the ring; redraw before the Commission. If you got both, you can see the whole machine at once, which is exactly what the schematic is for.</div>
+  <div class="answer"><strong>Part 1: at most 4 times, once per checkpoint, and the streak gate runs exactly once per pass.</strong> If your schematic shows the four checkpoints outside the ring, redraw before the Commission. <strong>Part 2: twelve points</strong>, because every point costs fifty held passes and 600 passes hold at most twelve fifties. A perfect agent's score is rationed by the ring itself, which is exactly the kind of thing a schematic lets you see without running anything.</div>
 </section>
 
 <!-- THE COMMISSION -->
 <section class="card">
-  <div class="chunkhead"><span class="chunklabel">The Commission &middot; due before you leave today</span><span class="chip">E5-ALG-PS-01</span></div>
-  <h2>Your Commissioned Gadget: a customized Tracker Scope</h2>
+  <div class="chunkhead"><span class="chunklabel">The Commission &middot; finished before you leave today</span><span class="chip">E5-ALG-PS-01</span></div>
+  <h2>Your Commissioned Edition of Target Lock</h2>
   <div class="law"><span class="tag">Deadline law</span>
-    Your gadget is <strong>finished, running, and rehearsed by the end of Day 4</strong>. Tomorrow is the Final Debrief: you present; nothing gets fixed tomorrow. Worst case at day's end, revert to the clean engine plus your one safest change, and present that. Nobody walks into Day 5 with nothing running.
+    Your edition is <strong>finished, running, and rehearsed by the end of Day 4</strong>. Tomorrow is the Final Debrief: you present; nothing gets fixed tomorrow. Worst case at day's end, revert to the clean game plus your one safest change, and present that. Nobody walks into Day 5 with nothing running.
   </div>
   <p><strong>The four requirements.</strong> Each is a tool from this week, and house law holds: one change per run, predict before each.</p>
-  <p>1. <strong>Your colors.</strong> Rebuild <code>BEACON_COLORS</code> as your own list of 3&ndash;5 color tuples.<br>
-     2. <strong>Your numbers.</strong> Change <code>BEACON_COUNT</code> and one speed (<code>SWEEP_SPEED</code> or <code>DRIFT_SPEED</code>); predict each effect before the run.<br>
-     3. <strong>Your alert mode.</strong> Drill 3's gate, at a frame you choose and can defend.<br>
-     4. <strong>Your own gadget.</strong> Your own <code>def</code>, your own drawing, called in the ring, marked on the schematic.</p>
+  <p>1. <strong>Your difficulty.</strong> Design a <em>kid mode</em> and a <em>pro mode</em>: two full Ops Panels written in your Field Notebook, every knob predicted in one sentence before its run. The dials, and which way each turns the game:</p>
+  <table class="knobs">
+    <tr><th>Knob</th><th>What it controls</th><th>To make it easier</th><th>To make it harder</th></tr>
+    <tr><td><code>TARGET_DARTS</code></td><td>the target's speeds; repeat a slot to make it likelier</td><td>add more 0s and 1s</td><td>add a 3 and a -3</td></tr>
+    <tr><td><code>TURN_EVERY</code></td><td>passes between the target's changes of mind</td><td>raise it: longer, steadier runs</td><td>lower it: jumpier escapes</td></tr>
+    <tr><td><code>LOCK_RANGE</code></td><td>how close counts as on target</td><td>raise toward 30</td><td>lower toward 18</td></tr>
+    <tr><td><code>POINT_EVERY</code></td><td>passes held in a row per point</td><td>lower toward 30</td><td>raise toward 90</td></tr>
+    <tr><td><code>WIN_SCORE</code></td><td>points to finish (keep it 28 or fewer so the pips fit)</td><td>lower it</td><td>raise it</td></tr>
+    <tr><td><code>LOCK_SPEED</code></td><td>how far each held arrow moves the lock per pass</td><td>4 overshoots less</td><td>7 slides more</td></tr>
+  </table>
+  <p>2. <strong>Your colors.</strong> Rebuild the palette: your own ink, crosshair, and target tuples.<br>
+     3. <strong>Your banner.</strong> The victory message in your own words, drawn in Xs on the racks, every row 48 characters or fewer, recentered with left = 320 minus 4 times the row's length.<br>
+     4. <strong>Your own gadget.</strong> Your own <code>def</code>, your own drawing, called in the ring, marked on the schematic: a second range ring, corner brackets on the lock, a border that changes with the score, whatever you can draw with circles, lines, and rects.</p>
   <div class="law"><span class="tag">When it misbehaves: the Bug Hunt protocol</span>
-    <strong>Symptom</strong> (what actually happened) &rarr; <strong>Predict</strong> the cause &rarr; <strong>Trace</strong> to the exact line &rarr; <strong>One change</strong> &rarr; <strong>Re-run</strong>. Every bug gets a row in the Bug Hunt Log in your Field Notebook: Symptom | Predicted cause | Line found | The one change. A loud bug hands you a traceback with the line number in it; read the last line first, the way you did on Day 1. A silent bug has no traceback: the gadget runs and does the wrong thing, and the only way to catch it is to compare what it <em>does</em> against what your schematic says it <em>should</em> do. Two silent bugs to expect today: a gate that never fires because the frame number is higher than the run ever reaches, and a routine that draws before the fill and gets painted over.
+    <strong>Symptom</strong> (what actually happened) &rarr; <strong>Predict</strong> the cause &rarr; <strong>Trace</strong> to the exact line &rarr; <strong>One change</strong> &rarr; <strong>Re-run</strong>. Every bug gets a row in the Bug Hunt Log in your Field Notebook: Symptom | Predicted cause | Line found | The one change. A loud bug hands you a traceback with the line number in it; read the last line first, the way you did on Day 1. A silent bug has no traceback: the game runs and does the wrong thing, and the only way to catch it is to compare what it <em>does</em> against what your schematic says it <em>should</em> do. Two silent bugs to expect today: a LOCK_RANGE cut so small the crosshair never reads green, and a banner row edited to a new length but never recentered, so the message leans out of the frame.
   </div>
-  <p><strong>Before you leave:</strong> the gadget runs clean from a fresh start, the schematic is signed and matches it, the log holds at least one real row, and you have rehearsed the three-part Debrief once with a partner: <strong>Run</strong> it, <strong>Point</strong> at the ring and the decisions on your schematic, <strong>Tell</strong> one design choice and read one log row aloud.</p>
+  <p><strong>Before you leave:</strong> your edition runs clean from a fresh start, the schematic is signed and matches it, the log holds at least one real row, and you have rehearsed the three-part Debrief once with a partner: <strong>Run</strong> it, <strong>Point</strong> at the ring and the decisions on your schematic, <strong>Tell</strong> one design choice and read one log row aloud.</p>
 </section>
 
 <!-- EXITS -->
@@ -200,27 +227,27 @@ while the sweep passes through it.</pre>
   <h2>Choose your exit gate</h2>
   <div class="exits">
     <div class="exit"><span class="lvl" style="color:#8a5a00">Floor <small>&middot; approaching the standard</small></span>
-      <p style="margin:6px 0 0">The clean engine runs, plus one predicted change from the Ops Panel, and your schematic shows the setup and the ring, teacher-signed.</p></div>
+      <p style="margin:6px 0 0">The clean game runs, plus one predicted knob change from the Ops Panel, and your schematic shows the setup and the ring, teacher-signed.</p></div>
     <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
-      <p style="margin:6px 0 0">Your signed schematic shows sequence, the ring, both decisions, and your labeled variables, and your running gadget matches it: your color list, your numbers, and the alert-mode gate all wired in. Your Bug Hunt Log holds at least one real row from your own code, all four columns filled.</p></div>
+      <p style="margin:6px 0 0">Your signed schematic shows sequence, the ring, the beats with their decisions, and your labeled variables, and your running edition matches it: kid mode and pro mode both written and one of them wired in, your colors, and your banner in your own words. Your Bug Hunt Log holds at least one real row from your own code, all four columns filled.</p></div>
     <div class="exit"><span class="lvl" style="color:var(--stamp)">Stretch <small>&middot; exceeds the standard</small></span>
-      <p style="margin:6px 0 0">Your own <code>def</code> gadget fires in the ring and lives on the schematic, and you can point to the exact pass number when your gate flips and say why. Optional final flourish: grow the alert gate into a ladder with a stand-down rung, a second pass number you choose and can defend where the sweep turns green again.</p></div>
+      <p style="margin:6px 0 0">Your own <code>def</code> gadget fires in the ring and lives on the schematic, and every number in your pro mode has a one-sentence defense you can give without looking at your notes.</p></div>
   </div>
 </section>
 
 <!-- TEACHER PANEL -->
 <details class="teacher">
   <summary>Standards, pacing &amp; evidence (teacher panel)</summary>
-  <p><strong>The pacing choice, stated plainly:</strong> no new syntax today, and that is the proudest line on the page. Everything the Commission asks for was owned at least a day ago: the panel constants are Day 1's briefcases, the alert gate is Day 1's flat checkpoint reading Day 3's frame tally, and the lock ring is Day 3's <code>def</code> with Day 3's drawing vocabulary. Load stays level because integration replaces novelty. Day 4 is also where debugging is collected: Day 5 is presentations only, so the Commission block carries the Bug Hunt protocol and the log, and the deadline is <em>finished</em>, not merely running.</p>
-  <p><strong>Where recruits actually stall:</strong> Block A (Drills 1 and 2, about 35 minutes) is the schematic; the stall is drawing the beacon loop as a box instead of a loop inside the ring, which the hinge is built to catch. Sign schematics as they come, not at the end. Block B (Drills 3 and 4 plus the hinge, about 40 minutes): the common Drill 3 error is replacing only one of the two <code>draw.line</code> lines; the common Drill 4 error is calling the ring before the fill. Block C, the Commission, the bug hunting, and the rehearsal, needs everything that is left, at least 60 minutes; call a hard stop fifteen minutes before the bell for the rehearsal. The deadline law is real: a recruit with nothing running at the bell reverts to the clean engine plus one change, and that counts. Collect the log rows as recruits finish; the two planted-by-nature silent bugs (a gate set past the run's length, a routine drawn before the fill) appear in most rooms and are worth naming aloud. For the stretch gate's question: the sweep wraps every 101 passes, so it wraps five times in the first 600.</p>
+  <p><strong>The pacing choice, stated plainly:</strong> no new syntax today, and that is the proudest line on the page. Everything the Commission asks for was owned at least a day ago: the panel knobs are Day 1's briefcases, the streak gate is a checkpoint reading Day 2's tally, the winning condition is one flat gate flipping a boolean the way QUIT always has, and the banner is Day 2's string racks fed to Day 3's <code>def</code>. Load stays level because integration replaces novelty. Day 4 is also where debugging is collected: Day 5 is presentations only, so the Commission block carries the Bug Hunt protocol and the log, and the deadline is <em>finished</em>, not merely running.</p>
+  <p><strong>Where recruits actually stall:</strong> Block A (Drills 1 and 2, about 35 minutes) is the schematic; the stall is drawing the lock test as one box instead of four checkpoints feeding a counter, which the hinge is built to catch. Sign schematics as they come, not at the end. Block B (Drills 3 and 4 plus the hinge, about 35 minutes): the common Drill 4 error is editing a banner rack's row to a new length and leaving the old left number, which the second silent-bug warning names. Block C, the Commission, the bug hunting, and the rehearsal, needs everything that is left, at least 65 minutes; call a hard stop fifteen minutes before the bell for the rehearsal. The deadline law is real: a recruit with nothing running at the bell reverts to the clean game plus one change, and that counts. Collect the log rows as recruits finish. The classic overreach is three knob changes in one run, which the house law exists to stop.</p>
   <table>
     <tr><th>Code</th><th>Standard (verbatim)</th><th>Drill(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
-    <tr><td>E5-ALG-PS-01</td><td>Create a visual representation of an algorithm that includes variables and a combination of sequence, events, iteration, and selection to solve a problem or express an idea.</td><td>2, Commission; gated by the hinge</td><td>Mastery</td><td>The signed Gadget Schematic showing sequence, the watch ring, the wrap and respawn decisions, the alert-mode gate, and labeled variables, plus the built gadget that follows it.</td><td>Verified</td></tr>
-    <tr><td>E5-PRO-TR-??</td><td>Grade-5 progression: students identify and debug errors in simple programs. [Confirm exact code and wording at source.]</td><td>Commission</td><td>Mastery when the recruit's log holds at least one complete row from their own gadget (symptom, predicted cause, line, one change); record Addressed otherwise</td><td>The Bug Hunt Log in the Field Notebook, plus Day 2's sabotage drills (the silent wrap, the runaway loop, the sulking door). This is thinner evidence than a shared planted-bug hunt would give; the week trades that hunt for a presentation day on purpose.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
-    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>1, 3, 4, Commission</td><td>Addressed</td><td>The customized engine: color list, count and speed, gate, and own gadget, each landed one change per run with the prediction spoken first.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-ALG-PS-01</td><td>Create a visual representation of an algorithm that includes variables and a combination of sequence, events, iteration, and selection to solve a problem or express an idea.</td><td>2, Commission; gated by the hinge</td><td>Mastery</td><td>The signed Gadget Schematic showing sequence, the watch ring, the steering and fence decisions, the timed reroll, the four-checkpoint lock test, the streak gate and the winning condition, with labeled variables, plus the built edition that follows it.</td><td>Verified</td></tr>
+    <tr><td>E5-PRO-TR-??</td><td>Grade-5 progression: students identify and debug errors in simple programs. [Confirm exact code and wording at source.]</td><td>Commission</td><td>Mastery when the recruit's log holds at least one complete row from their own edition (symptom, predicted cause, line, one change); record Addressed otherwise</td><td>The Bug Hunt Log in the Field Notebook, plus Day 2's sabotage drills (the silent wrap, the runaway loop, the sulking door). This is thinner evidence than a shared planted-bug hunt would give; the week trades that hunt for a presentation day on purpose.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>1, 3, 4, Commission</td><td>Addressed</td><td>The kid-mode and pro-mode panels with one-sentence defenses, the rewritten banner, and the own-def gadget, each landed one change per run with the prediction spoken first.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
   </table>
-  <p><strong>Deliberately not covered here:</strong> no new syntax at all; this page spends everything on planning, predicted change, and repair, building directly on Day 3's reading. The VS Code debugger is not taught: a breakpoint ritual (red dot in the gutter, Start Debugging, predict the variable, then look) is a fine one-on-one tool for a recruit stuck on a silent bug, but there is no room for it as a drill. <code>return</code> values remain excluded: every routine acts by drawing or printing, and recruits who reach for <code>return</code> get one-on-one support, by program-wide design. The run is Day 2's watched loop and ends only when the agent closes the window; <code>pygame.event.pump</code> and <code>pygame.time.wait</code> appear nowhere in this Academy's engines, because every window reads its mail. The <code>frame</code> tally keeps time inside the watch so gates can fire at chosen moments. Sprites, image files, and classes are excluded program-wide.</p>
-  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. Mathematics standards &copy; Copyright 2010 National Governors Association Center for Best Practices and Council of Chief State School Officers. All rights reserved. Statement text verified via the Learning Commons CASE network. "Mapped to" is this page's claim; it is not a CSTA- or CCSS-reviewed designation.</p>
+  <p><strong>Deliberately not covered here:</strong> no new syntax at all; this page spends everything on planning, predicted change, and repair, building directly on Day 3's reading. <code>pygame.font</code> stays banned, and Drill 4 is the proof that the law survives contact with a real design problem: the banner puts words in the window with a rack, a loop, a gate, and a rectangle. The word <code>and</code> is never introduced; the four-checkpoint counter does its job, and a teacher who wants to reveal <code>and</code> after the week has a perfect before-and-after. The VS Code debugger is not taught: a breakpoint ritual (red dot in the gutter, Start Debugging, predict the variable, then look) is a fine one-on-one tool for a recruit stuck on a silent bug, but there is no room for it as a drill. <code>return</code> values remain excluded: every routine acts by drawing or printing. Sprites, image files, and classes are excluded program-wide.</p>
+  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
 </details>
 
 <p class="foot"><a href="spy_academy_hub.html">Back to HQ</a> &middot; Read it, trace it, then run it</p>
