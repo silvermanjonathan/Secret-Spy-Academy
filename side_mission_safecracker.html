@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Side Mission — The Safecracker's Ledger</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B1F26;--manila:#F2E9D3;--stamp:#B3261E;--phosphor:#7BE495;--green:#047857;--amber:#C98B1F;--ink-soft:rgba(27,31,38,.08);--ink-line:rgba(27,31,38,.18);--shadow:0 4px 0 rgba(27,31,38,.14);}
+*{box-sizing:border-box;font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0,"dlig" 0}
+body{margin:0;background:var(--manila);color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:16.5px}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+.hero{background:var(--ink);color:var(--manila);padding:46px 24px 40px;text-align:center;border-bottom:3px dashed var(--amber)}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+h1{font-family:'Special Elite',serif;font-weight:400;font-size:clamp(32px,5.6vw,50px);line-height:1.08;margin:.2em auto .35em;max-width:640px}
+.hook{max-width:560px;margin:0 auto 8px;font-size:17.5px;opacity:.94}
+.need{font-family:'JetBrains Mono',monospace;font-size:12.5px;opacity:.8;margin-top:14px}
+.need a{color:var(--phosphor)}
+.stamp{display:inline-block;margin:20px auto 0;padding:8px 18px;border:3px double var(--amber);border-radius:6px;color:var(--amber);font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.2em;font-size:clamp(11px,2.6vw,13px);text-transform:uppercase;transform:rotate(-2deg)}
+h2{font-family:'Special Elite',serif;font-weight:400;font-size:24px;margin:0 0 6px}
+.card{background:#fff;border:1px solid var(--ink-line);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px;margin:28px 0}
+.chunkhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chunklabel{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--stamp);font-weight:700}
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--ink-soft);color:var(--ink);border-radius:999px;padding:3px 11px;white-space:nowrap}
+.chip.unv{color:var(--stamp)}
+pre{background:var(--ink);color:#EDE5D0;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.6;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:14px 0}
+code{font-family:'JetBrains Mono',monospace;font-size:.92em}
+.predict{border-left:4px solid var(--amber);background:rgba(201,139,31,.14);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.ptag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:4px;color:#8a5a00}
+button.reveal{background:var(--ink);color:var(--manila);border:none;border-radius:999px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;margin-top:6px}
+button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
+.answer{display:none;background:var(--ink-soft);border-radius:10px;padding:14px 16px;margin-top:12px}
+.answer.open{display:block}
+.see{border:2px solid var(--green);background:rgba(4,120,87,.08);border-radius:12px;padding:13px 16px;margin:14px 0;display:none}
+.see.open{display:block}
+.see .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
+.see pre{background:#0b3a2e;margin:10px 0 2px}
+.hinge{border:2px solid var(--stamp)}
+.law{border:2px dashed var(--stamp);background:rgba(179,38,30,.07);border-radius:12px;padding:13px 16px;margin:14px 0}
+.law .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--stamp);font-weight:700;display:block;margin-bottom:4px}
+.exits{display:grid;gap:14px}
+.exit{border:1px solid var(--ink-line);border-radius:12px;padding:14px 16px}
+.lvl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.lvl small{opacity:.65;letter-spacing:.06em}
+.teacher{background:var(--ink-soft);border:1px solid var(--ink-line);border-radius:14px;padding:6px 20px 16px;margin:34px 0;color:var(--ink);font-size:14.5px}
+.teacher summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px 0;font-weight:700;opacity:.85}
+.teacher table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+.teacher th,.teacher td{border:1px solid var(--ink-line);padding:7px 9px;text-align:left;vertical-align:top}
+.teacher th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.warn{color:var(--stamp);font-family:'JetBrains Mono',monospace;font-size:11px}
+.attr{font-size:12px;opacity:.75;margin-top:12px}
+.tracker{display:flex;align-items:center;gap:8px;margin:6px 0 0;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--ink-line);background:transparent}
+.dot.done{background:var(--green);border-color:var(--green)}
+.tlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.knobs{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
+.knobs th,.knobs td{border:1px solid var(--ink-line);padding:8px 10px;text-align:left;vertical-align:top}
+.knobs th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.foot{text-align:center;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin-top:40px}
+.foot a{color:var(--stamp)}
+@media print{.answer,.see{display:block}button.reveal{display:none}.card{box-shadow:none;break-inside:avoid}.teacher{break-before:page}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Secret Spy Academy &middot; Side Mission</div>
+  <h1>The Safecracker's Ledger</h1>
+  <p class="hook">A safe with a three-digit combination guards the enemy ledger. You have two ways in: turn the dial in order, or gamble on random guesses. Then the ledger itself needs searching: the strongest signal, the mole's codename. Every search is a loop, a gate, and a briefcase.</p>
+  <div><span class="stamp">Count &middot; Gamble &middot; Search</span></div>
+  <p class="need">YOU'LL NEED: VS Code open &middot; a new file saved as safecracker.py &middot; <a href="field_notebook_handout.html">your Field Notebook</a> &middot; Day 2 finished (while and the sentinel gate)</p>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h2>Mission target</h2>
+  <p><strong>I can trace a while loop that searches, name its exit line, and say before running how many tries a systematic search needs.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
+  <p><strong>I can hunt through a rack with a gate and a best-so-far briefcase, and keep the champion's slot as well as its value.</strong> <span class="chip unv">E5-PRO-PD-?? &#9888;</span></p>
+  <div class="tracker" aria-label="drill progress">
+    <span class="tlabel">Drills cleared</span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span>
+  </div>
+</section>
+
+<!-- DRILL 1 -->
+<section class="card" data-chunk="1">
+  <div class="chunkhead"><span class="chunklabel">Drill 1 &middot; The dial, turned in order</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>The count-up crack</h2>
+  <p>The safe's combination is a number from 0 to 999. The systematic crack starts at zero and turns the dial one click at a time. It's Day 2's sentinel gate with a counter riding along.</p>
+  <pre>secret = 741
+guess = 0
+tries = 0
+while guess != secret:
+    guess = guess + 1
+    tries = tries + 1
+print(f"The safe opens on guess {guess}, after {tries} tries.")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Which line is this while's exit line? How many tries will it take, and why is the answer the combination itself? What's the worst case on this dial?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">The exit line is <code>guess = guess + 1</code>: it's what moves the question toward no. It takes <strong>741 tries</strong>, one click per number from 1 up to the secret, so a count-up crack always costs exactly the combination. Worst case, a secret of 999 costs 999 tries, and that ceiling is guaranteed. No luck involved either way.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>The safe opens on guess 741, after 741 tries.</pre>
+  </div>
+</section>
+
+<!-- DRILL 2 -->
+<section class="card" data-chunk="2">
+  <div class="chunkhead"><span class="chunklabel">Drill 2 &middot; The gamble</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>The random stakeout</h2>
+  <p>The other way in: guess at random, forever, until the door opens. Three spins of the Dispatcher build a three-character guess, glued together with the tally's plus. The combination is a string now, so the door compares text, and the seed makes your run match the box below.</p>
+  <pre>import random
+
+random.seed(7)
+digits = "0123456789"
+secret = "741"
+guess = ""
+tries = 0
+while guess != secret:
+    guess = random.choice(digits) + random.choice(digits) + random.choice(digits)
+    tries = tries + 1
+print(f"The safe opens after {tries} random tries.")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    How many different three-character guesses are possible? Could this loop, in principle, run forever? And will the seeded count land above or below Drill 1's 741?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Ten times ten times ten: <strong>1000 possibilities</strong>. In principle the gamble could run forever, since nothing stops it re-guessing the same wrong number, and this seed happens to get lucky at <strong>217 tries</strong>, beating the count-up. Don't be fooled. Averaged over many runs the gamble costs about a thousand tries, while the count-up carries a written guarantee of 999 or fewer. Would you bet a mission on a lucky seed? This is why safecrackers count and gamblers go broke.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>The safe opens after 217 random tries.</pre>
+  </div>
+</section>
+
+<!-- DRILL 3 -->
+<section class="card" data-chunk="3">
+  <div class="chunkhead"><span class="chunklabel">Drill 3 &middot; Pattern: best-so-far</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>The champion signal</h2>
+  <p>Inside the safe: a ledger of intercepted signal strengths. Which transmitter is loudest? A briefcase holds the best value seen so far; a second briefcase remembers <em>where</em> it was seen. Every new reading challenges the champion, and only a stronger one takes the crown.</p>
+  <pre>ledger = [62, 87, 45, 91, 73, 88, 54]
+best = 0
+slot = 0
+for i in range(7):
+    if ledger[i] &gt; best:
+        best = ledger[i]
+        slot = i
+print(f"Strongest signal: {best}, at slot {slot}.")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Walk the rack. On which passes does the gate fire, and what do the two briefcases hold at the end? Then the trap: what would print if every reading in the ledger were negative?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">The gate fires on passes 0, 1, and 3, as 62, 87, then 91 each beat the champion; 88 arrives too late and loses to 91. The briefcases end at <strong>91 and slot 3</strong>. The trap: an all-negative ledger never beats the starting 0, so the program reports a champion of 0 at slot 0, a signal that was never in the ledger at all. Starting <code>best</code> at the rack's first reading instead of 0 fixes it, and noticing that is the difference between using a pattern and owning it.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Strongest signal: 91, at slot 3.</pre>
+  </div>
+</section>
+
+<!-- DRILL 4 -->
+<section class="card" data-chunk="4">
+  <div class="chunkhead"><span class="chunklabel">Drill 4 &middot; The mole hunt</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Searching a rack of names</h2>
+  <p>The ledger's last page lists five codenames. One belongs to the mole. This is Day 2's slot search running on a rack of strings instead of a rack of letters: same loop, same gate, same briefcase.</p>
+  <pre>roster = ["falcon", "osprey", "nightjar", "kestrel", "merlin"]
+mole = "nightjar"
+found = 0
+for i in range(5):
+    if roster[i] == mole:
+        found = i
+print(f"The mole is {roster[found]}, slot {found}.")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    How many times does the gate say yes? What prints? And the familiar trap: what happens if <code>mole</code> is a name that isn't on the roster?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Yes exactly once, on pass 2, so it prints <code>The mole is nightjar, slot 2.</code> A name that's not on the roster leaves <code>found</code> at its starting 0, and the program calmly accuses falcon, an agent who did nothing wrong. Same silent default as the Cipher Room's small h, and the fix is the same idea as Drill 3's: a starting value that can't be mistaken for a real answer.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>The mole is nightjar, slot 2.</pre>
+  </div>
+</section>
+
+<!-- HINGE -->
+<section class="card hinge">
+  <div class="chunkhead"><span class="chunklabel">Hinge question &middot; stop here until you're sure</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Guarantees and gambles</h2>
+  <p>Part 1: the enemy upgrades the safe to a four-digit combination. What's the new worst case for the count-up crack, and what happens to the gamble's odds on any single guess?<br>
+  Part 2: in Drill 3, the ledger grows to twenty readings and the strongest is the very first one. How many times does the gate fire across the whole search?</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Part 1: 9999 tries worst case</strong>, ten times the old ceiling, and each random guess now has 1 chance in 10000. One extra digit multiplies the work by ten, and that is the entire secret of strong keys: Day 2's brute-force loop cracked a 27-key wheel in a blink, and every added digit buys another factor of ten against it. <strong>Part 2: once.</strong> The first reading takes the crown on pass 0 and no later reading beats it, so the gate stays shut for nineteen passes. A quiet search is still a complete search.</div>
+</section>
+
+<!-- BUILD -->
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">Field Mission &middot; Crack the Vault</span></div>
+  <h2>One program, three searches</h2>
+  <p><strong>Part A, the crack:</strong> a secret of your choosing, the count-up while, and an f-string report of guesses and tries.</p>
+  <p><strong>Part B, the ledger:</strong> your own rack of at least eight signal strengths; report the champion <em>and</em> the weakest signal (a second best-so-far, with the gate flipped the other way; mind Drill 3's starting-value trap).</p>
+  <p><strong>Part C, the roster:</strong> your own codename roster and a mole search with an honest miss: start <code>found</code> at a slot that can't be real, and gate the report so a missing mole prints a warning instead of an accusation.</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal a sample solution</button>
+  <div class="answer">
+<pre>import random
+
+# --- Part A: the crack ---
+secret = 358
+guess = 0
+tries = 0
+while guess != secret:
+    guess = guess + 1
+    tries = tries + 1
+print(f"Safe open on {guess} after {tries} tries.")
+
+# --- Part B: the ledger ---
+ledger = [44, 90, 12, 76, 90, 31, 8, 67]
+best = ledger[0]
+weakest = ledger[0]
+for i in range(8):
+    if ledger[i] &gt; best:
+        best = ledger[i]
+    if ledger[i] &lt; weakest:
+        weakest = ledger[i]
+print(f"Champion {best}, weakest {weakest}.")
+
+# --- Part C: the roster ---
+roster = ["viper", "heron", "lynx", "corsair"]
+mole = "petrel"
+found = 99
+for i in range(4):
+    if roster[i] == mole:
+        found = i
+if found == 99:
+    print("No mole on this roster. Stay sharp.")
+else:
+    print(f"The mole is {roster[found]}, slot {found}.")</pre>
+    Why start <code>best</code> and <code>weakest</code> at <code>ledger[0]</code>? Because the first reading is the only champion that can't be wrong. And why 99 for <code>found</code>? Any slot the roster can't own works; 99 just says so loudly.
+  </div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Safe open on 358 after 358 tries.
+Champion 90, weakest 8.
+No mole on this roster. Stay sharp.</pre>
+  </div>
+</section>
+
+<!-- EXITS -->
+<section class="card">
+  <h2>Choose your exit gate</h2>
+  <div class="exits">
+    <div class="exit"><span class="lvl" style="color:#8a5a00">Floor <small>&middot; approaching the mission</small></span>
+      <p style="margin:6px 0 0">Your count-up crack opens the safe, reports its tries, and you can point at the exit line before you run it.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the mission</small></span>
+      <p style="margin:6px 0 0">Champion and weakest both come off your own ledger with the starting-value trap handled, and you can say in one sentence why the count-up beats the gamble even on a night the gamble gets lucky.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--stamp)">Stretch <small>&middot; exceeds the mission</small></span>
+      <p style="margin:6px 0 0">Your mole hunt reports a clean miss, and you extend the crack to a four-digit safe, predict the new worst case before running, and check it against a secret of your choosing.</p></div>
+  </div>
+</section>
+
+<!-- TEACHER PANEL -->
+<details class="teacher">
+  <summary>Standards, pacing &amp; evidence (teacher panel)</summary>
+  <p><strong>Where this fits:</strong> a terminal-only side mission for agents who finished Day 2 early, a Day 5 station, or homework. Forty minutes, no pygame. Nothing here is new syntax; the mission's job is to graduate three search patterns from "seen once" to "owned": the sentinel while with a counter, best-so-far with its slot, and the flat search with an honest miss. Best-so-far was stretch tier on Day 2, so this page is where mid-tier agents finally meet it with support.</p>
+  <p><strong>Where recruits actually stall:</strong> Drill 2's gamble beating Drill 1's count is the productive surprise; let the room argue about it before the reveal, because the argument is the lesson. In Drill 3, half the room will miss that 88 loses to 91, and the trap questions in Drills 3 and 4 both hinge on starting values, which recruits find easier the second time. The Part C gate on the report is the mission's only two-branch decision; recruits who reach for a second search loop instead should re-read the brief.</p>
+  <table>
+    <tr><th>Code</th><th>Standard (verbatim)</th><th>Drill(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
+    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>1, 2, 4; hinge</td><td>Addressed (a side mission collects no Mastery claims)</td><td>The pass-by-pass trace of the champion search and the hinge's worst-case reasoning, worked in the Field Notebook margin.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>3, build</td><td>Addressed</td><td>Best-so-far flipped into weakest-so-far, both starting-value traps repaired, and the mole hunt refitted to report a clean miss.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+  </table>
+  <p><strong>Deliberately not covered here:</strong> <code>break</code> stays excluded, so every search walks its whole rack even after finding the answer, and the hinge's Part 2 turns that into a feature worth naming rather than an inefficiency to apologize for. <code>min</code> and <code>max</code> exist in Python and would erase Drill 3 in one call; they are left unmentioned so the pattern gets built by hand once. <code>random.randint</code> is not used; three spins of <code>random.choice</code> build the guess so the Dispatcher stays the only randomness tool. Sorting is out entirely.</p>
+  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
+</details>
+
+<p class="foot"><a href="spy_academy_hub.html">Back to HQ</a> &middot; Read it, trace it, then run it</p>
+
+</main>
+<script>
+function reveal(btn){
+  if(!btn.dataset.label){ btn.dataset.label = btn.textContent; }
+  var a = btn.nextElementSibling;
+  var open = a.classList.toggle('open');
+  btn.textContent = open ? 'Hide' : btn.dataset.label;
+  var see = a.nextElementSibling;
+  if(see && see.classList.contains('see')){ see.classList.toggle('open', open); }
+  var card = btn.closest('[data-chunk]');
+  if(card){ var d = document.getElementById('d'+card.getAttribute('data-chunk')); if(d) d.classList.add('done'); }
+}
+</script>
+</body>
+</html>

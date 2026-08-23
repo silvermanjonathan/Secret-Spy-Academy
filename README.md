@@ -24,7 +24,7 @@ All course links in this README are absolute `github.io` addresses on purpose. T
 
 The Commission is **finished by the end of Day 4**, debugging included. Day 5 is presentations only.
 
-The capstone is **Target Lock**, a playable game: a coral target darts and pauses around the scope, the agent steers the lock with the arrow keys, holding it on target scores, and the first to ten points sees the MISSION FINISHED banner (drawn without `pygame.font`, from racks of strings). Day 3 plays and reads the clean game; Day 4 commissions each agent's own edition: a kid mode and a pro mode, their colors, their banner, and one routine of their own. Side missions (the Cipher Grid, the Safecracker's Ledger, the Beacon Field) stay sealed on the hub until they ship.
+The capstone is **Target Lock**, a playable game: a coral target darts and pauses around the scope, the agent steers the lock with the arrow keys, holding it on target scores, and the first to ten points sees the MISSION FINISHED banner (drawn without `pygame.font`, from racks of strings). Day 3 plays and reads the clean game; Day 4 commissions each agent's own edition: a kid mode and a pro mode, their colors, their banner, and one routine of their own. Three side missions are live for agents who finish early. [The Cipher Grid](https://silvermanjonathan.github.io/Secret-Spy-Academy/side_mission_cipher_grid.html) and [The Safecracker's Ledger](https://silvermanjonathan.github.io/Secret-Spy-Academy/side_mission_safecracker.html) are terminal-only and open after Day 2: the first stacks a parallel-racks substitution cipher with a column-read grid into a double lock, the second cracks a safe by counting and by gambling, then searches the ledger with best-so-far. [The Beacon Field](https://silvermanjonathan.github.io/Secret-Spy-Academy/side_mission_beacon_field.html) opens after the capstone: the declassified twelve-contact scope, carrying `append` and `random.randint` as mission-local tools.
 
 ## Files
 
@@ -39,6 +39,10 @@ day3_gadget_blueprint.html
 day4_gadget_commission.html
 day5_final_debrief.html
 target_lock_pygame.py            ← the capstone game, byte-identical to the Day 3 in-page listing
+side_mission_cipher_grid.html    ← side mission: the Cipher Grid (after Day 2)
+side_mission_safecracker.html    ← side mission: the Safecracker's Ledger (after Day 2)
+side_mission_beacon_field.html   ← side mission: the Beacon Field (after the capstone)
+beacon_field_pygame.py           ← the Beacon Field engine, byte-identical to the mission's in-page listing
 field_notebook_handout.html      ← the printable Field Notebook (trace sheets, the codebreaker's corner, and the Bug Hunt Log, one per agent)
 ```
 
