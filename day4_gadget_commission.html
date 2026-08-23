@@ -113,7 +113,7 @@ CORAL = (255, 120, 90)
     At LOCK_SPEED 5, how far does one full second of held RIGHT carry the lock? Which knob makes each <em>point</em> take longer to earn, and which makes the <em>target</em> jumpier? What would LOCK_RANGE 30 feel like, and LOCK_RANGE 18?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">Three hundred pixels: 60 passes of plus 5, most of the scope in one second, which is why the lock feels quick. POINT_EVERY sets the price of a point, TURN_EVERY sets the jumpiness (lower is jumpier), and LOCK_RANGE is the forgiveness dial: 30 reads as generous, 18 as cruel, because the box test opens only inside that distance on <em>both</em> axes. The dice rack is the target's whole personality: more 0s and it lies low, an extra 3 and -3 and it dashes. If you can predict a knob's effect, you have permission to change it. That is the whole test.</div>
+  <div class="answer">Three hundred pixels: 60 passes of plus 5, most of the scope in one second. No wonder the lock feels quick. POINT_EVERY sets the price of a point, TURN_EVERY sets the jumpiness (lower is jumpier), and LOCK_RANGE is the forgiveness dial: 30 reads as generous, 18 as cruel, because the box test opens only inside that distance on <em>both</em> axes. The dice rack is the target's whole personality: more 0s and it lies low, an extra 3 and -3 and it dashes. If you can predict a knob's effect, you have permission to change it. That is the test.</div>
 </section>
 
 <!-- DRILL 2 -->
@@ -126,7 +126,7 @@ CORAL = (255, 120, 90)
     Before drawing: which beat holds the most checkpoints, and how many? Where on your schematic will your own changes land: inside the ring, in the panel, or both?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">The lock test: four checkpoints feeding the counter, plus the verdict gate that reads it, five decisions in one beat, which is why it gets its own box. And your Commission lands in <strong>both</strong> places: the difficulty, the colors, and the banner racks live in the panel and the setup; your own gadget fires inside the ring. A plan that shows where each change lives is what turns customizing from guessing into engineering, and it's the artifact this page exists to collect.</div>
+  <div class="answer">The lock test: four checkpoints feeding the counter, plus the verdict gate that reads it, five decisions in one beat. It earns its own box. And your Commission lands in <strong>both</strong> places: the difficulty, the colors, and the banner racks live in the panel and the setup; your own gadget fires inside the ring. A plan that shows where each change lives is what turns customizing from guessing into engineering, and it's the artifact this page exists to collect.</div>
 </section>
 
 <!-- DRILL 3 -->
@@ -181,7 +181,7 @@ def draw_banner(surface, rows, left, top):
     Count the Xs in the letter I alone (columns 7 to 11 of the rack). How many squares is it drawn from? And if you wanted the banner to say something else, which part of the program would you edit, and which part would you leave alone?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">Thirteen: five across the top, five across the bottom, and three down the middle. To change the message you edit only the <em>racks</em>, drawing your letters in Xs; <code>draw_banner</code> never changes, because the routine holds the how and the rack holds the what, Day 3's whole lesson in one def. Keep each row 48 characters or fewer so it fits the scope, and recenter with left = 320 minus 4 times the row's length.</div>
+  <div class="answer">Thirteen: five across the top, five across the bottom, and three down the middle. To change the message you edit only the <em>racks</em>, drawing your letters in Xs; <code>draw_banner</code> never changes, because the routine holds the how and the rack holds the what, Day 3's lesson in one def. Keep each row 48 characters or fewer so it fits the scope, and recenter with left = 320 minus 4 times the row's length.</div>
 </section>
 
 <!-- HINGE -->
@@ -192,7 +192,7 @@ def draw_banner(surface, rows, left, top):
   Part 1: in <em>one pass</em>, how many times does the lock test's counter line <code>close = close + 1</code> run at most, and how many times does the streak gate run?<br>
   Part 2: across the first ten seconds of a run, 600 passes, what is the greatest number of <em>points</em> a perfect agent could earn at POINT_EVERY 50, and why?</p>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer"><strong>Part 1: at most 4 times, once per checkpoint, and the streak gate runs exactly once per pass.</strong> If your schematic shows the four checkpoints outside the ring, redraw before the Commission. <strong>Part 2: twelve points</strong>, because every point costs fifty held passes and 600 passes hold at most twelve fifties. A perfect agent's score is rationed by the ring itself, which is exactly the kind of thing a schematic lets you see without running anything.</div>
+  <div class="answer"><strong>Part 1: at most 4 times, once per checkpoint, and the streak gate runs exactly once per pass.</strong> If your schematic shows the four checkpoints outside the ring, redraw before the Commission. <strong>Part 2: twelve points</strong>, because every point costs fifty held passes and 600 passes hold at most twelve fifties. A perfect agent's score is rationed by the ring itself. You can read that off the schematic without running a thing.</div>
 </section>
 
 <!-- THE COMMISSION -->
@@ -238,7 +238,7 @@ def draw_banner(surface, rows, left, top):
 <!-- TEACHER PANEL -->
 <details class="teacher">
   <summary>Standards, pacing &amp; evidence (teacher panel)</summary>
-  <p><strong>The pacing choice, stated plainly:</strong> no new syntax today, and that is the proudest line on the page. Everything the Commission asks for was owned at least a day ago: the panel knobs are Day 1's briefcases, the streak gate is a checkpoint reading Day 2's tally, the winning condition is one flat gate flipping a boolean the way QUIT always has, and the banner is Day 2's string racks fed to Day 3's <code>def</code>. Load stays level because integration replaces novelty. Day 4 is also where debugging is collected: Day 5 is presentations only, so the Commission block carries the Bug Hunt protocol and the log, and the deadline is <em>finished</em>, not merely running.</p>
+  <p><strong>The pacing choice, stated plainly:</strong> no new syntax today, and that is the proudest line on the page. Everything the Commission asks for was owned at least a day ago: the panel knobs are Day 1's briefcases, the streak gate is a checkpoint reading Day 2's tally, the winning condition is one flat gate flipping a boolean the way QUIT always has, and the banner is Day 2's string racks fed to Day 3's <code>def</code>. Load stays level because integration replaces novelty. Day 4 is also where debugging is collected: Day 5 is presentations only, so the Commission block carries the Bug Hunt protocol and the log, and the deadline is <em>finished</em>, a harder word than running.</p>
   <p><strong>Where recruits actually stall:</strong> Block A (Drills 1 and 2, about 35 minutes) is the schematic; the stall is drawing the lock test as one box instead of four checkpoints feeding a counter, which the hinge is built to catch. Sign schematics as they come, not at the end. Block B (Drills 3 and 4 plus the hinge, about 35 minutes): the common Drill 4 error is editing a banner rack's row to a new length and leaving the old left number, which the second silent-bug warning names. Block C, the Commission, the bug hunting, and the rehearsal, needs everything that is left, at least 65 minutes; call a hard stop fifteen minutes before the bell for the rehearsal. The deadline law is real: a recruit with nothing running at the bell reverts to the clean game plus one change, and that counts. Collect the log rows as recruits finish. The classic overreach is three knob changes in one run, which the house law exists to stop.</p>
   <table>
     <tr><th>Code</th><th>Standard (verbatim)</th><th>Drill(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>

@@ -63,7 +63,7 @@ field_notebook_handout.html      ← the printable Field Notebook (trace sheets,
 
 ## Pacing model
 
-Novelty is front-loaded and decays to zero: Day 1 carries about ten mechanics in twelve drills, Day 2 adds three marks and builds a working cipher out of four named patterns, Day 3 adds one mark plus the pygame vocabulary and then plays and reads the capstone game, and Days 4 and 5 add nothing. Day 3 is the heaviest day; that is the price of a cipher day, paid on purpose. The Day 4 engine is paced backward: every ingredient it uses is owned at least one full day earlier, and the hub's teacher panel lists each one with the drill that taught it.
+Novelty is front-loaded and decays to zero: Day 1 carries about ten mechanics in twelve drills, Day 2 adds three marks and builds a working cipher out of four named patterns, Day 3 adds one mark plus the pygame vocabulary and then plays and reads the capstone game, and Days 4 and 5 add nothing. Day 3 is the heaviest day; that is the price of a cipher day, paid knowingly. The capstone is paced backward: every ingredient it uses is owned at least one full day earlier, and the hub's teacher panel lists each one with the drill that taught it.
 
 ## Standards
 
