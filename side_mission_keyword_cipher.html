@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Side Mission — The Keyword Cipher</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B1F26;--manila:#F2E9D3;--stamp:#B3261E;--phosphor:#7BE495;--green:#047857;--amber:#C98B1F;--ink-soft:rgba(27,31,38,.08);--ink-line:rgba(27,31,38,.18);--shadow:0 4px 0 rgba(27,31,38,.14);}
+*{box-sizing:border-box;font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0,"dlig" 0}
+body{margin:0;background:var(--manila);color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:16.5px}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+.hero{background:var(--ink);color:var(--manila);padding:46px 24px 40px;text-align:center;border-bottom:3px dashed var(--amber)}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+h1{font-family:'Special Elite',serif;font-weight:400;font-size:clamp(32px,5.6vw,50px);line-height:1.08;margin:.2em auto .35em;max-width:640px}
+.hook{max-width:560px;margin:0 auto 8px;font-size:17.5px;opacity:.94}
+.need{font-family:'JetBrains Mono',monospace;font-size:12.5px;opacity:.8;margin-top:14px}
+.need a{color:var(--phosphor)}
+.stamp{display:inline-block;margin:20px auto 0;padding:8px 18px;border:3px double var(--amber);border-radius:6px;color:var(--amber);font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.2em;font-size:clamp(11px,2.6vw,13px);text-transform:uppercase;transform:rotate(-2deg)}
+h2{font-family:'Special Elite',serif;font-weight:400;font-size:24px;margin:0 0 6px}
+.card{background:#fff;border:1px solid var(--ink-line);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px;margin:28px 0}
+.chunkhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chunklabel{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--stamp);font-weight:700}
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--ink-soft);color:var(--ink);border-radius:999px;padding:3px 11px;white-space:nowrap}
+.chip.unv{color:var(--stamp)}
+pre{background:var(--ink);color:#EDE5D0;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.6;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:14px 0}
+code{font-family:'JetBrains Mono',monospace;font-size:.92em}
+.predict{border-left:4px solid var(--amber);background:rgba(201,139,31,.14);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.ptag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:4px;color:#8a5a00}
+button.reveal{background:var(--ink);color:var(--manila);border:none;border-radius:999px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;margin-top:6px}
+button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
+.answer{display:none;background:var(--ink-soft);border-radius:10px;padding:14px 16px;margin-top:12px}
+.answer.open{display:block}
+.see{border:2px solid var(--green);background:rgba(4,120,87,.08);border-radius:12px;padding:13px 16px;margin:14px 0;display:none}
+.see.open{display:block}
+.see .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
+.see pre{background:#0b3a2e;margin:10px 0 2px}
+.hinge{border:2px solid var(--stamp)}
+.law{border:2px dashed var(--stamp);background:rgba(179,38,30,.07);border-radius:12px;padding:13px 16px;margin:14px 0}
+.law .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--stamp);font-weight:700;display:block;margin-bottom:4px}
+.exits{display:grid;gap:14px}
+.exit{border:1px solid var(--ink-line);border-radius:12px;padding:14px 16px}
+.lvl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.lvl small{opacity:.65;letter-spacing:.06em}
+.teacher{background:var(--ink-soft);border:1px solid var(--ink-line);border-radius:14px;padding:6px 20px 16px;margin:34px 0;color:var(--ink);font-size:14.5px}
+.teacher summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px 0;font-weight:700;opacity:.85}
+.teacher table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+.teacher th,.teacher td{border:1px solid var(--ink-line);padding:7px 9px;text-align:left;vertical-align:top}
+.teacher th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.warn{color:var(--stamp);font-family:'JetBrains Mono',monospace;font-size:11px}
+.attr{font-size:12px;opacity:.75;margin-top:12px}
+.tracker{display:flex;align-items:center;gap:8px;margin:6px 0 0;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--ink-line);background:transparent}
+.dot.done{background:var(--green);border-color:var(--green)}
+.tlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.knobs{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
+.knobs th,.knobs td{border:1px solid var(--ink-line);padding:8px 10px;text-align:left;vertical-align:top}
+.knobs th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.foot{text-align:center;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin-top:40px}
+.foot a{color:var(--stamp)}
+@media print{.answer,.see{display:block}button.reveal{display:none}.card{box-shadow:none;break-inside:avoid}.teacher{break-before:page}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Secret Spy Academy &middot; Side Mission &middot; Cryptography Wing</div>
+  <h1>The Keyword Cipher</h1>
+  <p class="hook">The Cipher Grid's Atbash rack was fixed: every agent's reversed alphabet is the same reversed alphabet. This machine builds a personal coded rack from a keyword you can carry in your head: FALCON first, then everything unused. One memorized word, a whole substitution alphabet. Then you'll find the machine's lazy tail, because every cipher in this wing gets audited.</p>
+  <div><span class="stamp">Build &middot; Swap &middot; Audit</span></div>
+  <p class="need">YOU'LL NEED: VS Code open &middot; a new file saved as keyword.py &middot; <a href="field_notebook_handout.html">your Field Notebook</a> &middot; the Cipher Grid side mission finished</p>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h2>Mission target</h2>
+  <p><strong>I can trace the rack builder: which letters the used-check skips and where every survivor lands.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
+  <p><strong>I can audit my own cipher: find the letters it fails to disguise and choose a keyword that shrinks the failure.</strong> <span class="chip unv">E5-PRO-PD-?? &#9888;</span></p>
+  <div class="tracker" aria-label="drill progress">
+    <span class="tlabel">Drills cleared</span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span>
+  </div>
+</section>
+
+<!-- DRILL 1 -->
+<section class="card" data-chunk="1">
+  <div class="chunkhead"><span class="chunklabel">Drill 1 &middot; Building the rack</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>The keyword first, then everyone still waiting</h2>
+  <p>Seat the keyword's letters first, then walk the plain rack and seat everyone still waiting. Both passes use the same doorman: the Safecracker's mole-hunt search, admitting a character only if it isn't already seated. The result is a full 27-slot rack, no repeats, no absences, even if the keyword itself stutters.</p>
+  <pre>rack = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+keyword = "FALCON"
+coded = ""
+for letter in keyword:
+    used = 0
+    for j in range(len(coded)):
+        if coded[j] == letter:
+            used = 1
+    if used == 0:
+        coded = coded + letter
+for letter in rack:
+    used = 0
+    for j in range(len(coded)):
+        if coded[j] == letter:
+            used = 1
+    if used == 0:
+        coded = coded + letter
+print(coded)
+print(len(coded))</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Which is the first plain-rack letter the used-check skips? Which letter sits in slot 6, right after the keyword? And why must the final length be exactly 27?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">A is the first skip: the walk meets it immediately and finds it already seated inside FALCON. Slot 6 holds <strong>B</strong>, the first survivor after the keyword's six. And the length must be 27 because the builder is a seating chart, not a filter: every character gets exactly one chair, keyword letters up front, everyone else in their old order behind. If your length prints 26, a keyword letter sneaked in twice.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>FALCONBDEGHIJKMPQRSTUVWXYZ 
+27</pre>
+  </div>
+</section>
+
+<!-- DRILL 2 -->
+<section class="card" data-chunk="2">
+  <div class="chunkhead"><span class="chunklabel">Drill 2 &middot; The swap machine rides again</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Encode on one rack, decode on the other</h2>
+  <p>From here it is the Cipher Grid's machine exactly: search the plain rack, emit from the coded rack; decode by swapping their jobs. New alphabet, old engine.</p>
+  <pre>rack = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+coded = "FALCONBDEGHIJKMPQRSTUVWXYZ "
+message = "STRIKE AT NOON"
+result = ""
+for letter in message:
+    slot = 0
+    for i in range(27):
+        if rack[i] == letter:
+            slot = i
+    result = result + coded[slot]
+print(result)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Trace S, T, R through the racks. Something odd happens. What comes out, and can you see why before the reveal?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">S, T, and R come out as <strong>S, T, and R</strong>. Slots 17 through 19 hold the same letters on both racks, so those letters walk through the cipher untouched. The message's opening word barely changes at all, and if that feels like a broken cipher, good instinct: it isn't broken, it's <em>lazy</em>, and the next drill measures exactly how lazy.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>STREHO FT KMMK</pre>
+  </div>
+</section>
+
+<!-- DRILL 3 -->
+<section class="card" data-chunk="3">
+  <div class="chunkhead"><span class="chunklabel">Drill 3 &middot; The lazy tail</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>Audit: count the letters that don't move</h2>
+  <p>Walk both racks in step and count every slot where they agree. Each agreement is a letter your cipher leaves in plain sight.</p>
+  <pre>rack = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+coded = "FALCONBDEGHIJKMPQRSTUVWXYZ "
+lazy = ""
+for i in range(27):
+    if rack[i] == coded[i]:
+        lazy = lazy + rack[i]
+print("Unmoved:", lazy)
+print("Count:", len(lazy))</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    FALCON is six letters, and it only rearranges the front of the alphabet. Roughly how much of the rack do you expect to survive unmoved, and will the space move?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Twelve characters</strong>, P through Z and the space: nearly half the rack encodes as itself. The keyword shuffles only the seats in front of it; once the removed letters are all spent, the tail realigns and everything from P on sits back in its own chair. The space staying put is the worst leak of all, the Cipher Room's C-giveaway in reverse. The repair is keyword choice, and the build makes you prove yours is better.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Unmoved: PQRSTUVWXYZ 
+Count: 12</pre>
+  </div>
+</section>
+
+<!-- HINGE -->
+<section class="card hinge">
+  <div class="chunkhead"><span class="chunklabel">Hinge question &middot; stop here until you're sure</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Choosing a keyword like a professional</h2>
+  <p>Part 1: the keyword is BALLOON. The builder's used-check meets the second L and the second O. What does it do, and how long is the finished rack?<br>
+  Part 2: which keyword leaves a shorter lazy tail, FALCON or ZEBRA QUILT? Reason it out before you test it.</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Part 1: the doorman skips both twins</strong>, because each repeated letter is already seated by the time its double arrives, and the rack still finishes at exactly 27: BALON up front, then the survivors. That first pass is the reason the builder walks the keyword through the same used-check as everyone else; a builder that seated the keyword blindly would give BALLOON a 29-chair rack with two Ls answering to one slot. <strong>Part 2: ZEBRA QUILT</strong>, and the reasoning is the audit's lesson: a tail realigns only after the last removed letter's old position is passed, so keywords carrying <em>late</em> letters (Z, the space, U, T) keep the shuffle alive deep into the rack. FALCON's letters all live in the front half, which is why its tail slept.</div>
+</section>
+
+<!-- BUILD -->
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">Field Mission &middot; Your Personal Alphabet</span></div>
+  <h2>Build it, audit it, trade it</h2>
+  <p><strong>Part A, build:</strong> your own keyword through Drill 1's builder. Confirm 27.</p>
+  <p><strong>Part B, audit:</strong> Drill 3's counter on your rack. Write the unmoved count in your notebook next to the keyword.</p>
+  <p><strong>Part C, the trade:</strong> encode a message on your rack and pass the coded text to a classmate with the keyword <em>spoken</em>, never written: they rebuild your entire rack from one remembered word and decode by rack swap. That rebuild-from-a-word is the machine's whole reason to exist.</p>
+  <p><strong>Stretch:</strong> hunt for a keyword whose unmoved count is 3 or less, and explain what your winner has that FALCON lacked.</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal a worked audit</button>
+  <div class="answer">
+<pre>rack = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+keyword = "ZEBRA QUILT"
+coded = ""
+for letter in keyword:
+    used = 0
+    for j in range(len(coded)):
+        if coded[j] == letter:
+            used = 1
+    if used == 0:
+        coded = coded + letter
+for letter in rack:
+    used = 0
+    for j in range(len(coded)):
+        if coded[j] == letter:
+            used = 1
+    if used == 0:
+        coded = coded + letter
+lazy = ""
+for i in range(27):
+    if rack[i] == coded[i]:
+        lazy = lazy + rack[i]
+print(coded)
+print("Unmoved:", lazy, len(lazy))</pre>
+    ZEBRA QUILT carries the space and four late letters, so the shuffle reaches the rack's far end.
+  </div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>ZEBRA QUILTCDFGHJKMNOPSVWXY
+Unmoved: I 1</pre>
+  </div>
+</section>
+
+<!-- EXITS -->
+<section class="card">
+  <h2>Choose your exit gate</h2>
+  <div class="exits">
+    <div class="exit"><span class="lvl" style="color:#8a5a00">Floor <small>&middot; approaching the mission</small></span>
+      <p style="margin:6px 0 0">Your keyword builds a 27-slot rack and you can say which plain letter the used-check skips first.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the mission</small></span>
+      <p style="margin:6px 0 0">A classmate rebuilds your rack from the spoken keyword and decodes your message, and your notebook holds your rack's audited unmoved count.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--stamp)">Stretch <small>&middot; exceeds the mission</small></span>
+      <p style="margin:6px 0 0">Your hunted keyword scores 3 or less on the audit and you can explain the late-letters principle that got it there.</p></div>
+  </div>
+</section>
+
+<!-- TEACHER PANEL -->
+<details class="teacher">
+  <summary>Standards, pacing &amp; evidence (teacher panel)</summary>
+  <p><strong>Where this fits:</strong> thirty-five minutes, terminal only, sequenced after the Cipher Grid whose rack-swap engine it reuses wholesale; the only new construction is the builder loop, which is the Safecracker's mole hunt repurposed. The mission's spine is the audit: recruits build a cipher, then <em>measure</em> it, then improve it by reasoned keyword choice. That build-measure-improve loop is worth more than the cipher.</p>
+  <p><strong>Where recruits actually stall:</strong> the builder's two-loop nesting reads dense on first contact; the seating-chart metaphor in Drill 1's reveal unsticks most, and a paper walk of the first five plain letters unsticks the rest. In Part C, the spoken keyword gets misheard exactly as it does in the Wheel mission, and the resulting garbage decode is a fine argument for the Tamper Seal. The stretch hunt turns competitive fast; a leaderboard of unmoved counts on the board costs nothing.</p>
+  <table>
+    <tr><th>Code</th><th>Standard (verbatim)</th><th>Drill(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
+    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>1, 2; hinge</td><td>Addressed (a side mission collects no Mastery claims)</td><td>The paper walk of the builder's first skips and the hinge's BALLOON trace, in the Field Notebook margin.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>3, build</td><td>Addressed</td><td>The audited unmoved count for the recruit's own keyword and the stretch hunt's reasoned winner.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+  </table>
+  <p><strong>Deliberately not covered here:</strong> frequency analysis against keyword ciphers, which works and which the Cipher Grid's teacher panel already flags; this mission's audit measures a different leak. <code>random.shuffle</code> stays out: a memorable rack is the machine's entire point, and a shuffled one is the Cipher Grid's stretch. The builder never uses sets or membership operators; the used-flag search is the tool, as taught.</p>
+  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
+</details>
+
+<p class="foot"><a href="spy_academy_hub.html">Back to HQ</a> &middot; Read it, trace it, then run it</p>
+
+</main>
+<script>
+function reveal(btn){
+  if(!btn.dataset.label){ btn.dataset.label = btn.textContent; }
+  var a = btn.nextElementSibling;
+  var open = a.classList.toggle('open');
+  btn.textContent = open ? 'Hide' : btn.dataset.label;
+  var see = a.nextElementSibling;
+  if(see && see.classList.contains('see')){ see.classList.toggle('open', open); }
+  var card = btn.closest('[data-chunk]');
+  if(card){ var d = document.getElementById('d'+card.getAttribute('data-chunk')); if(d) d.classList.add('done'); }
+}
+</script>
+</body>
+</html>

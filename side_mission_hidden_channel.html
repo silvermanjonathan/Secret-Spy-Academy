@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Side Mission — The Hidden Channel</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B1F26;--manila:#F2E9D3;--stamp:#B3261E;--phosphor:#7BE495;--green:#047857;--amber:#C98B1F;--ink-soft:rgba(27,31,38,.08);--ink-line:rgba(27,31,38,.18);--shadow:0 4px 0 rgba(27,31,38,.14);}
+*{box-sizing:border-box;font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0,"dlig" 0}
+body{margin:0;background:var(--manila);color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:16.5px}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+.hero{background:var(--ink);color:var(--manila);padding:46px 24px 40px;text-align:center;border-bottom:3px dashed var(--amber)}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+h1{font-family:'Special Elite',serif;font-weight:400;font-size:clamp(32px,5.6vw,50px);line-height:1.08;margin:.2em auto .35em;max-width:640px}
+.hook{max-width:560px;margin:0 auto 8px;font-size:17.5px;opacity:.94}
+.need{font-family:'JetBrains Mono',monospace;font-size:12.5px;opacity:.8;margin-top:14px}
+.need a{color:var(--phosphor)}
+.stamp{display:inline-block;margin:20px auto 0;padding:8px 18px;border:3px double var(--amber);border-radius:6px;color:var(--amber);font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.2em;font-size:clamp(11px,2.6vw,13px);text-transform:uppercase;transform:rotate(-2deg)}
+h2{font-family:'Special Elite',serif;font-weight:400;font-size:24px;margin:0 0 6px}
+.card{background:#fff;border:1px solid var(--ink-line);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px;margin:28px 0}
+.chunkhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chunklabel{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--stamp);font-weight:700}
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--ink-soft);color:var(--ink);border-radius:999px;padding:3px 11px;white-space:nowrap}
+.chip.unv{color:var(--stamp)}
+pre{background:var(--ink);color:#EDE5D0;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.6;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:14px 0}
+code{font-family:'JetBrains Mono',monospace;font-size:.92em}
+.predict{border-left:4px solid var(--amber);background:rgba(201,139,31,.14);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.ptag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:4px;color:#8a5a00}
+button.reveal{background:var(--ink);color:var(--manila);border:none;border-radius:999px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;margin-top:6px}
+button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
+.answer{display:none;background:var(--ink-soft);border-radius:10px;padding:14px 16px;margin-top:12px}
+.answer.open{display:block}
+.see{border:2px solid var(--green);background:rgba(4,120,87,.08);border-radius:12px;padding:13px 16px;margin:14px 0;display:none}
+.see.open{display:block}
+.see .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
+.see pre{background:#0b3a2e;margin:10px 0 2px}
+.hinge{border:2px solid var(--stamp)}
+.law{border:2px dashed var(--stamp);background:rgba(179,38,30,.07);border-radius:12px;padding:13px 16px;margin:14px 0}
+.law .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--stamp);font-weight:700;display:block;margin-bottom:4px}
+.exits{display:grid;gap:14px}
+.exit{border:1px solid var(--ink-line);border-radius:12px;padding:14px 16px}
+.lvl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.lvl small{opacity:.65;letter-spacing:.06em}
+.teacher{background:var(--ink-soft);border:1px solid var(--ink-line);border-radius:14px;padding:6px 20px 16px;margin:34px 0;color:var(--ink);font-size:14.5px}
+.teacher summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px 0;font-weight:700;opacity:.85}
+.teacher table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+.teacher th,.teacher td{border:1px solid var(--ink-line);padding:7px 9px;text-align:left;vertical-align:top}
+.teacher th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.warn{color:var(--stamp);font-family:'JetBrains Mono',monospace;font-size:11px}
+.attr{font-size:12px;opacity:.75;margin-top:12px}
+.tracker{display:flex;align-items:center;gap:8px;margin:6px 0 0;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--ink-line);background:transparent}
+.dot.done{background:var(--green);border-color:var(--green)}
+.tlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.knobs{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
+.knobs th,.knobs td{border:1px solid var(--ink-line);padding:8px 10px;text-align:left;vertical-align:top}
+.knobs th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.foot{text-align:center;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin-top:40px}
+.foot a{color:var(--stamp)}
+@media print{.answer,.see{display:block}button.reveal{display:none}.card{box-shadow:none;break-inside:avoid}.teacher{break-before:page}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Secret Spy Academy &middot; Side Mission &middot; Cryptography Wing</div>
+  <h1>The Hidden Channel</h1>
+  <p class="hook">Every cipher so far screams "I am a secret." This mission whispers. Steganography hides the message inside an innocent-looking one, and the enemy who reads the cover text sees weather reports and grocery lists. No cipher, no key, just a channel: every fifth character, counted by a pattern you already own.</p>
+  <div><span class="stamp">Hide &middot; Count &middot; Extract</span></div>
+  <p class="need">YOU'LL NEED: VS Code open &middot; a new file saved as channel.py &middot; <a href="field_notebook_handout.html">your Field Notebook</a> &middot; Day 2 finished, both benches</p>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h2>Mission target</h2>
+  <p><strong>I can predict which positions a channel gate fires on, and extract a hidden message by counting.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
+  <p><strong>I can write a cover text that carries my own secret on channel 5 and reads like nothing at all.</strong> <span class="chip unv">E5-PRO-PD-?? &#9888;</span></p>
+  <div class="tracker" aria-label="drill progress">
+    <span class="tlabel">Drills cleared</span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span>
+  </div>
+</section>
+
+<!-- DRILL 1 -->
+<section class="card" data-chunk="1">
+  <div class="chunkhead"><span class="chunklabel">Drill 1 &middot; The extractor</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Every fifth character, starting at zero</h2>
+  <p>An intercepted note reads like a scrap of a map description. Agents who know the channel run a counter over it and keep only the characters where <code>i % 5</code> is 0. Spaces count; every character ticks the counter.</p>
+  <pre>cover = "NEAR OAKS OPEN NORTH"
+secret = ""
+i = 0
+for letter in cover:
+    if i % 5 == 0:
+        secret = secret + letter
+    i = i + 1
+print(secret)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    The cover has 20 characters. Which positions fire the gate, and what do those four characters spell?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Positions 0, 5, 10, and 15: the N of NEAR, the O of OAKS, the O of OPEN, and the N of NORTH. <strong>NOON.</strong> The enemy who reads the note sees directions to nowhere; the agent who knows the channel reads a time. Nothing was encrypted, which is the whole point and the whole risk: steganography's secret is not a key but a <em>location</em>, and a secret location, once guessed, protects nothing.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>NOON</pre>
+  </div>
+</section>
+
+<!-- DRILL 2 -->
+<section class="card" data-chunk="2">
+  <div class="chunkhead"><span class="chunklabel">Drill 2 &middot; The wrong channel</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Right note, wrong count</h2>
+  <p>A rival agency suspects the note and tries a channel of 7. Same extractor, one number changed.</p>
+  <pre>cover = "NEAR OAKS OPEN NORTH"
+secret = ""
+i = 0
+for letter in cover:
+    if i % 7 == 0:
+        secret = secret + letter
+    i = i + 1
+print(secret)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Which positions fire now, how many characters come out of a 20-character cover, and do they spell anything?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Positions 0, 7, and 14: three characters, N, K, and a space, spelling nothing. The rivals shrug and move on, and that shrug is the defense working: a wrong channel yields plausible garbage, not a locked door begging to be forced. Compare the failure modes: a cipher intercepted announces there is a secret; a channel misread announces there is nothing. Quiet is its own kind of armor.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>NK </pre>
+  </div>
+</section>
+
+<!-- DRILL 3 -->
+<section class="card" data-chunk="3">
+  <div class="chunkhead"><span class="chunklabel">Drill 3 &middot; Casing the channel</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>How many slots does a cover text offer?</h2>
+  <p>Before writing a cover, an agent counts its capacity: on channel 5, a text of length n carries a secret letter at every position where the gate fires. The counter tells you before you write a word.</p>
+  <pre>cover_length = 34
+capacity = 0
+i = 0
+while i &lt; 34:
+    if i % 5 == 0:
+        capacity = capacity + 1
+    i = i + 1
+print("Slots for secret letters:", capacity)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Positions 0 through 33, gate at every multiple of 5: how many firings? And to smuggle a 6-letter secret on channel 5, at least how long must the cover be?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Seven</strong>: 0, 5, 10, 15, 20, 25, 30. And a 6-letter secret needs its sixth slot at position 25, so the cover must run at least <strong>26 characters</strong>: five secret letters fully spaced, plus one more character to stand on. Capacity math first, prose second; agents who write the cover before counting the slots end up cramming, and crammed covers read strangely, which is the one thing a cover must never do.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Slots for secret letters: 7</pre>
+  </div>
+</section>
+
+<!-- HINGE -->
+<section class="card hinge">
+  <div class="chunkhead"><span class="chunklabel">Hinge question &middot; stop here until you're sure</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>The channel and the cipher</h2>
+  <p>Part 1: a cover text is 41 characters on channel 5. Position of the last secret letter, and how many secret letters in total?<br>
+  Part 2: the enemy captures this page. Your hidden channel is now public knowledge. What one move restores your safety, and which earlier mission provides it?</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Part 1: position 40, and nine letters</strong>, at 0, 5, 10, 15, 20, 25, 30, 35, 40. <strong>Part 2: encrypt the secret before hiding it</strong>, with any wheel from Day 2 or the Wing; the Unbreakable Wheel is the natural partner. Then the channel hides that a message exists, and the cipher guards it even if the channel is found. Hiding plus locking beats either alone, and layering different defenses, unlike the clerk's two same-kind shifts, does stack.</div>
+</section>
+
+<!-- BUILD -->
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">Field Mission &middot; The Innocent Note</span></div>
+  <h2>Write a cover that carries your secret</h2>
+  <p><strong>Part A, the worksheet:</strong> pick a 4-letter secret. On paper, write its letters in slots 0, 5, 10, and 15, leaving four blanks between each. Fill the blanks so the whole line reads like an ordinary note: each secret letter must start a real word.</p>
+  <p><strong>Part B, prove it:</strong> run Drill 1's extractor on your cover and show it yields your secret exactly.</p>
+  <p><strong>Part C, the exchange:</strong> leave your innocent note where a partner will find it. They extract; a bystander reads the same slip and sees nothing. Stretch: encrypt the secret with a Day 2 wheel first, hide the coded version, and hand your partner the key separately.</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal a sample solution</button>
+  <div class="answer">
+<pre>cover = "SEND MORE OATS SOON "
+secret = ""
+i = 0
+for letter in cover:
+    if i % 5 == 0:
+        secret = secret + letter
+    i = i + 1
+print(secret)</pre>
+    Slots 0, 5, 10, 15 hold S, M, O, S: the extractor prints SMOS... which is why this sample is a <em>failed</em> cover, left here on purpose. The worksheet order matters: secret letters first, filler second. A cover written the other way around smuggles whatever it happens to smuggle.
+  </div>
+  <div class="see"><span class="tag">You should see (the failed sample)</span>
+    <pre>SMOS</pre>
+  </div>
+</section>
+
+<!-- EXITS -->
+<section class="card">
+  <h2>Choose your exit gate</h2>
+  <div class="exits">
+    <div class="exit"><span class="lvl" style="color:#8a5a00">Floor <small>&middot; approaching the mission</small></span>
+      <p style="margin:6px 0 0">You can list the firing positions of channel 5 on a 20-character text without running anything.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the mission</small></span>
+      <p style="margin:6px 0 0">Your own cover text extracts to your secret, reads innocently to a bystander, and you can say what a channel's secret is if it isn't a key.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--stamp)">Stretch <small>&middot; exceeds the mission</small></span>
+      <p style="margin:6px 0 0">Your hidden message is also encrypted, the key traveled separately, and you can explain why this layering stacks where the clerk's double shift didn't.</p></div>
+  </div>
+</section>
+
+<!-- TEACHER PANEL -->
+<details class="teacher">
+  <summary>Standards, pacing &amp; evidence (teacher panel)</summary>
+  <p><strong>Where this fits:</strong> thirty-five minutes, terminal only, the Wing's lightest mission and a strong first pick for recruits intimidated by the Wheel: one gate, one counter, no cipher machinery. The concept is real and current, from microdots to pixels; the reveal keeps it at the acrostic level. Drill 3's capacity arithmetic and the failed sample in the build are the two deliberate teeth: cover-writing is a planning problem, and the sample models the failure so recruits meet it on the page instead of in their own work.</p>
+  <p><strong>Where recruits actually stall:</strong> counting from 1. Every channel position in this mission starts at 0, and the hinge's Part 1 is built to catch the off-by-one. In the build, recruits who fill the blanks first and place secret letters second produce accidental secrets; the reveal's failed sample exists so you can point at it rather than at a recruit. The Part C bystander should be a genuine third party for the payoff to land.</p>
+  <table>
+    <tr><th>Code</th><th>Standard (verbatim)</th><th>Drill(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
+    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>1&ndash;3; hinge</td><td>Addressed (a side mission collects no Mastery claims)</td><td>The firing-position lists worked before running, and the hinge's capacity arithmetic in the Field Notebook margin.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>build</td><td>Addressed</td><td>The recruit's own cover text, extractor-proven, plus the stretch layering of channel and cipher.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+  </table>
+  <p><strong>Deliberately not covered here:</strong> image and audio steganography, which is where the real field lives; the acrostic channel is its honest miniature. Detection (stylometry, the strangeness of crammed covers) is one sentence in Drill 3's reveal and no more. The extractor never uses slicing or step arguments; the counter and the gate are the machinery, as everywhere this month.</p>
+  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
+</details>
+
+<p class="foot"><a href="spy_academy_hub.html">Back to HQ</a> &middot; Read it, trace it, then run it</p>
+
+</main>
+<script>
+function reveal(btn){
+  if(!btn.dataset.label){ btn.dataset.label = btn.textContent; }
+  var a = btn.nextElementSibling;
+  var open = a.classList.toggle('open');
+  btn.textContent = open ? 'Hide' : btn.dataset.label;
+  var see = a.nextElementSibling;
+  if(see && see.classList.contains('see')){ see.classList.toggle('open', open); }
+  var card = btn.closest('[data-chunk]');
+  if(card){ var d = document.getElementById('d'+card.getAttribute('data-chunk')); if(d) d.classList.add('done'); }
+}
+</script>
+</body>
+</html>
