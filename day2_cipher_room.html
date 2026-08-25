@@ -68,10 +68,10 @@ button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
 <header class="hero">
   <div class="eyebrow">Secret Spy Academy &middot; Day 2</div>
   <h1>The Cipher Room</h1>
-  <p class="hook">Some messages have to cross enemy ground. Today you build a cipher wheel out of the patterns every program is made of, lock a door with a passphrase, and learn how codebreakers crack a message with no key at all.</p>
+  <p class="hook">Some messages have to cross enemy ground. Two benches today. In the morning you build a cipher wheel out of the patterns every program is made of and learn why the key, not the machine, is the secret. In the afternoon you switch chairs to the codebreaker's bench: lock a door with a passphrase, then crack messages with no key at all, two different ways.</p>
   <div class="wheel" aria-hidden="true"><span class="row plain">ABCDEFGHIJKLMNOPQRSTUVWXYZ_</span><span class="row coded">DEFGHIJKLMNOPQRSTUVWXYZ_ABC</span></div>
   <div><span class="stamp">Encode &middot; Decode &middot; Crack</span></div>
-  <p class="need">YOU'LL NEED: VS Code open &middot; a new file saved as day2.py &middot; <a href="field_notebook_handout.html">your Field Notebook</a> &middot; a classmate, later, for the Dead Drop</p>
+  <p class="need">YOU'LL NEED: VS Code open &middot; a new file saved as day2.py &middot; <a href="field_notebook_handout.html">your Field Notebook</a>, open to the paper wheel &middot; a classmate, later, for the Dead Drop</p>
 </header>
 
 <main class="wrap">
@@ -79,11 +79,17 @@ button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
 <section class="card">
   <h2>Today's target</h2>
   <p><strong>I can trace a letter through the cipher wheel by hand: its slot, its shift, its wrap, and the tally that collects the result.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
-  <p><strong>I can write a while loop that names its exit, stop one that doesn't, and turn my encoder into a decoder with one change.</strong> <span class="chip unv">E5-PRO-TR-?? &#9888;</span> <span class="chip unv">E5-PRO-PD-?? &#9888;</span></p>
+  <p><strong>I can say why the key is the secret and the machine is not, and crack a shift two ways: the patient way and the clever way.</strong> <span class="chip unv">E5-PRO-PD-?? &#9888;</span></p>
+  <p><strong>I can write a while loop that names its exit, stop one that doesn't, and repair a crash by reading its last line first.</strong> <span class="chip unv">E5-PRO-TR-?? &#9888;</span></p>
   <div class="tracker" aria-label="drill progress">
     <span class="tlabel">Drills cleared</span>
-    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span><span class="dot" id="d9"></span><span class="dot" id="d10"></span><span class="dot" id="d11"></span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span><span class="dot" id="d9"></span><span class="dot" id="d10"></span><span class="dot" id="d11"></span><span class="dot" id="d12"></span><span class="dot" id="d13"></span><span class="dot" id="d14"></span>
   </div>
+</section>
+
+<section class="card" style="border:2px solid var(--amber)">
+  <div class="chunkhead"><span class="chunklabel" style="color:#8a5a00">Morning bench &middot; The Cipher Machine</span></div>
+  <p style="margin:8px 0 0">Eight drills to build the wheel: the rack, the search, the shift, the wrap, the tally, the assembled machine, the decoder, and the key. Work with the paper wheel from your Field Notebook beside you; every trace you do by hand first will run faster on the screen. The morning hinge is a real landing: clear it and you have done a full day's work.</p>
 </section>
 
 <!-- DRILL 1 -->
@@ -127,7 +133,7 @@ print("Slot of", letter, "is", slot)</pre>
     How many times does the gate say yes across all 27 passes? What does <code>slot</code> hold at the end, and what would it hold if <code>letter</code> were a small <code>"h"</code>?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">Yes exactly once, on pass 7, so <code>slot</code> ends at <strong>7</strong>. A small "h" is on no rack, so the gate never says yes and <code>slot</code> keeps its starting 0: the program would quietly treat an unknown letter as an A. The shape, a loop with a gate inside and a briefcase filled by the gate, is the counter with a gate's cousin; you'll meet the counter itself in Drill 7.</div>
+  <div class="answer">Yes exactly once, on pass 7, so <code>slot</code> ends at <strong>7</strong>. A small "h" is on no rack, so the gate never says yes and <code>slot</code> keeps its starting 0: the program would quietly treat an unknown letter as an A. The shape, a loop with a gate inside and a briefcase filled by the gate, is the counter with a gate's cousin; you'll meet the counter itself in Drill 12.</div>
   <div class="see"><span class="tag">You should see</span>
     <pre>Slot of H is 7</pre>
   </div>
@@ -135,9 +141,36 @@ print("Slot of", letter, "is", slot)</pre>
 
 <!-- DRILL 3 -->
 <section class="card" data-chunk="3">
-  <div class="chunkhead"><span class="chunklabel">Drill 3 &middot; The shift and the wrap</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
-  <h2>Past the end of the rack, come back around</h2>
-  <p>A shift cipher moves every letter the same number of slots forward. Past slot 26 there is no slot 27, so the wheel comes back around to the start. That's a flat gate doing the wrapping.</p>
+  <div class="chunkhead"><span class="chunklabel">Drill 3 &middot; The shift</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Move every letter the same number of slots</h2>
+  <p>A shift cipher is one addition: take the letter's slot, add the key. Caesar used 3, two thousand years ago, and his enemies never cracked it. Here is the shift on one letter, no safety equipment yet.</p>
+  <pre>rack = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+slot = 7
+shift = 3
+slot = slot + shift
+print(slot, rack[slot])</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Slot 7 is H. What number and letter print? Now the dangerous question: Y sits in slot 24. What is 24 plus 5, and does the rack <em>have</em> that slot?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><code>10 K</code>: H slides three slots to K, and every letter of a message would slide the same way; that sameness is what makes it a cipher instead of a scramble. And 24 plus 5 is 29, but the last slot on this rack is 26. There is no slot 29. The next drill drives off that edge with the airbags out, so you can hear exactly what it sounds like.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>10 K</pre>
+  </div>
+</section>
+
+<!-- DRILL 4 -->
+<section class="card" data-chunk="4">
+  <div class="chunkhead"><span class="chunklabel">Drill 4 &middot; Sabotage drill: off the edge of the wheel</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
+  <h2>Crash it, read it, repair it with the wrap</h2>
+  <p>Run the broken version first. Y plus 5 asks for slot 29, and Day 1 taught you what a rack does when you reach for a slot it doesn't have.</p>
+  <pre>rack = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+slot = 24
+shift = 5
+slot = slot + shift
+print(slot, rack[slot])</pre>
+  <p>A real cipher wheel doesn't fall off its edge; it comes back around. Past slot 26, subtract one full turn of 27. That's a flat gate doing the wrapping. The repair:</p>
   <pre>rack = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
 slot = 24
 shift = 5
@@ -147,18 +180,20 @@ if slot &gt; 26:
 print(slot, rack[slot])</pre>
   <div class="predict">
     <span class="ptag">Predict</span>
-    Slot 24 is Y. Trace it: what number and what letter print? What would print with <code>shift = 1</code>? And if a saboteur changed the 27 to 26, which letters would come out wrong: all of them, or only some?
+    Broken version: which line of the traceback names the crime? Repaired version: trace 24 plus 5 through the gate; what prints? And if a saboteur changed the 27 to 26, which letters would come out wrong: all of them, or only some?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer"><code>2 C</code>: 24 plus 5 is 29, the gate fires, 29 minus 27 is 2, and slot 2 is C. With shift 1 the sum is 25, the gate stays shut, and Z prints. The sabotaged 26 would be a <em>silent</em> bug: only letters that wrap would land one slot too far, and the program would never complain. Keep that idea; it's Thursday's kind of bug.</div>
+  <div class="answer">The last line: <code>IndexError: string index out of range</code>, Day 1's reach-for-a-missing-slot crime with a cipher wheel for a victim. Repaired: 24 plus 5 is 29, the gate fires, 29 minus 27 is <code>2 C</code>, and Y has wrapped around to C. The sabotaged 26 would be a <em>silent</em> bug: only letters that wrap would land one slot too far, and the program would never complain. A crash is loud and honest; the silent wrap is Thursday's kind of bug. Keep both in your notebook.</div>
   <div class="see"><span class="tag">You should see</span>
-    <pre>2 C</pre>
+    <pre>IndexError: string index out of range
+...and after the repair:
+2 C</pre>
   </div>
 </section>
 
-<!-- DRILL 4 -->
-<section class="card" data-chunk="4">
-  <div class="chunkhead"><span class="chunklabel">Drill 4 &middot; Pattern: the tally</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+<!-- DRILL 5 -->
+<section class="card" data-chunk="5">
+  <div class="chunkhead"><span class="chunklabel">Drill 6 &middot; Pattern: the tally</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
   <h2>A briefcase that collects, one pass at a time</h2>
   <p>The most useful pattern in programming: start a briefcase empty, then let a loop add into it, one piece per pass. Programmers call it the <strong>accumulator</strong>; at this Academy it's the tally. Here it collects letters; with numbers it becomes a running total, which is how the capstone game will count the passes you hold your lock on target.</p>
   <pre>rack = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
@@ -181,9 +216,9 @@ ABCDE</pre>
   </div>
 </section>
 
-<!-- DRILL 5 -->
-<section class="card" data-chunk="5">
-  <div class="chunkhead"><span class="chunklabel">Drill 5 &middot; The Cipher Wheel</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+<!-- DRILL 6 -->
+<section class="card" data-chunk="6">
+  <div class="chunkhead"><span class="chunklabel">Drill 7 &middot; The Cipher Wheel</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
   <h2>Encode: the slot search, the shift, the wrap, the tally</h2>
   <p>Drills 2, 3, and 4 stacked into one machine. One new move: <code>for letter in message:</code> walks a word letter by letter, the way Day 1's loop walked a rack. Inside it, the slot search runs for each letter, so this is a loop inside a loop. Capitals and spaces only.</p>
   <pre>rack = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
@@ -211,11 +246,11 @@ print(result)</pre>
   </div>
 </section>
 
-<!-- DRILL 6 -->
-<section class="card" data-chunk="6">
-  <div class="chunkhead"><span class="chunklabel">Drill 6 &middot; Decode</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+<!-- DRILL 7 -->
+<section class="card" data-chunk="7">
+  <div class="chunkhead"><span class="chunklabel">Drill 12 &middot; Decode</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
   <h2>Going forward 24 is going back 3</h2>
-  <p>There is no separate decoder. On a wheel of 27 slots, moving forward 24 lands exactly where moving back 3 would. Feed the coded text back into Drill 5 with the complementary shift. Two lines change; everything else is the same machine.</p>
+  <p>There is no separate decoder. On a wheel of 27 slots, moving forward 24 lands exactly where moving back 3 would. Feed the coded text back into Drill 6 with the complementary shift. Two lines change; everything else is the same machine.</p>
   <pre>rack = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
 message = "PHHWCPHCDWCWKHCVDIHCKRXVHCDWCVHYHQ"
 shift = 24
@@ -241,33 +276,57 @@ print(result)</pre>
   </div>
 </section>
 
-<!-- DRILL 7 -->
-<section class="card" data-chunk="7">
-  <div class="chunkhead"><span class="chunklabel">Drill 7 &middot; Frequency analysis</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
-  <h2>Pattern: the counter with a gate</h2>
-  <p>Codebreakers have a trick that needs no key. In English, E is the most common letter. Count the letters in a coded message and the most common one is probably E in disguise. The tool is a tally that adds 1 instead of a letter, and only when a gate says yes.</p>
-  <pre>coded = "PHHWCPHCDWCWKHCVDIHCKRXVHCDWCVHYHQ"
-count = 0
-for letter in coded:
-    if letter == "H":
-        count = count + 1
-print("H appears", count, "times")</pre>
+<!-- DRILL 8 -->
+<section class="card" data-chunk="8">
+  <div class="chunkhead"><span class="chunklabel">Drill 8 &middot; The key ceremony</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>One machine, twenty-six masks</h2>
+  <p>Here is the deepest idea in this room, and it is one sentence long: <strong>the enemy can own your machine; the key is the secret.</strong> Every spy service on earth runs on it. Watch one message wear two different keys through the very same wheel.</p>
+  <pre>rack = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+message = "STRIKE AT DAWN"
+for shift in [3, 10]:
+    result = ""
+    for letter in message:
+        slot = 0
+        for i in range(27):
+            if rack[i] == letter:
+                slot = i
+        slot = slot + shift
+        if slot &gt; 26:
+            slot = slot - 27
+        result = result + rack[slot]
+    print(shift, result)</pre>
   <div class="predict">
     <span class="ptag">Predict</span>
-    How many Hs are in the coded text? If H is really E in disguise, what does that tell you about the shift that made this message?
+    Same machine, same message: will the two coded lines share <em>any</em> letters in the same position? And the ceremony question: your enemy steals a perfect copy of this program. Why is your message still safe?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">Eight. And H sits three slots past E, so a codebreaker who has never seen the key guesses <strong>shift 3</strong> from the count alone. Count C next and you'll find seven: the spaces in disguise, the second giveaway. Real agents strip the spaces out before encoding, for exactly this reason. The counter with a gate is three Day 1 tools in one shape: a loop, a checkpoint inside it, and a briefcase swap inside the checkpoint.</div>
+  <div class="answer">Not one position matches; a different key remakes the whole disguise. And the stolen program betrays nothing, because the secret was never the machine: it is the number you and your partner agreed on. Cryptographers state it as a law, and it's over a century old: assume the enemy knows the system. Tomorrow's game will hand every recruit the same engine, and each will make it their own the same way, with their numbers.</div>
   <div class="see"><span class="tag">You should see</span>
-    <pre>H appears 8 times</pre>
+    <pre>3 VWULNHCDWCGDZQ
+10 BCASUOJKCJNKFX</pre>
   </div>
 </section>
 
-<!-- DRILL 8 -->
-<section class="card" data-chunk="8">
-  <div class="chunkhead"><span class="chunklabel">Drill 8 &middot; Meet while</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+<!-- MORNING HINGE -->
+<section class="card hinge">
+  <div class="chunkhead"><span class="chunklabel">Morning hinge &middot; the lunch landing</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>The wheel with no key</h2>
+  <p>Part 1: trace the letter Z (slot 25) through the wheel with <code>shift = 4</code>. What slot does it land on after the wrap, and what character is that?<br>
+  Part 2: a message arrives that was encoded with shift 12. What shift decodes it on this 27-slot wheel, and why?</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Part 1: slot 2, the letter C.</strong> 25 plus 4 is 29, the wrap subtracts 27, and slot 2 is C. If you said slot 29, you skipped the gate; if you said B, you started counting at 1. <strong>Part 2: shift 15</strong>, because 12 plus 15 is 27, one full turn, and a full turn changes nothing. If both parts landed, the morning is yours: you are a working cipher clerk, and that is a finished day's work on its own. The Codebreaker's Bench opens after lunch.</div>
+</section>
+
+<section class="card" style="border:2px solid var(--amber)">
+  <div class="chunkhead"><span class="chunklabel" style="color:#8a5a00">Afternoon bench &middot; The Codebreaker's Bench</span></div>
+  <p style="margin:8px 0 0">Now switch chairs and think like the enemy. Six drills: a loop that runs until a condition says stop, two sabotage repairs, the leak that betrays every shift cipher, the patient crack that tries all 27 keys, and the clerk's error. Then the Dead Drop, where both chairs get used.</p>
+</section>
+
+<!-- DRILL 9 -->
+<section class="card" data-chunk="9">
+  <div class="chunkhead"><span class="chunklabel">Drill 10 &middot; Meet while</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
   <h2>The big shift: watch, don't count</h2>
-  <p>A shift of 60 goes around the wheel twice and then some. Drill 3's gate wraps once and stops caring. <code>while</code> is different: it checks its question at the top of every pass and keeps running the indented lines while the answer is yes. <code>for</code> counts; <code>while</code> watches.</p>
+  <p>A shift of 60 goes around the wheel twice and then some. Drill 4's gate wraps once and stops caring. <code>while</code> is different: it checks its question at the top of every pass and keeps running the indented lines while the answer is yes. <code>for</code> counts; <code>while</code> watches.</p>
   <pre>slot = 60
 while slot &gt; 26:
     slot = slot - 27
@@ -278,7 +337,7 @@ print("Landed on slot", slot)</pre>
     Trace it in your Field Notebook, one row per <em>check</em>, including the check that fails. What numbers print, and when does the last line finally run?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">33, then 6, then <code>Landed on slot 6</code>. Three checks: 60 is more than 26, yes; 33 is more than 26, yes; 6 is not, no, and only then does the last line run. Every <code>while</code> ends on a check that fails. Notice the subtraction is Drill 4's tally running backward; a while is often a tally with a finish line.</div>
+  <div class="answer">33, then 6, then <code>Landed on slot 6</code>. Three checks: 60 is more than 26, yes; 33 is more than 26, yes; 6 is not, no, and only then does the last line run. Every <code>while</code> ends on a check that fails. Notice the subtraction is Drill 5's tally running backward; a while is often a tally with a finish line.</div>
   <div class="see"><span class="tag">You should see</span>
     <pre>33
 6
@@ -286,9 +345,9 @@ Landed on slot 6</pre>
   </div>
 </section>
 
-<!-- DRILL 9 -->
-<section class="card" data-chunk="9">
-  <div class="chunkhead"><span class="chunklabel">Drill 9 &middot; Sabotage drill: the runaway loop</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
+<!-- DRILL 10 -->
+<section class="card" data-chunk="10">
+  <div class="chunkhead"><span class="chunklabel">Drill 11 &middot; Sabotage drill: the runaway loop</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
   <h2>The loop that never stops, and how to stop it</h2>
   <p>A <code>while</code> must move toward no. Break that law on purpose, once, so you know the fix. <strong>Before you run this, find the stop control:</strong> the square stop button in the terminal's corner, or click in the terminal and press <code>Ctrl</code>+<code>C</code>.</p>
   <pre>slot = 60
@@ -307,9 +366,9 @@ Then the terminal reports the program was interrupted.</pre>
   </div>
 </section>
 
-<!-- DRILL 10 -->
-<section class="card" data-chunk="10">
-  <div class="chunkhead"><span class="chunklabel">Drill 10 &middot; Pattern: the sentinel gate</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
+<!-- DRILL 11 -->
+<section class="card" data-chunk="11">
+  <div class="chunkhead"><span class="chunklabel">Drill 13 &middot; Pattern: the sentinel gate</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
   <h2>The Safe House door: ask until the passphrase is spoken</h2>
   <p>The classic <code>while</code> pattern: keep asking while the answer is wrong. The exit is a word, not a count, and it's Drill 1's <code>!=</code> doing the watching.</p>
   <pre>passphrase = "nightjar"
@@ -334,11 +393,33 @@ The door unlocks. Come in.</pre>
   </div>
 </section>
 
-<!-- DRILL 11 -->
-<section class="card" data-chunk="11">
-  <div class="chunkhead"><span class="chunklabel">Drill 11 &middot; Cracking the code</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+<!-- DRILL 12 -->
+<section class="card" data-chunk="12">
+  <div class="chunkhead"><span class="chunklabel">Drill 12 &middot; Frequency analysis</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Pattern: the counter with a gate</h2>
+  <p>Codebreakers have a trick that needs no key. In English, E is the most common letter. Count the letters in a coded message and the most common one is probably E in disguise. The tool is a tally that adds 1 instead of a letter, and only when a gate says yes.</p>
+  <pre>coded = "PHHWCPHCDWCWKHCVDIHCKRXVHCDWCVHYHQ"
+count = 0
+for letter in coded:
+    if letter == "H":
+        count = count + 1
+print("H appears", count, "times")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    How many Hs are in the coded text? If H is really E in disguise, what does that tell you about the shift that made this message?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Eight. And H sits three slots past E, so a codebreaker who has never seen the key guesses <strong>shift 3</strong> from the count alone. Count C next and you'll find seven: the spaces in disguise, the second giveaway. Real agents strip the spaces out before encoding, for exactly this reason. The counter with a gate is three Day 1 tools in one shape: a loop, a checkpoint inside it, and a briefcase swap inside the checkpoint.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>H appears 8 times</pre>
+  </div>
+</section>
+
+<!-- DRILL 13 -->
+<section class="card" data-chunk="13">
+  <div class="chunkhead"><span class="chunklabel">Drill 13 &middot; Cracking the code</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
   <h2>No key? Try every key.</h2>
-  <p>A shift cipher on this wheel has only 27 possible keys, and a computer can try them all before you finish reading this sentence. Wrap Drill 6 in one more loop and print every shift with its number. The readable line is the answer.</p>
+  <p>A shift cipher on this wheel has only 27 possible keys, and a computer can try them all before you finish reading this sentence. Wrap Drill 7 in one more loop and print every shift with its number. The readable line is the answer.</p>
   <pre>rack = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
 message = "PHHWCPHCDWCWKHCVDIHCKRXVHCDWCVHYHQ"
 for shift in range(27):
@@ -390,23 +471,55 @@ for shift in range(27):
   </div>
 </section>
 
-<!-- HINGE -->
-<section class="card hinge">
-  <div class="chunkhead"><span class="chunklabel">Hinge question &middot; stop here until you're sure</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
-  <h2>The wheel with no key</h2>
-  <p>Part 1: trace the letter Z (slot 25) through the wheel with <code>shift = 4</code>. What slot does it land on after the wrap, and what character is that?<br>
-  Part 2: a message arrives that was encoded with shift 12. What shift decodes it on this 27-slot wheel, and why?</p>
+<!-- DRILL 14 -->
+<section class="card" data-chunk="14">
+  <div class="chunkhead"><span class="chunklabel">Drill 14 &middot; The clerk's error: the double shift</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Two locks of the same kind are one lock</h2>
+  <p>A nervous cipher clerk encodes a message with shift 3, then, to be extra safe, feeds the coded text back through the wheel with shift 4. Twice the locking, twice the safety? Read the output against a single shift of 7 before you answer.</p>
+  <pre>rack = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+message = "ATTACK AT DAWN"
+for shift in [3, 4, 7]:
+    result = ""
+    for letter in message:
+        slot = 0
+        for i in range(27):
+            if rack[i] == letter:
+                slot = i
+        slot = slot + shift
+        if slot &gt; 26:
+            slot = slot - 27
+        result = result + rack[slot]
+    print(shift, result)
+    message = message</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    This prints the message under shifts 3, 4, and 7 separately. Now the clerk's plan: shift 3 first, then shift 4 <em>on the result</em>. Which of the three printed lines will that double encoding match, and what does that mean for the clerk's extra safety?
+  </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer"><strong>Part 1: slot 2, the letter C.</strong> 25 plus 4 is 29, the wrap subtracts 27, and slot 2 is C. If you said slot 29, you skipped the gate; if you said B, you started counting at 1. <strong>Part 2: shift 15</strong>, because 12 plus 15 is 27, one full turn, and a full turn changes nothing. If both parts landed, the Cipher Room is yours.</div>
+  <div class="answer">It matches the shift 7 line exactly, because sliding 3 slots and then 4 more is sliding 7: shifts <em>add</em>. The clerk bought no safety at all; a codebreaker cracks the doubled message as an ordinary shift of 7 and never learns it was two. Stacking the same kind of lock buys nothing, and knowing that is real cryptography. Stacking two <em>different</em> kinds is another story, and it waits in the Cipher Grid side mission on the hub.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>3 DWWDFNCDWCGDZQ
+4 EXXEGODEXDHE R
+7 H  HJRGH GKHCU</pre>
+  </div>
 </section>
 
-<!-- BUILD BRIEF -->
+<!-- AFTERNOON HINGE -->
+<section class="card hinge">
+  <div class="chunkhead"><span class="chunklabel">Hinge question &middot; stop here until you're sure</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>The codebreaker's arithmetic</h2>
+  <p>Part 1: a long intercepted message's most common letter is K. If K is really E in disguise, what was the shift?<br>
+  Part 2: the nervous clerk from Drill 14 encodes with shift 20, then encodes the result with shift 20 again. A codebreaker cracks it as one shift of what, and why isn't the answer 40?</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Part 1: shift 6.</strong> E lives in slot 4 and K in slot 10, and 10 minus 4 is 6; one counted letter gives away the whole key. <strong>Part 2: shift 13</strong>, because 20 plus 20 is 40, and 40 is more than a full turn of the 27-slot wheel: 40 minus 27 is 13. The wrap gate governs keys too. If both parts landed, you're ready to run a dead drop and crack one.</div>
+</section>
+
 <section class="card">
   <div class="chunkhead"><span class="chunklabel">Field Mission &middot; The Dead Drop</span></div>
   <h2>Encode it, lock it, crack a classmate's</h2>
   <p><strong>Part A, the dead drop (terminal):</strong> your own message in capitals and spaces, your own shift, run through the Cipher Wheel. Write the coded text on a slip of paper. Keep the shift secret.</p>
-  <p><strong>Part B, the Safe House door (terminal):</strong> your own passphrase, a sentinel <code>while</code> gate, and an attempts counter (Drill 7's pattern inside Drill 10's loop), with an f-string report when it unlocks.</p>
-  <p><strong>Part C, the crack (terminal):</strong> trade slips with a classmate. Paste their coded text into Drill 11, find the readable line, and tell them their shift. They never told you; you cracked it.</p>
+  <p><strong>Part B, the Safe House door (terminal):</strong> your own passphrase, a sentinel <code>while</code> gate, and an attempts counter (Drill 12's pattern inside Drill 11's loop), with an f-string report when it unlocks.</p>
+  <p><strong>Part C, the crack (terminal):</strong> trade slips with a classmate. Paste their coded text into Drill 13, find the readable line, and tell them their shift. They never told you; you cracked it. Stretch: crack it the clever way first, Drill 12's count on their most common letter, and use Drill 13 only to confirm your answer.</p>
   <p><strong>Suggested start:</strong> A, then B, then C, one pattern per run. House law: <strong>one change per run</strong>, and point at every while's exit line before you run it.</p>
   <button class="reveal" onclick="reveal(this)">Tap to reveal a sample solution</button>
   <div class="answer">
@@ -435,7 +548,7 @@ while guess != passphrase:
     attempts = attempts + 1
     guess = input("Passphrase: ")
 print(f"The door unlocks after {attempts} attempts. Deliver the drop.")</pre>
-    Part C is Drill 11 with your classmate's text pasted into <code>message</code>. Why does <code>attempts</code> start at 1 and not 0? Answer in your Field Notebook.
+    Part C is Drill 13 with your classmate's text pasted into <code>message</code>. Why does <code>attempts</code> start at 1 and not 0? Answer in your Field Notebook.
   </div>
   <div class="see"><span class="tag">You should see (guessing falcon, then nightjar)</span>
     <pre>Dead drop: XLIDJEPGSRDPERHWDEXDRSSR
@@ -445,31 +558,30 @@ The door unlocks after 2 attempts. Deliver the drop.</pre>
   </div>
 </section>
 
-<!-- EXITS -->
 <section class="card">
   <h2>Choose your exit gate</h2>
   <div class="exits">
     <div class="exit"><span class="lvl" style="color:#8a5a00">Floor <small>&middot; approaching the standard</small></span>
-      <p style="margin:6px 0 0">Your dead drop encodes with your own shift, your Safe House door unlocks on the passphrase, and you can set off the runaway loop on purpose, stop it, and say which line was missing.</p></div>
+      <p style="margin:6px 0 0">You cleared the morning hinge: your wheel encodes and decodes with your own shift, and you can trace one letter through it by hand. The afternoon patterns can wait for the side missions if the day ran long.</p></div>
     <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
-      <p style="margin:6px 0 0">You decode your own drop with the complementary shift and can say why it works, the door counts attempts, your Field Notebook traces of the slot search, the wrap, and the big-shift while are complete, and for each while you can point at its exit line.</p></div>
+      <p style="margin:6px 0 0">Your dead drop encodes and decodes with your own shift, the Safe House door unlocks and counts attempts, you can set off the runaway loop and say which line was missing, and for each while you can point at its exit line.</p></div>
     <div class="exit"><span class="lvl" style="color:var(--stamp)">Stretch <small>&middot; exceeds the standard</small></span>
-      <p style="margin:6px 0 0">You crack a classmate's drop and name their shift, then write the champion letter: a best-so-far briefcase that finds the most common letter in any coded text (count each letter of the rack in turn; if its count beats the champion, it takes the crown). Say what the champion tells you about the shift.</p></div>
+      <p style="margin:6px 0 0">You crack a classmate's drop the clever way, one counted letter, and confirm it the patient way, then write the champion letter: a best-so-far briefcase that finds the most common letter in any coded text (count each letter of the rack in turn; if its count beats the champion, it takes the crown). Say what the champion tells you about the shift.</p></div>
   </div>
 </section>
 
-<!-- TEACHER PANEL -->
 <details class="teacher">
   <summary>Standards, pacing &amp; evidence (teacher panel)</summary>
-  <p><strong>The pacing choice, stated plainly:</strong> Day 2 spends all of its novelty on cryptography, and cryptography turns out to be made of the exact patterns the Day 4 game needs: the tally (the game's streak, score, and frame count), the counter with a gate (the game's four-checkpoint lock test), the flat wrap gate (whose held and flipped cousins fence the lock and bounce the target), <code>==</code> and <code>!=</code>, and <code>while</code> with a named exit (the watch loop under every window). Three marks arrive today (<code>==</code>, <code>!=</code>, <code>while</code>) plus one small move, <code>for letter in message</code>, and loops inside loops appear for the first time in Drill 5, where the slot search runs once per letter. Windows are deliberately not on this page; they open on Day 3 with <code>def</code>, which makes Day 3 the heaviest day of the week. That is the price of a cipher day, paid with eyes open.</p>
-  <p><strong>Where recruits actually stall:</strong> Block A (Drills 1 to 6, about 55 minutes) stalls at the wrap: recruits who subtract 26 instead of 27 get an off-by-one that never crashes, which Drill 3's sabotage question is there to name. Trace Drill 5 by hand for M, E, E before anyone runs it. Block B (Drills 7 to 11 plus the hinge, about 40 minutes): the Drill 8 question "does the check happen at the top?" is the stall, and the runaway loop needs the stop control found <em>before</em> the run. Block C, the Dead Drop and the Mission Debrief, needs a full 40 minutes; the slip trade is the high point of the day, so protect it. Tell recruits at the start of Day 3 to run <code>pip install pygame</code>; it is not needed today.</p>
+  <p><strong>The pacing choice, stated plainly:</strong> Day 2 spends all of its novelty on cryptography, and the day is now built as two benches with a real landing between them. The morning (Drills 1 to 8 plus the morning hinge, about 80 minutes) builds the machine and closes on the room's deepest idea, the key ceremony: the machine can be public, the key is the secret. The afternoon (Drills 9 to 14, the hinge, and the Dead Drop, about 90 minutes) is the codebreaker's chair: <code>while</code> arrives here because cracking and door-guarding need it, and cryptanalysis gets three genuine tools, the frequency leak, the patient 27-key crack, and the clerk's-error insight that same-kind locks add into one. Cryptography turns out to be made of the exact patterns the Day 4 game needs: the tally (the game's streak, score, and frame count), the counter with a gate (the game's four-checkpoint lock test), the flat wrap gate (whose held and flipped cousins fence the lock and bounce the target), <code>==</code> and <code>!=</code>, and <code>while</code> with a named exit (the watch loop under every window). Three marks arrive today (<code>==</code>, <code>!=</code>, <code>while</code>) plus one small move, <code>for letter in message</code>, and loops inside loops appear for the first time in Drill 6, where the slot search runs once per letter. Windows are deliberately not on this page; they open on Day 3 with <code>def</code>, which makes Day 3 the heaviest day of the week. That is the price of a cipher day, paid with eyes open.</p>
+  <p><strong>The scaffold, stated plainly:</strong> the paper wheel in the Field Notebook comes first, before any code: three letters encoded by hand and traded. Recruits who have turned the wheel with their fingers read Drill 1 as a machine for a thing they already did. The wrap is met as a repair, not a rule: Drill 3 drives off the rack's edge with a loud crash, and Drill 4 reads the traceback and installs the gate. The morning hinge is a legitimate floor: a recruit who lands it and goes no further today has succeeded, and the afternoon's patterns re-arrive with support in the Safecracker's Ledger side mission. Nothing in the afternoon is prerequisite to Day 3 except <code>while</code> itself.</p>
+  <p><strong>Where recruits actually stall:</strong> the morning stalls at the wrap: recruits who subtract 26 instead of 27 get an off-by-one that never crashes, which Drill 4's sabotage question is there to name. Trace Drill 6 by hand for M, E, E before anyone runs it. In the afternoon, the Drill 9 question "does the check happen at the top?" is the stall, and the runaway loop needs the stop control found <em>before</em> the run. Drill 14's reveal lands best if the room commits out loud to "twice as safe" or "not safer" before anyone runs it. The Dead Drop and the Mission Debrief need a full 40 minutes; the slip trade is the high point of the day, so protect it. Tell recruits at the start of Day 3 to run <code>pip install pygame</code>; it is not needed today.</p>
   <table>
     <tr><th>Code</th><th>Standard (verbatim)</th><th>Drill(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
-    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>1&ndash;5, 7, 8; hinge</td><td>Mastery</td><td>Field Notebook pass-by-pass traces of the slot search, the shift-and-wrap, the tally on text, and the big-shift while including its failing check (collected); two-part hinge answer in the Field Notebook entry.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
-    <tr><td>E5-PRO-TR-??</td><td>Grade-5 progression: students identify and debug errors in simple programs. [Confirm exact code and wording at source.]</td><td>3, 9, 10</td><td>Addressed</td><td>Recruit predicts the silent off-by-one in the sabotaged wrap, deliberately sets off and stops the runaway loop and names the missing exit line, and repairs the sulking-door variant of the sentinel gate.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
-    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>6, 11, build</td><td>Addressed</td><td>The encoder turned decoder by one deliberate change, then wrapped in a loop to become a code-cracker; the Dead Drop with a classmate's message cracked.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>1&ndash;3, 5, 6, 12, 14; both hinges</td><td>Mastery</td><td>Field Notebook pass-by-pass traces of the slot search, the shift-and-wrap, the tally on text, and the big-shift while including its failing check (collected); both hinge answers in the Field Notebook entry.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-TR-??</td><td>Grade-5 progression: students identify and debug errors in simple programs. [Confirm exact code and wording at source.]</td><td>4, 10, 11</td><td>Addressed (raised toward Mastery on Day 4 with the Bug Hunt Log)</td><td>The off-the-edge crash read last line first and repaired with the wrap gate; the runaway loop stopped and its missing line named; the sulking door's exit line pointed to before the run.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>7, 8, 13; Dead Drop</td><td>Addressed</td><td>The encoder turned decoder with the complementary key, the key ceremony's two-mask run, and a classmate's drop cracked without the key by either method.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
   </table>
-  <p><strong>Deliberately not covered here:</strong> the rack is capitals and one space so that every character has a slot and the gate stays flat; lowercase, punctuation, and the string methods that would handle them (<code>.upper()</code>, <code>.index()</code>) are left out, and an unknown character silently becomes an A, which Drill 2 names. There is no <code>%</code>: the wrap stays a flat gate by design, and Drill 8's <code>while</code> is how a shift bigger than the wheel gets wrapped. Substitution ciphers with two parallel racks, and a message written into a grid and read out by columns, live in the bonus Cipher Grid once Day 3's parallel-racks trick exists. <code>break</code>, <code>return</code> values, dictionaries, classes, and nested <code>if</code> gates remain excluded program-wide. Best-so-far is stretch-tier only; the engine doesn't use it.</p>
+  <p><strong>Deliberately not covered here:</strong> only the shift cipher is built today. Substitution on shuffled racks and the transposition grid live in the Cipher Grid side mission, because one cipher understood beats three sampled, and the double-lock idea waits there for exactly the recruit Drill 14 leaves curious. There is no <code>%</code>: the wrap stays a flat gate by design, and Drill 9's while is how a shift bigger than the wheel gets wrapped. The champion-letter search (find the most common letter automatically) is the exit-gate stretch, not a drill; the best-so-far pattern gets full support in the Safecracker's Ledger side mission instead. Kerckhoffs's principle is taught as one sentence and never named on the recruit-facing page; the name is here for you. <code>break</code>, <code>return</code> values, dictionaries, and nested <code>if</code> gates remain excluded program-wide.</p>
   <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
 </details>
 
