@@ -18,8 +18,9 @@ All course links in this README are absolute `github.io` addresses on purpose. T
 |---|---|---|---|
 | 1 | [Induction Day & the Three Clearance Checks](https://silvermanjonathan.github.io/Secret-Spy-Academy/day1_induction_day.html) | `print`, tracebacks, variables, `input`/`int()`, f-strings, `for`/`range`, `if`/`elif`/`else`, lists, `random.choice`, `in` | The Induction Terminal + a Division assignment |
 | 2 | [The Cipher Room](https://silvermanjonathan.github.io/Secret-Spy-Academy/day2_cipher_room.html) | cryptography day, two benches. Morning, the Cipher Machine: paper wheel by hand, the rack, `==`/`!=`, the slot search, the shift (wrap met as a crash-and-repair), the tally, the Caesar wheel, decode, the key ceremony. Afternoon, the Codebreaker's Bench: `while` & the sentinel gate, `%` as clock arithmetic (the wheel respelled professionally), the frequency leak, cracking all 27 keys, the double-shift clerk's error. Morning hinge is a legitimate floor landing | The Dead Drop + the Safe House door |
-| 3 | [The Gadget Blueprint](https://silvermanjonathan.github.io/Secret-Spy-Academy/day3_gadget_blueprint.html) | `def` & parameters, the loaded dice; first pygame windows, the `while running` loop and the frame tally, the keyboard as a rack; playing and reading the capstone game | The Blueprint Rehearsal + the initialed game |
-| 4 | [The Gadget Commission](https://silvermanjonathan.github.io/Secret-Spy-Academy/day4_gadget_commission.html) | zero new syntax: the Gadget Schematic, the knobs, the banner, your own def, the Bug Hunt protocol & log | Your Commissioned Edition, finished: a redesigned [Target Lock](https://silvermanjonathan.github.io/Secret-Spy-Academy/target_lock_pygame.py) |
+| 3 | [The Cipher Console](https://silvermanjonathan.github.io/Secret-Spy-Academy/day3_cipher_console.html) | one lesson, the console read line by line in eleven stations: the banner, the Ops Panel, the glyph rack, the intake door, THE CARTRIDGE (Day 2's wheel) with a line-by-line ledger, first light, `def`, the sabotaged exit, the repaint, the fraction blend, the frame clock's freeze trick, the spares left sealed for Day 4; Caesar is the day's only cipher, and the full run comes only after the last line | The Reading of the Machine + a commissioned console rehearsal |
+| 4 | [The Console Commission](https://silvermanjonathan.github.io/Secret-Spy-Academy/day4_console_commission.html) | the seals come off: toggle-comment (the quartermaster's key), the rotor promoted and its fan of drops, the Unbreakable Wheel with its keyword line, the knobs commissioned one change per run, a Bug Hunt with one loud bug and one silent one, and the sixty-second demo rehearsed against the deadline law | The Commissioned Console + the Bug Hunt Log + the rehearsed demo |
+cipher_console_pygame.py           ← the Cipher Console engine (Day 3's machine; cartridge = Day 2's wheel)
 | 5 | [The Final Debrief](https://silvermanjonathan.github.io/Secret-Spy-Academy/day5_final_debrief.html) | zero new syntax: presentations only (Run, Point, Tell), the audience's what-if, the Dead Drop exchange | The Final Debrief + the Field Agent badge |
 
 The Commission is **finished by the end of Day 4**, debugging included. Day 5 is presentations only.
@@ -37,8 +38,8 @@ README.md                        ← you are here (site root)
 spy_academy_hub.html             ← the front door
 day1_induction_day.html
 day2_cipher_room.html
-day3_gadget_blueprint.html
-day4_gadget_commission.html
+day3_cipher_console.html
+day4_console_commission.html
 day5_final_debrief.html
 target_lock_pygame.py            ← the capstone game, byte-identical to the Day 3 in-page listing
 side_mission_cipher_grid.html    ← side mission: the Cipher Grid (after Day 2)

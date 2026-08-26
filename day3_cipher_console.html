@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 3 — The Cipher Console</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B1F26;--manila:#F2E9D3;--stamp:#B3261E;--phosphor:#7BE495;--green:#047857;--amber:#C98B1F;--ink-soft:rgba(27,31,38,.08);--ink-line:rgba(27,31,38,.18);--shadow:0 4px 0 rgba(27,31,38,.14);}
+*{box-sizing:border-box;font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0,"dlig" 0}
+body{margin:0;background:var(--manila);color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:16.5px}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+.hero{background:var(--ink);color:var(--manila);padding:46px 24px 40px;text-align:center;border-bottom:3px dashed var(--phosphor);background-image:linear-gradient(rgba(123,228,149,.06) 1px, transparent 1px),linear-gradient(90deg, rgba(123,228,149,.06) 1px, transparent 1px);background-size:28px 28px}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--phosphor);margin-bottom:10px}
+h1{font-family:'Special Elite',serif;font-weight:400;font-size:clamp(32px,5.6vw,50px);line-height:1.08;margin:.2em auto .35em;max-width:640px}
+.hook{max-width:560px;margin:0 auto 8px;font-size:17.5px;opacity:.94}
+.need{font-family:'JetBrains Mono',monospace;font-size:12.5px;opacity:.8;margin-top:14px}
+.need a{color:var(--phosphor)}
+.stamp{display:inline-block;margin:20px auto 0;padding:10px 20px;border:3px double var(--phosphor);border-radius:6px;color:var(--phosphor);font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.06em;font-size:clamp(13px,3vw,18px);transform:rotate(-2deg);background:rgba(15,19,24,.7)}
+h2{font-family:'Special Elite',serif;font-weight:400;font-size:24px;margin:0 0 6px}
+.card{background:#fff;border:1px solid var(--ink-line);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px;margin:28px 0}
+.chunkhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chunklabel{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--stamp);font-weight:700}
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--ink-soft);color:var(--ink);border-radius:999px;padding:3px 11px;white-space:nowrap}
+.chip.unv{color:var(--stamp)}
+pre{background:var(--ink);color:#EDE5D0;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.6;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:14px 0}
+code{font-family:'JetBrains Mono',monospace;font-size:.92em}
+.predict{border-left:4px solid var(--amber);background:rgba(201,139,31,.14);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.ptag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:4px;color:#8a5a00}
+button.reveal{background:var(--ink);color:var(--manila);border:none;border-radius:999px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;margin-top:6px}
+button.reveal:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
+.answer{display:none;background:var(--ink-soft);border-radius:10px;padding:14px 16px;margin-top:12px}
+.answer.open{display:block}
+.see{border:2px solid var(--green);background:rgba(4,120,87,.08);border-radius:12px;padding:13px 16px;margin:14px 0;display:none}
+.see.open{display:block}
+.see .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
+.see pre{background:#0b3a2e;margin:10px 0 2px}
+.hinge{border:2px solid var(--stamp)}
+.exits{display:grid;gap:14px}
+.exit{border:1px solid var(--ink-line);border-radius:12px;padding:14px 16px}
+.lvl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.lvl small{opacity:.65;letter-spacing:.06em}
+.teacher{background:var(--ink-soft);border:1px solid var(--ink-line);border-radius:14px;padding:6px 20px 16px;margin:34px 0;color:var(--ink);font-size:14.5px}
+.teacher summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px 0;font-weight:700;opacity:.85}
+.teacher table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+.teacher th,.teacher td{border:1px solid var(--ink-line);padding:7px 9px;text-align:left;vertical-align:top}
+.teacher th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.warn{color:var(--stamp);font-family:'JetBrains Mono',monospace;font-size:11px}
+.attr{font-size:12px;opacity:.75;margin-top:12px}
+.tracker{display:flex;align-items:center;gap:8px;margin:6px 0 0;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--ink-line);background:transparent}
+.dot.done{background:var(--green);border-color:var(--green)}
+.tlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.foot{text-align:center;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin-top:40px}
+.foot a{color:var(--stamp)}
+.filelink{color:var(--stamp);font-weight:700}
+@media print{.answer,.see{display:block}button.reveal{display:none}.card{box-shadow:none;break-inside:avoid}.teacher{break-before:page}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Secret Spy Academy &middot; Day 3</div>
+  <h1>The Cipher Console</h1>
+  <p class="hook">Today's lesson is one file, read line by line from its first comment to its last running order. The file is the Cipher Console, the machine you will commission tomorrow and demo to your family this week, and its cartridge is your own Day 2 wheel. Eleven stations, top of the file to the bottom. Each station puts the real lines on the table, and the ones that can run alone, you run. The whole machine runs only at the end, after the last line, because at this Academy you may run what you have read.</p>
+  <div><span class="stamp">Read &middot; Trace &middot; Then Run</span></div>
+  <p class="need">YOU'LL NEED: VS Code open &middot; <code>pip install pygame</code> run once in the terminal &middot; the file <code>cipher_console_pygame.py</code> open in the editor, line numbers on &middot; <a href="field_notebook_handout.html">your Field Notebook</a></p>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h2>Today's target</h2>
+  <p><strong>I can read the console top to bottom and say, for every region, what its lines do and when they run.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
+  <p><strong>I can trace the frame clock by hand: which line advances the letter, and which three lines freeze the finish.</strong> <span class="chip unv">E5-PRO-PD-?? &#9888;</span></p>
+  <p><strong>I can follow the signal's path as two number patterns built from one fraction.</strong> <span class="chip">CCSS-M 5.OA.B.3</span></p>
+  <div class="tracker" aria-label="drill progress">
+    <span class="tlabel">Stations cleared</span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span><span class="dot" id="d9"></span><span class="dot" id="d10"></span><span class="dot" id="d11"></span>
+  </div>
+</section>
+
+<!-- DRILL 1 -->
+<section class="card" data-chunk="1">
+  <div class="chunkhead"><span class="chunklabel">Drill 1 &middot; Lines 1 to 17: the banner</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Seventeen lines that give zero orders</h2>
+  <p>The file opens with its own briefing. Every line starts with <code>#</code>, the mark that tells Python: this line is for the human. Paste just this banner into an empty file and run it, so you know for certain what a comment costs.</p>
+  <pre># ============================================================
+#  THE CIPHER CONSOLE  ·  Secret Spy Academy
+#  Front end for any Day 2 / Cryptography Wing cipher.
+#  Read it, trace it, then run it.
+#
+#  HOW IT WORKS
+#  1. The terminal asks for your message (CAPITALS AND SPACES)
+#     plus your key. Keep the message under 36 characters.
+#  2. THE CARTRIDGE encodes it. The one installed below is
+#     Day 2's Cipher Wheel. Swap the cartridge for any Wing
+#     cipher; two spares wait at the bottom of this file.
+#  3. The window animates it: your letter's tile lights on the
+#     plain rack, the signal drops to the coded rack, and the
+#     coded message assembles in pixel letters.
+#  Press R in the window to replay. Close the window to stop:
+#  the console never closes itself.
+# ============================================================</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    What does the terminal print when this runs? And why would a machine's builder spend seventeen lines saying nothing to the machine?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Nothing at all: the program starts, gives zero orders, and returns. A comment costs the machine nothing. For the reader, this banner is the file's own mission briefing: how to run it, where the cartridge lives, which laws it obeys, and today the human those lines were written for is you. Python reads the file top to bottom, so that's how we'll read it too.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>(nothing: the terminal returns in silence)</pre>
+  </div>
+</section>
+
+<!-- DRILL 2 -->
+<section class="card" data-chunk="2">
+  <div class="chunkhead"><span class="chunklabel">Drill 2 &middot; The import and the Ops Panel</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>One toolbox fetched, fourteen knobs named</h2>
+  <p><code>import pygame</code> is the file's first order: fetch the window toolbox. Every mark starting <code>pygame.</code> later in the file comes out of it, and the import announces itself with a hello line in the terminal, which you will see once per run and may greet or ignore.</p>
+  <pre>import pygame</pre>
+  <p>Then the Ops Panel, the Target Lock tradition: every number a commissioner might want, at the top, with a name. Read all fourteen knobs, then run the panel and its arithmetic.</p>
+  <pre># ===================== OPS PANEL =====================
+KID_TITLE     = "CIPHER CONSOLE"   # your console's name, on the board
+PULSE_FRAMES  = 10                 # frames the plain tile glows
+TRAVEL_FRAMES = 22                 # frames the signal takes to drop
+FLASH_FRAMES  = 12                 # frames the coded tile flashes
+BOARD_COLOR   = (15, 19, 24)
+TILE_COLOR    = (242, 233, 211)
+TILE_INK      = (27, 31, 38)
+CODED_TILE    = (31, 46, 39)
+CODED_INK     = (123, 228, 149)
+SIGNAL_COLOR  = (201, 139, 31)
+TITLE_COLOR   = (201, 139, 31)
+ECHO_COLOR    = (150, 143, 128)
+ASSEMBLY_INK  = (123, 228, 149)
+HINT_COLOR    = (90, 96, 88)
+# =====================================================
+
+RACK = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+LETTER_EVERY = PULSE_FRAMES + TRAVEL_FRAMES + FLASH_FRAMES
+print(LETTER_EVERY)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Which knobs are colors, and how do you know at a glance? What prints? And at sixty frames a second, is one letter's turn on stage longer or shorter than a second?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">The colors travel as three numbers in parentheses, red, green, blue, 0 to 255 each; ten of the fourteen are colors. The arithmetic prints <code>44</code>: pulse plus travel plus flash, one letter's whole turn, a touch under a second. Notice what the panel is <em>for</em>: tomorrow you'll change these lines and only these lines, one change per run, and never hunt through the engine below. That contract is why the knobs live here with names instead of hiding in the code as bare numbers.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>44</pre>
+  </div>
+</section>
+
+<!-- DRILL 3 -->
+<section class="card" data-chunk="3">
+  <div class="chunkhead"><span class="chunklabel">Drill 3 &middot; The GLYPHS rack: letters made of marks</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Twenty-seven racks of five strings</h2>
+  <p>Next the file lays out how it writes without <code>pygame.font</code>, which the laws forbid. Every character is a rack of five strings, three marks each: <code>#</code> is ink, <code>.</code> is air. Here are the region's opening lines with three of its twenty-seven racks; the other twenty-four sit between them in the file, one per character of the RACK, in rack order.</p>
+  <pre># Every character's picture: 5 rows of 3 marks. # is ink.
+GLYPHS = [
+[".#.","#.#","###","#.#","#.#"],  # A
+["###",".#.",".#.",".#.",".#."],  # T
+["...","...","...","...","..."],  # space
+]</pre>
+  <p>To see how marks become a letter, print T in the terminal the same way the window will paint it: walk rows and columns with two loops and one gate.</p>
+  <pre>rows = ["###", ".#.", ".#.", ".#.", ".#."]
+for r in range(5):
+    line = ""
+    for c in range(3):
+        if rows[r][c] == "#":
+            line = line + "#"
+        else:
+            line = line + " "
+    print(line)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Sketch all five printed lines. Why is the space's rack all dots instead of missing? And design on paper: which positions become ink for the letter L?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">A T, three marks wide, five tall. The space gets a real rack of pure air because the console draws <em>every</em> character the same way; a missing rack would need a special case, and this file would rather have twenty-seven identical citizens than twenty-six and an exception. For L: four rows of <code>"#.."</code> and a floor of <code>"###"</code>. When the window draws, this exact double loop runs with one swap: where the terminal adds a <code>#</code>, the screen gets a small painted square. Same walk, different ink. It's the lawful loophole the Day 4 banner tradition stands on.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>###
+ # 
+ # 
+ # 
+ # </pre>
+  </div>
+</section>
+
+<!-- DRILL 4 -->
+<section class="card" data-chunk="4">
+  <div class="chunkhead"><span class="chunklabel">Drill 4 &middot; The briefing and the intake door</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Terminal country: two prints and a doorman</h2>
+  <p>Now the first lines that run out loud. The console briefs its agent, takes the message, and refuses to move until every character is on the rack: the sentinel while from Day 2's Safe House, holding Day 2's found-flag search. These lines, verbatim, plus the RACK they lean on. Run them and try to sneak lowercase past the door.</p>
+  <pre>RACK = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+
+# ---------------- the terminal briefing ----------------
+print("CIPHER CONSOLE ONLINE.")
+print("Capitals and spaces only. Under 36 characters fits the board.")
+message = input("Message: ")
+legal = 0
+while legal == 0:
+    legal = 1
+    if len(message) == 0:
+        legal = 0
+    for letter in message:
+        found = 0
+        for j in range(27):
+            if RACK[j] == letter:
+                found = 1
+        if found == 0:
+            legal = 0
+    if legal == 0:
+        print("Every character must be on the rack: CAPITALS AND SPACES ONLY.")
+        message = input("Message: ")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Type <code>we strike at dawn</code> first, then <code>WE STRIKE AT DAWN</code>. How many times does the door scold? Which line is the while's exit, house law? And when the good message arrives, what does the door say?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">One scold: the scanner walks every character, the found-flag stays 0 on the first lowercase letter it meets, <code>legal</code> falls to 0, and the door asks again. The exit is the second <code>input()</code>, the line that lets the answer change, exactly as in the Safe House. And on success the door says <em>nothing</em>. It stops objecting, and the file flows on. Get used to reading silence; in a machine it usually means yes.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>CIPHER CONSOLE ONLINE.
+Capitals and spaces only. Under 36 characters fits the board.
+Message: we strike at dawn
+Every character must be on the rack: CAPITALS AND SPACES ONLY.
+Message: WE STRIKE AT DAWN</pre>
+  </div>
+</section>
+
+<!-- DRILL 5 -->
+<section class="card" data-chunk="5">
+  <div class="chunkhead"><span class="chunklabel">Drill 5 &middot; The key and THE CARTRIDGE</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>The lines you wrote yesterday</h2>
+  <p>The key comes in, gets wrapped by the professional's law so 30 quietly acts as 3, and then the file reaches its heart. Read the cartridge closely: it is Day 2's Cipher Wheel in Drill 11's <code>%</code> spelling, wearing the console's names, <code>key</code> for shift and <code>coded</code> for result. Run this whole stretch with the door's message and key 6.</p>
+  <pre>RACK = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+message = "WE STRIKE AT DAWN"
+
+key = int(input("Key (1 to 26): "))
+key = key % 27
+
+# ================= THE CARTRIDGE =================
+# Installed: Day 2's Cipher Wheel (the Caesar shift).
+# Swap this whole block for any Wing cipher. Keep the
+# first line (coded = "") and keep building coded the
+# same way. Spare cartridges wait at the bottom.
+coded = ""
+for letter in message:
+    slot = 0
+    for j in range(27):
+        if RACK[j] == letter:
+            slot = j
+    coded_slot = (slot + key) % 27
+    coded = coded + RACK[coded_slot]
+# =============== END OF CARTRIDGE ================
+
+print("Coded:", coded)
+print("The window is yours. R replays the encoding.")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Trace W, slot 22, through key 6 by hand: which coded letter opens the message? Whose code is the cartridge? And what exactly do the border comments make every future cartridge promise?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">22 plus 6 is 28, the wrap brings it to 1, and the message opens with <strong>B</strong>. The cartridge is yours: yesterday's wheel, and if that feels like meeting your own handwriting inside a machine, it should. The borders are a contract: whatever cipher sits inside, it must start with an empty <code>coded</code> and end by adding one character per message character, because the window ahead reads only those two strings and lights tiles to match. Keep the contract and any Wing cipher drops in. Two comment lines, holding up the whole machine. And the full ledger, every line's job in order, sits just below this station.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Coded: BKFYZXOQKFGZFJGBT
+The window is yours. R replays the encoding.</pre>
+  </div>
+</section>
+
+<section class="card" style="border:2px solid var(--amber)">
+  <div class="chunkhead"><span class="chunklabel" style="color:#8a5a00">The Cartridge Ledger &middot; the Caesar cipher, line by line</span></div>
+  <p style="margin:8px 0 10px">Station 5 ran the cartridge whole; this ledger slows it down to one line at a time. Keep it open all through the Reading. To quiz yourself, cover the right column and say each line's job out loud. The left column is the file's real lines, indentation and all.</p>
+  <table style="border-collapse:collapse;width:100%">
+    <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px;white-space:pre;padding:7px 10px;border:1px solid var(--ink-line);vertical-align:top">key = int(input("Key (1 to 26): "))</td><td style="padding:7px 10px;border:1px solid var(--ink-line);font-size:13.5px">The agent types the key. <code>input</code> hands it over as text, so <code>int</code> turns "6" into the number 6. The shift ahead is arithmetic, and arithmetic needs a number.</td></tr>
+    <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px;white-space:pre;padding:7px 10px;border:1px solid var(--ink-line);vertical-align:top">key = key % 27</td><td style="padding:7px 10px;border:1px solid var(--ink-line);font-size:13.5px">Day 2's wrap, applied to the key before anything else. Type 30 and the machine quietly works with 3.</td></tr>
+    <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px;white-space:pre;padding:7px 10px;border:1px solid var(--ink-line);vertical-align:top"># ================= THE CARTRIDGE =================</td><td style="padding:7px 10px;border:1px solid var(--ink-line);font-size:13.5px">Four comments, zero orders. They state the contract: start <code>coded</code> empty, add one character per message character, and any Wing cipher may sit between these borders.</td></tr>
+    <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px;white-space:pre;padding:7px 10px;border:1px solid var(--ink-line);vertical-align:top">coded = ""</td><td style="padding:7px 10px;border:1px solid var(--ink-line);font-size:13.5px">The tally starts empty. A briefcase has to exist before a loop can fill it, Day 2's oldest rule.</td></tr>
+    <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px;white-space:pre;padding:7px 10px;border:1px solid var(--ink-line);vertical-align:top">for letter in message:</td><td style="padding:7px 10px;border:1px solid var(--ink-line);font-size:13.5px">The outer loop walks the message, one pass per character, spaces included.</td></tr>
+    <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px;white-space:pre;padding:7px 10px;border:1px solid var(--ink-line);vertical-align:top">    slot = 0</td><td style="padding:7px 10px;border:1px solid var(--ink-line);font-size:13.5px">Every letter gets a fresh starting guess. A character that isn't on the rack keeps this 0 and quietly wears A's disguise; you met that warning on Day 2.</td></tr>
+    <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px;white-space:pre;padding:7px 10px;border:1px solid var(--ink-line);vertical-align:top">    for j in range(27):</td><td style="padding:7px 10px;border:1px solid var(--ink-line);font-size:13.5px">Day 1's patrol, visiting all 27 slots of the rack.</td></tr>
+    <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px;white-space:pre;padding:7px 10px;border:1px solid var(--ink-line);vertical-align:top">        if RACK[j] == letter:</td><td style="padding:7px 10px;border:1px solid var(--ink-line);font-size:13.5px">At each slot the gate asks whether this is our letter.</td></tr>
+    <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px;white-space:pre;padding:7px 10px;border:1px solid var(--ink-line);vertical-align:top">            slot = j</td><td style="padding:7px 10px;border:1px solid var(--ink-line);font-size:13.5px">When the gate says yes, the search remembers the address. The patrol walks on anyway, which is harmless on a rack with no repeats.</td></tr>
+    <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px;white-space:pre;padding:7px 10px;border:1px solid var(--ink-line);vertical-align:top">    coded_slot = (slot + key) % 27</td><td style="padding:7px 10px;border:1px solid var(--ink-line);font-size:13.5px">This one line is the whole Caesar cipher: slide by the key, wrap by the wheel. It's Drill 11's spelling from Day 2, unchanged.</td></tr>
+    <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px;white-space:pre;padding:7px 10px;border:1px solid var(--ink-line);vertical-align:top">    coded = coded + RACK[coded_slot]</td><td style="padding:7px 10px;border:1px solid var(--ink-line);font-size:13.5px">The tally collects the disguised letter, and <code>coded</code> grows in step with the message, one character per pass.</td></tr>
+    <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px;white-space:pre;padding:7px 10px;border:1px solid var(--ink-line);vertical-align:top">print("Coded:", coded)</td><td style="padding:7px 10px;border:1px solid var(--ink-line);font-size:13.5px">The verdict prints before any window opens. Words live in the terminal, that's the law, and this line is your first check against your hand-trace.</td></tr>
+  </table>
+</section>
+
+
+<!-- DRILL 6 -->
+<section class="card" data-chunk="6">
+  <div class="chunkhead"><span class="chunklabel">Drill 6 &middot; Window country opens: first light</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>The smallest window the law allows</h2>
+  <p>The next region opens the window: <code>pygame.init()</code>, the 640 by 480 screen, the caption, the clock, and the tile geometry the painter will use. Those lines only make sense with the watch loop that comes further down, so here they are together, the file's own lines and nothing else: the opening plus the loop, everything in between left out. Run it.</p>
+  <pre>import pygame
+
+pygame.init()
+screen = pygame.display.set_mode((640, 480))
+pygame.display.set_caption("Cipher Console")
+clock = pygame.time.Clock()
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    screen.fill(BOARD_COLOR)
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    One name here isn't defined; which line from Drill 2 must you paste above to run it? What does the loop <em>do</em> all day? Name the while's exit line before you run, house law.
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><code>BOARD_COLOR</code> comes from the Ops Panel; one pasted knob line and it runs. Then, sixty times a second: check the mail, repaint the board, show the paint, rest. The exit is <code>running = False</code>, fired only when the close button posts QUIT into the mail. Yesterday's sentinel door asked until a word arrived; this loop watches until an event does, and every window this Academy will ever open, the console's included, is this loop wearing more paint.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>A dark 640 by 480 window titled Cipher Console, sitting calmly
+until you close it. The terminal stays silent, then returns.</pre>
+  </div>
+</section>
+
+<!-- DRILL 7 -->
+<section class="card" data-chunk="7">
+  <div class="chunkhead"><span class="chunklabel">Drill 7 &middot; def: the file names its drills</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Two routines, filed and waiting</h2>
+  <p>Back in file order: before the state and the loop, the console files two routines. <code>def</code> means: do not run these indented lines now; store them under this name until the name is called with parentheses. The briefcases between the parentheses are packed fresh at every call. The real lines:</p>
+  <pre>def draw_glyph(letter, x, y, scale, color):
+    slot = 0
+    for j in range(27):
+        if RACK[j] == letter:
+            slot = j
+    for r in range(5):
+        for c in range(3):
+            if GLYPHS[slot][r][c] == "#":
+                pygame.draw.rect(screen, color, (x + c * scale, y + r * scale, scale, scale))
+
+def draw_text(text, y, scale, color):
+    step = 3 * scale + scale
+    width = len(text) * step - scale
+    x = int(320 - width / 2)
+    for k in range(len(text)):
+        draw_glyph(text[k], x + k * step, y, scale, color)</pre>
+  <p>To feel def's one strange law, run this model in the terminal:</p>
+  <pre>def stamp(word):
+    print("+----------------+")
+    print("|", word, "|")
+    print("+----------------+")
+
+print("Before any stamp.")
+stamp("TOP SECRET")
+stamp("EYES ONLY")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    In the model: what prints, in what order? Now the file: when Python first reads the two defs, how many times do their bodies run? And count <code>draw_glyph</code>'s briefcases.
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">The sentence, then two boxes wearing two different words: one routine, two orders, each call packing <code>word</code> fresh. And the file's defs run <strong>zero times</strong> at reading: they are filed drills awaiting calls, which is why they sit above the loop that calls them: Python has to meet a name before it can call it. <code>draw_glyph</code> takes five briefcases: the letter, x, y, the scale, the color. Inside it you should recognize two old friends: Day 2's slot search, then Drill 3's row-and-column walk with the ink swapped from <code>#</code> to a painted square.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Before any stamp.
++----------------+
+| TOP SECRET |
++----------------+
++----------------+
+| EYES ONLY |
++----------------+</pre>
+  </div>
+</section>
+
+<!-- DRILL 8 -->
+<section class="card" data-chunk="8">
+  <div class="chunkhead"><span class="chunklabel">Drill 8 &middot; The state, the mail, and the R key</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>Sabotage drill: the window that wouldn't die</h2>
+  <p>Four briefcases start the show, then the watch loop opens, checks the mail, and reads the keyboard. The real lines:</p>
+  <pre>length = len(message)
+pos = 0
+frame_in = 0
+done = 0
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_r]:
+        pos = 0
+        frame_in = 0
+        done = 0</pre>
+  <p>Now the sabotage. In your copy of Drill 6's window, delete one line, <code>running = False</code>, and run it. <strong>Find the stop control first:</strong> the square stop button by the terminal, or <code>Ctrl</code>+<code>C</code>. Yesterday's runaway loop, at window scale.</p>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Which three briefcases does R reset, and to what? Sabotaged: you click the close button; what does the window do, and which law is broken?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">R hands <code>pos</code>, <code>frame_in</code>, and <code>done</code> their starting zeros, and the whole encoding replays from the first letter, as many times as there are parents watching. Sabotaged, the window sits open forever: the QUIT event is <em>heard</em> in the mail and never <em>obeyed</em>, because the line that moves the while toward no is gone. Every while names its exit; this one had its nameplate stolen. Stop it, restore the line, and log the symptom for Thursday's Bug Hunt: a window ignoring its close button has lost exactly one line, and you know which.</div>
+  <div class="see"><span class="tag">You should see (sabotaged)</span>
+    <pre>The window refuses to close. You stop it from the terminal,
+then restore the exit line and the close button works again.</pre>
+  </div>
+</section>
+
+<!-- DRILL 9 -->
+<section class="card" data-chunk="9">
+  <div class="chunkhead"><span class="chunklabel">Drill 9 &middot; The lookups and the repaint</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Sixty times a second, find today's two tiles</h2>
+  <p>Inside the loop, every single frame: find which plain tile and which coded tile are talking, then repaint the whole world, title, echo, both racks, and the glow. The real lines:</p>
+  <pre>    # which tiles are talking this frame
+    plain_slot = 0
+    for j in range(27):
+        if RACK[j] == message[pos]:
+            plain_slot = j
+    coded_slot = 0
+    for j in range(27):
+        if RACK[j] == coded[pos]:
+            coded_slot = j
+    tx = RACK_X + plain_slot * (TILE_W + 2) + 10
+    bx = RACK_X + coded_slot * (TILE_W + 2) + 10
+
+    screen.fill(BOARD_COLOR)
+    draw_text(KID_TITLE, 22, 4, TITLE_COLOR)
+    draw_text(message, 74, 2, ECHO_COLOR)
+
+    # the two racks
+    for t in range(27):
+        x = RACK_X + t * (TILE_W + 2)
+        pygame.draw.rect(screen, TILE_COLOR, (x, TOP_Y, TILE_W, TILE_H))
+        draw_glyph(RACK[t], x + 7, TOP_Y + 8, 2, TILE_INK)
+        pygame.draw.rect(screen, CODED_TILE, (x, BOT_Y, TILE_W, TILE_H))
+        draw_glyph(RACK[t], x + 7, BOT_Y + 8, 2, CODED_INK)
+
+    # the active plain tile always glows
+    px = RACK_X + plain_slot * (TILE_W + 2)
+    pygame.draw.rect(screen, SIGNAL_COLOR, (px - 2, TOP_Y - 2, TILE_W + 4, TILE_H + 4), 2)</pre>
+  <p>The tile arithmetic is one rule: a tile's center is <code>RACK_X + slot * (TILE_W + 2) + 10</code>. Run it for H and its key-6 disguise:</p>
+  <pre>RACK_X = 23
+TILE_W = 20
+slot = 7
+print("H tile center:", RACK_X + slot * (TILE_W + 2) + 10)
+slot = (7 + 6) % 27
+print("N tile center:", RACK_X + slot * (TILE_W + 2) + 10)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Two centers print; work H's by hand first: 23 plus 7 times 22 plus 10. And the reading question: why must the slot searches run every frame instead of once, before the loop?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><code>187</code> and <code>319</code>: slot times 22 marches the rule down the rack, one tile every 22 pixels, the same rule-places-a-row idea the score pips use in the Target Lock tradition. The searches rerun every frame because <code>pos</code> moves: each new letter needs its own two tiles found, and when R yanks <code>pos</code> back to 0 mid-show, the very next frame quietly looks up the first letter again. A loop that repaints everything, every frame, never has stale paint to clean up. It sounds wasteful, and it is, sixty times a second, cheerfully; nearly every game you've ever played is built the same way.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>H tile center: 187
+N tile center: 319</pre>
+  </div>
+</section>
+
+<!-- DRILL 10 -->
+<section class="card" data-chunk="10">
+  <div class="chunkhead"><span class="chunklabel">Drill 10 &middot; The phase chain and the signal's blend</span><span class="chip">CCSS-M 5.OA.B.3</span></div>
+  <h2>Pulse, travel, flash: one elif chain runs the stage</h2>
+  <p>Each letter's 44 frames split into three phases, chosen by one flat elif chain reading <code>frame_in</code>. The travel phase holds the day's most beautiful arithmetic: a fraction <code>f</code> climbs 0 to 1, and the same f feeds two rules, one for x, one for y, which is why the signal flies straight. The real lines:</p>
+  <pre>    reveal_current = 0
+    if frame_in &lt; PULSE_FRAMES:
+        pygame.draw.circle(screen, SIGNAL_COLOR, (tx, TOP_Y + TILE_H + 6), 5)
+    elif frame_in &lt; PULSE_FRAMES + TRAVEL_FRAMES:
+        p = frame_in - PULSE_FRAMES
+        f = p / TRAVEL_FRAMES
+        lx = int(tx + (bx - tx) * f)
+        ly = int(TOP_Y + TILE_H + (BOT_Y - TOP_Y - TILE_H) * f)
+        pygame.draw.circle(screen, (90, 62, 20), (lx, ly), 9)
+        pygame.draw.circle(screen, SIGNAL_COLOR, (lx, ly), 5)
+    elif frame_in &lt; LETTER_EVERY:
+        cx = RACK_X + coded_slot * (TILE_W + 2)
+        pygame.draw.rect(screen, ASSEMBLY_INK, (cx - 2, BOT_Y - 2, TILE_W + 4, TILE_H + 4), 2)
+        reveal_current = 1</pre>
+  <p>Run the blend by itself:</p>
+  <pre>tx = 100
+bx = 400
+for f in [0.0, 0.5, 1.0]:
+    lx = int(tx + (bx - tx) * f)
+    print("f =", f, " x =", lx)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Work the three positions by hand: 100 plus 300 times each fraction. Where is the signal at f = 0.5? And if a letter encoded to itself, tiles aligned, what would the x rule do the whole drop?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">100, 250, 400: the fraction of the journey becomes the fraction of the distance, and at one half you sit dead center. Tiles aligned makes <code>bx - tx</code> zero, so x holds still while y does all the moving: a straight vertical drop, which you'll see whenever a letter meets a key that maps it home. Two rules, one f driving both.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>f = 0.0  x = 100
+f = 0.5  x = 250
+f = 1.0  x = 400</pre>
+  </div>
+</section>
+
+<!-- DRILL 11 -->
+<section class="card" data-chunk="11">
+  <div class="chunkhead"><span class="chunklabel">Drill 11 &middot; The assembly and the frame clock</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>Three briefcases run the whole show</h2>
+  <p>The coded message assembles glyph by glyph, then come the six lines that run everything, the clock, and then the loop's last two orders: <code>flip</code>, show the paint, and <code>tick(60)</code>, rest until the next frame. Below the loop, <code>pygame.quit()</code> waits, running only after QUIT is obeyed and the while lets go. The real lines, down to the file's last running order:</p>
+  <pre>    # the coded message assembles
+    step = 16
+    width = length * step - 4
+    ax = int(320 - width / 2)
+    for k in range(pos):
+        draw_glyph(coded[k], ax + k * step, 396, 4, ASSEMBLY_INK)
+    if reveal_current == 1:
+        draw_glyph(coded[pos], ax + pos * step, 396, 4, ASSEMBLY_INK)
+
+    if done == 1:
+        draw_text("PRESS R TO REPLAY", 452, 2, HINT_COLOR)
+
+    if done == 0:
+        frame_in = frame_in + 1
+    if frame_in == LETTER_EVERY:
+        pos = pos + 1
+        frame_in = 0
+    if pos == length:
+        done = 1
+        pos = length - 1
+        frame_in = LETTER_EVERY - 1
+
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()</pre>
+  <p>Here is that exact clock lifted out and run in the terminal for a three-letter message, printing whenever a new letter takes the stage:</p>
+  <pre>length = 3
+pos = 0
+frame_in = 0
+done = 0
+for frame in range(140):
+    if done == 0:
+        frame_in = frame_in + 1
+    if frame_in == 44:
+        pos = pos + 1
+        frame_in = 0
+        print("frame", frame, ": letter", pos, "takes the stage")
+    if pos == length:
+        done = 1
+        pos = length - 1
+        frame_in = 43
+print("done =", done, " holding letter", pos)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    At which frames do letters 1 and 2 take the stage? And the day's hardest trace: when <code>pos</code> reaches 3, three lines fire. What do they leave the clock holding, and why does <code>frame_in</code> never move again?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Frames 43 and 87, every 44 on the dot. The finish is the freeze trick: <code>done</code> becomes 1, <code>pos</code> steps back to the last letter, <code>frame_in</code> parks at 43, the final flash. From then on the first gate refuses to advance <code>frame_in</code>, so the gate at 44 can never fire again, and the window holds the finished picture forever, or until R hands all three briefcases their zeros back. Nothing stops; everything <em>holds</em>. That's how a machine forbidden to close itself finishes a job. Six lines, and the best ones in the file. Below them, <code>pygame.quit()</code> is the last line that ever runs; the two sealed spare cartridges beneath it are comments, and breaking those seals is tomorrow's first order of business. That's every running line of the machine, top to bottom. It isn't a mystery you own anymore; it's a machine you understand. The first full run is yours to take.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>frame 43 : letter 1 takes the stage
+frame 87 : letter 2 takes the stage
+frame 131 : letter 3 takes the stage
+done = 1  holding letter 2</pre>
+  </div>
+</section>
+
+<!-- HINGE -->
+<section class="card hinge">
+  <div class="chunkhead"><span class="chunklabel">Hinge question &middot; stop here until you're sure</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>The commissioner's arithmetic</h2>
+  <p>Part 1: you want each letter to take <em>exactly one second</em> on stage at sixty frames a second. The pulse stays 10 and the flash stays 12. What must <code>TRAVEL_FRAMES</code> become?<br>
+  Part 2: <code>draw_glyph</code> is defined once. From your reading of the file: how many places call it? What would the file cost if def didn't exist and the body were pasted at each one?</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Part 1: 38</strong>, because one second is 60 frames and 60 minus 10 minus 12 leaves 38 for the travel. <strong>Part 2: five call sites</strong>: once inside <code>draw_text</code>, then the top rack, the bottom rack, the assembly loop, and the reveal of the current letter. Without def, five copies of the same double loop, and every future fix made five times or silently missed somewhere. A routine defined once and called from five places is the tally's lesson grown up: name the pattern, then spend the name.</div>
+</section>
+
+<!-- BUILD -->
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">Field Mission &middot; The Reading of the Machine</span></div>
+  <h2>The earned first run, then three lawful changes</h2>
+  <p><strong>Part A, the first full session:</strong> you have read every line; now run <code>cipher_console_pygame.py</code> whole, your own message, your own key. Then pick one letter of your message and follow it the entire way in your Field Notebook: its slot on the rack, what the cartridge does to that number, the coded letter, and the centers of the two tiles that light, by Drill 9's rule. One letter, end to end, in your own handwriting.</p>
+  <p><strong>Part B, the commission rehearsal (one change per run):</strong> three changes, run between each. First, <code>KID_TITLE</code> becomes your console's name. Second, one color knob, your choice. Third, <code>TRAVEL_FRAMES</code> to the hinge's one-second answer.</p>
+  <p><strong>Part C, stretch, the decode session:</strong> run the console again, but feed it your <em>coded</em> text as the message, with the complementary key, 27 minus yours. Watch the machine undo itself on screen: the racks light in reverse pairs and your original message assembles on the line. Then close your notebook and retell the freeze trick from memory: which three lines, and what they hold.</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal a worked Part B</button>
+  <div class="answer">
+<pre>KID_TITLE     = "THE MIDNIGHT DESK"
+TRAVEL_FRAMES = 38
+TILE_COLOR    = (255, 214, 140)</pre>
+    Three lines, three runs, and the machine is a little more yours. Every knob keeps its name and its place on the panel; commissioning never touches the engine below. Tomorrow does this in earnest.
+  </div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Your title in amber pixel letters, your tile color,
+and each letter holding the stage for exactly one second.</pre>
+  </div>
+</section>
+
+<!-- EXITS -->
+<section class="card">
+  <h2>Choose your exit gate</h2>
+  <div class="exits">
+    <div class="exit"><span class="lvl" style="color:#8a5a00">Floor <small>&middot; approaching the standard</small></span>
+      <p style="margin:6px 0 0">You walked all twelve stations, ran the console whole with your own message, and can point at where the cartridge begins and ends and at the watch loop's exit line.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
+      <p style="margin:6px 0 0">Your three Part B changes ran one at a time, your one-letter trace is in the notebook down to the two tile centers, and you can explain why draw_glyph is written once and called from five places.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--stamp)">Stretch <small>&middot; exceeds the standard</small></span>
+      <p style="margin:6px 0 0">Your decode session runs, coded text in, original message out with the complementary key, and you can retell the freeze trick from memory: which three lines, and what they hold.</p></div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">The whole file &middot; copy and paste</span></div>
+  <h2>The complete Cipher Console, every line you read today</h2>
+  <p>For a fresh machine, a home computer before the demo, or a copy that surgery left beyond repair. Select it all or use the button, paste into a new file named <code>cipher_console_pygame.py</code>, and run it from the terminal. One thing has to be true first: <code>pip install pygame</code>, once, on that machine.</p>
+  <button class="copybtn" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;background:var(--amber);color:#1a1a14;border:none;padding:9px 16px;cursor:pointer;margin:0 0 10px" onclick="navigator.clipboard.writeText(document.getElementById('fullcode').textContent).then(()=>{this.textContent='COPIED. PASTE AWAY.'})">COPY THE WHOLE FILE</button>
+  <pre id="fullcode"># ============================================================
+#  THE CIPHER CONSOLE  ·  Secret Spy Academy
+#  Front end for any Day 2 / Cryptography Wing cipher.
+#  Read it, trace it, then run it.
+#
+#  HOW IT WORKS
+#  1. The terminal asks for your message (CAPITALS AND SPACES)
+#     plus your key. Keep the message under 36 characters.
+#  2. THE CARTRIDGE encodes it. The one installed below is
+#     Day 2's Cipher Wheel. Swap the cartridge for any Wing
+#     cipher; two spares wait at the bottom of this file.
+#  3. The window animates it: your letter's tile lights on the
+#     plain rack, the signal drops to the coded rack, and the
+#     coded message assembles in pixel letters.
+#  Press R in the window to replay. Close the window to stop:
+#  the console never closes itself.
+# ============================================================
+
+import pygame
+
+# ===================== OPS PANEL =====================
+KID_TITLE     = "CIPHER CONSOLE"   # your console's name, on the board
+PULSE_FRAMES  = 10                 # frames the plain tile glows
+TRAVEL_FRAMES = 22                 # frames the signal takes to drop
+FLASH_FRAMES  = 12                 # frames the coded tile flashes
+BOARD_COLOR   = (15, 19, 24)
+TILE_COLOR    = (242, 233, 211)
+TILE_INK      = (27, 31, 38)
+CODED_TILE    = (31, 46, 39)
+CODED_INK     = (123, 228, 149)
+SIGNAL_COLOR  = (201, 139, 31)
+TITLE_COLOR   = (201, 139, 31)
+ECHO_COLOR    = (150, 143, 128)
+ASSEMBLY_INK  = (123, 228, 149)
+HINT_COLOR    = (90, 96, 88)
+# =====================================================
+
+RACK = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+LETTER_EVERY = PULSE_FRAMES + TRAVEL_FRAMES + FLASH_FRAMES
+
+# Every character's picture: 5 rows of 3 marks. # is ink.
+GLYPHS = [
+[".#.","#.#","###","#.#","#.#"],  # A
+["##.","#.#","##.","#.#","##."],  # B
+[".##","#..","#..","#..",".##"],  # C
+["##.","#.#","#.#","#.#","##."],  # D
+["###","#..","##.","#..","###"],  # E
+["###","#..","##.","#..","#.."],  # F
+[".##","#..","#.#","#.#",".##"],  # G
+["#.#","#.#","###","#.#","#.#"],  # H
+["###",".#.",".#.",".#.","###"],  # I
+["..#","..#","..#","#.#",".#."],  # J
+["#.#","#.#","##.","#.#","#.#"],  # K
+["#..","#..","#..","#..","###"],  # L
+["#.#","###","###","#.#","#.#"],  # M
+["#.#","###","###","###","#.#"],  # N
+[".#.","#.#","#.#","#.#",".#."],  # O
+["##.","#.#","##.","#..","#.."],  # P
+[".#.","#.#","#.#",".#.","..#"],  # Q
+["##.","#.#","##.","#.#","#.#"],  # R
+[".##","#..",".#.","..#","##."],  # S
+["###",".#.",".#.",".#.",".#."],  # T
+["#.#","#.#","#.#","#.#","###"],  # U
+["#.#","#.#","#.#","#.#",".#."],  # V
+["#.#","#.#","###","###","#.#"],  # W
+["#.#","#.#",".#.","#.#","#.#"],  # X
+["#.#","#.#",".#.",".#.",".#."],  # Y
+["###","..#",".#.","#..","###"],  # Z
+["...","...","...","...","..."],  # space
+]
+
+# ---------------- the terminal briefing ----------------
+print("CIPHER CONSOLE ONLINE.")
+print("Capitals and spaces only. Under 36 characters fits the board.")
+message = input("Message: ")
+legal = 0
+while legal == 0:
+    legal = 1
+    if len(message) == 0:
+        legal = 0
+    for letter in message:
+        found = 0
+        for j in range(27):
+            if RACK[j] == letter:
+                found = 1
+        if found == 0:
+            legal = 0
+    if legal == 0:
+        print("Every character must be on the rack: CAPITALS AND SPACES ONLY.")
+        message = input("Message: ")
+key = int(input("Key (1 to 26): "))
+key = key % 27
+
+# ================= THE CARTRIDGE =================
+# Installed: Day 2's Cipher Wheel (the Caesar shift).
+# Swap this whole block for any Wing cipher. Keep the
+# first line (coded = "") and keep building coded the
+# same way. Spare cartridges wait at the bottom.
+coded = ""
+for letter in message:
+    slot = 0
+    for j in range(27):
+        if RACK[j] == letter:
+            slot = j
+    coded_slot = (slot + key) % 27
+    coded = coded + RACK[coded_slot]
+# =============== END OF CARTRIDGE ================
+
+print("Coded:", coded)
+print("The window is yours. R replays the encoding.")
+
+# ---------------- the window ----------------
+pygame.init()
+screen = pygame.display.set_mode((640, 480))
+pygame.display.set_caption("Cipher Console")
+clock = pygame.time.Clock()
+
+TILE_W = 20
+TILE_H = 26
+RACK_X = 23
+TOP_Y = 120
+BOT_Y = 300
+
+def draw_glyph(letter, x, y, scale, color):
+    slot = 0
+    for j in range(27):
+        if RACK[j] == letter:
+            slot = j
+    for r in range(5):
+        for c in range(3):
+            if GLYPHS[slot][r][c] == "#":
+                pygame.draw.rect(screen, color, (x + c * scale, y + r * scale, scale, scale))
+
+def draw_text(text, y, scale, color):
+    step = 3 * scale + scale
+    width = len(text) * step - scale
+    x = int(320 - width / 2)
+    for k in range(len(text)):
+        draw_glyph(text[k], x + k * step, y, scale, color)
+
+length = len(message)
+pos = 0
+frame_in = 0
+done = 0
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_r]:
+        pos = 0
+        frame_in = 0
+        done = 0
+
+    # which tiles are talking this frame
+    plain_slot = 0
+    for j in range(27):
+        if RACK[j] == message[pos]:
+            plain_slot = j
+    coded_slot = 0
+    for j in range(27):
+        if RACK[j] == coded[pos]:
+            coded_slot = j
+    tx = RACK_X + plain_slot * (TILE_W + 2) + 10
+    bx = RACK_X + coded_slot * (TILE_W + 2) + 10
+
+    screen.fill(BOARD_COLOR)
+    draw_text(KID_TITLE, 22, 4, TITLE_COLOR)
+    draw_text(message, 74, 2, ECHO_COLOR)
+
+    # the two racks
+    for t in range(27):
+        x = RACK_X + t * (TILE_W + 2)
+        pygame.draw.rect(screen, TILE_COLOR, (x, TOP_Y, TILE_W, TILE_H))
+        draw_glyph(RACK[t], x + 7, TOP_Y + 8, 2, TILE_INK)
+        pygame.draw.rect(screen, CODED_TILE, (x, BOT_Y, TILE_W, TILE_H))
+        draw_glyph(RACK[t], x + 7, BOT_Y + 8, 2, CODED_INK)
+
+    # the active plain tile always glows
+    px = RACK_X + plain_slot * (TILE_W + 2)
+    pygame.draw.rect(screen, SIGNAL_COLOR, (px - 2, TOP_Y - 2, TILE_W + 4, TILE_H + 4), 2)
+
+    reveal_current = 0
+    if frame_in &lt; PULSE_FRAMES:
+        pygame.draw.circle(screen, SIGNAL_COLOR, (tx, TOP_Y + TILE_H + 6), 5)
+    elif frame_in &lt; PULSE_FRAMES + TRAVEL_FRAMES:
+        p = frame_in - PULSE_FRAMES
+        f = p / TRAVEL_FRAMES
+        lx = int(tx + (bx - tx) * f)
+        ly = int(TOP_Y + TILE_H + (BOT_Y - TOP_Y - TILE_H) * f)
+        pygame.draw.circle(screen, (90, 62, 20), (lx, ly), 9)
+        pygame.draw.circle(screen, SIGNAL_COLOR, (lx, ly), 5)
+    elif frame_in &lt; LETTER_EVERY:
+        cx = RACK_X + coded_slot * (TILE_W + 2)
+        pygame.draw.rect(screen, ASSEMBLY_INK, (cx - 2, BOT_Y - 2, TILE_W + 4, TILE_H + 4), 2)
+        reveal_current = 1
+
+    # the coded message assembles
+    step = 16
+    width = length * step - 4
+    ax = int(320 - width / 2)
+    for k in range(pos):
+        draw_glyph(coded[k], ax + k * step, 396, 4, ASSEMBLY_INK)
+    if reveal_current == 1:
+        draw_glyph(coded[pos], ax + pos * step, 396, 4, ASSEMBLY_INK)
+
+    if done == 1:
+        draw_text("PRESS R TO REPLAY", 452, 2, HINT_COLOR)
+
+    if done == 0:
+        frame_in = frame_in + 1
+    if frame_in == LETTER_EVERY:
+        pos = pos + 1
+        frame_in = 0
+    if pos == length:
+        done = 1
+        pos = length - 1
+        frame_in = LETTER_EVERY - 1
+
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()
+
+# ================= SPARE CARTRIDGES =================
+# To swap: delete the installed cartridge block above and
+# paste one of these in its place. Nothing else changes.
+#
+# --- THE ROTOR (the wheel that turns itself) ---
+# coded = ""
+# i = 0
+# for letter in message:
+#     slot = 0
+#     for j in range(27):
+#         if RACK[j] == letter:
+#             slot = j
+#     coded_slot = (slot + (key + i) % 27) % 27
+#     coded = coded + RACK[coded_slot]
+#     i = i + 1
+#
+# --- THE UNBREAKABLE WHEEL (Vigenere) ---
+# Add this line just above the cartridge, with the inputs:
+#     keyword = input("Keyword: ")
+# coded = ""
+# i = 0
+# for letter in message:
+#     slot = 0
+#     for j in range(27):
+#         if RACK[j] == letter:
+#             slot = j
+#     kletter = keyword[i % len(keyword)]
+#     kslot = 0
+#     for j in range(27):
+#         if RACK[j] == kletter:
+#             kslot = j
+#     coded_slot = (slot + kslot) % 27
+#     coded = coded + RACK[coded_slot]
+#     i = i + 1
+# ====================================================
+</pre>
+</section>
+
+<details class="teacher">
+  <summary>Standards, pacing &amp; evidence (teacher panel)</summary>
+  <p><strong>The pacing choice, stated plainly:</strong> Day 3 is one lesson, a line-by-line reading of the Cipher Console, top of the file to the bottom, eleven stations in file order. Concepts arrive exactly where the file needs them: comments at the banner, <code>def</code> at the two definitions, the watch loop when window country opens, the interpolation inside the travel phase. Every station's first code block is the file's real lines, machine-checked against the engine, so nothing on the table is a paraphrase, and every station that can run alone does: the room runs eight fragments before it runs the machine. The full console runs only in the Field Mission. That's the day's spine, run what you have read, and the reading is affordable because the file's heart isn't new: the cartridge is the recruits' own Day 2 wheel, and the window half, the true new territory, gets six of the eleven stations. Morning is stations 1 to 6, the terminal half plus first light, about 80 minutes with the pygame install; afternoon is 7 to 11, the hinge, and the Reading, about 95.</p>
+  <p><strong>Where recruits actually stall:</strong> the first ten minutes are <code>pip install pygame</code>, run as a room before station 1. Station 5 is where a stalled room revives: recruits meeting their own Day 2 code inside the machine is the day's event, so let it breathe. Station 8's sabotage needs the stop control found before the run, same law as the runaway loop. Station 11's freeze trick is the hardest trace of the week: walk it on the board with three paper briefcases before the reveal. If the day runs long, stations 9 and 10 compress to their reading halves; the arithmetic moves to homework and nothing downstream breaks.</p>
+  <table>
+    <tr><th>Code</th><th>Standard (verbatim)</th><th>Drill(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
+    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>1&ndash;4, 6, 7, 9, 11; hinge</td><td>Mastery</td><td>The frame-clock trace with three paper briefcases, the def zero-times question in the recruit's own words, and the one-letter end-to-end trace from the Reading, tile centers included, all in the Field Notebook.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>5, 8; the Reading</td><td>Addressed (raised toward Mastery in tomorrow's commission)</td><td>Three one-change-per-run knob edits, the repaired exit line, and the stretch decode session run with the complementary key.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>CCSS-M 5.OA.B.3</td><td>Generate two numerical patterns using two given rules. Identify apparent relationships between corresponding terms.</td><td>10</td><td>Addressed</td><td>The fraction table for x worked by hand, and the aligned-tiles question, which is the two-rules relationship stated in the recruit's own words.</td><td>Verified</td></tr>
+  </table>
+  <p><strong>Deliberately not covered here:</strong> the sealed spare cartridges at the file's very bottom: they are named at station 11 and opened on Day 4, and today's only cipher is the Caesar wheel, because one machine understood whole beats two sampled. <code>return</code> values, the program-wide exclusion, stated loudest today because def is where recruits meet the temptation: at this Academy a routine <em>does</em>, it never hands back, and both console routines draw. <code>pygame.font</code> stays out; the glyph rack is the lawful loophole and station 3 hands it over openly. <code>KEYDOWN</code> stays out; the R key reads through <code>get_pressed</code>, the held-key law the Target Lock tradition steers by. Classes, sprites, and the mouse remain excluded program-wide. The retired Gadget Blueprint day, with Target Lock's first run, lives in the repo history for any cohort running the game week instead.</p>
+  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation. CCSS-M quoted from the Common Core State Standards for Mathematics.</p>
+</details>
+
+<p class="foot"><a href="spy_academy_hub.html">Back to HQ</a> &middot; Read it, trace it, then run it</p>
+
+</main>
+<script>
+function reveal(btn){
+  if(!btn.dataset.label){ btn.dataset.label = btn.textContent; }
+  var a = btn.nextElementSibling;
+  var open = a.classList.toggle('open');
+  btn.textContent = open ? 'Hide' : btn.dataset.label;
+  var see = a.nextElementSibling;
+  if(see && see.classList.contains('see')){ see.classList.toggle('open', open); }
+  var card = btn.closest('[data-chunk]');
+  if(card){ var d = document.getElementById('d'+card.getAttribute('data-chunk')); if(d) d.classList.add('done'); }
+}
+</script>
+</body>
+</html>
