@@ -73,19 +73,19 @@ GLYPHS = [
 print("CIPHER CONSOLE ONLINE.")
 print("Capitals and spaces only. Under 36 characters fits the board.")
 message = input("Message: ")
-legal = 0
-while legal == 0:
-    legal = 1
+strikes = 1                    # the door starts locked
+while strikes > 0:
+    strikes = 0                # fresh scan, tally from zero
     if len(message) == 0:
-        legal = 0
+        strikes = 1
     for letter in message:
         found = 0
         for j in range(27):
             if RACK[j] == letter:
                 found = 1
         if found == 0:
-            legal = 0
-    if legal == 0:
+            strikes = strikes + 1
+    if strikes > 0:
         print("Every character must be on the rack: CAPITALS AND SPACES ONLY.")
         message = input("Message: ")
 key = int(input("Key (1 to 26): "))

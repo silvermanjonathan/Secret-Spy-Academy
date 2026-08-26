@@ -198,19 +198,19 @@ for r in range(5):
 print("CIPHER CONSOLE ONLINE.")
 print("Capitals and spaces only. Under 36 characters fits the board.")
 message = input("Message: ")
-legal = 0
-while legal == 0:
-    legal = 1
+strikes = 1                    # the door starts locked
+while strikes &gt; 0:
+    strikes = 0                # fresh scan, tally from zero
     if len(message) == 0:
-        legal = 0
+        strikes = 1
     for letter in message:
         found = 0
         for j in range(27):
             if RACK[j] == letter:
                 found = 1
         if found == 0:
-            legal = 0
-    if legal == 0:
+            strikes = strikes + 1
+    if strikes &gt; 0:
         print("Every character must be on the rack: CAPITALS AND SPACES ONLY.")
         message = input("Message: ")</pre>
   <div class="predict">
@@ -218,7 +218,7 @@ while legal == 0:
     Type <code>we strike at dawn</code> first, then <code>WE STRIKE AT DAWN</code>. How many times does the door scold? Which line is the while's exit, house law? And when the good message arrives, what does the door say?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">One scold: the scanner walks every character, the found-flag stays 0 on the first lowercase letter it meets, <code>legal</code> falls to 0, and the door asks again. The exit is the second <code>input()</code>, the line that lets the answer change, exactly as in the Safe House. And on success the door says <em>nothing</em>. It stops objecting, and the file flows on. Get used to reading silence; in a machine it usually means yes.</div>
+  <div class="answer">One scold: the scanner walks every character, every lowercase letter leaves the found-flag at 0 and adds a strike (fourteen of them for <code>we strike at dawn</code>; the three spaces are on the rack), and any strike at all sends the door back to ask again. The exit is the second <code>input()</code>, the line that lets the answer change, exactly as in the Safe House. And on success the door says <em>nothing</em>. It stops objecting, and the file flows on. Get used to reading silence; in a machine it usually means yes.</div>
   <div class="see"><span class="tag">You should see</span>
     <pre>CIPHER CONSOLE ONLINE.
 Capitals and spaces only. Under 36 characters fits the board.
@@ -676,19 +676,19 @@ GLYPHS = [
 print("CIPHER CONSOLE ONLINE.")
 print("Capitals and spaces only. Under 36 characters fits the board.")
 message = input("Message: ")
-legal = 0
-while legal == 0:
-    legal = 1
+strikes = 1                    # the door starts locked
+while strikes &gt; 0:
+    strikes = 0                # fresh scan, tally from zero
     if len(message) == 0:
-        legal = 0
+        strikes = 1
     for letter in message:
         found = 0
         for j in range(27):
             if RACK[j] == letter:
                 found = 1
         if found == 0:
-            legal = 0
-    if legal == 0:
+            strikes = strikes + 1
+    if strikes &gt; 0:
         print("Every character must be on the rack: CAPITALS AND SPACES ONLY.")
         message = input("Message: ")
 key = int(input("Key (1 to 26): "))
