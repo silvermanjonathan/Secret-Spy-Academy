@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Side Mission — Attack at Dawn</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B1F26;--manila:#F2E9D3;--stamp:#B3261E;--phosphor:#7BE495;--green:#047857;--amber:#C98B1F;--ink-soft:rgba(27,31,38,.08);--ink-line:rgba(27,31,38,.18);--shadow:0 4px 0 rgba(27,31,38,.14);}
+*{box-sizing:border-box}
+body{margin:0;background:var(--manila);color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:16.5px}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+.hero{background:var(--ink);color:var(--manila);padding:46px 24px 40px;text-align:center;border-bottom:3px dashed var(--phosphor)}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--phosphor);margin-bottom:10px}
+h1{font-family:'Special Elite',serif;font-weight:400;font-size:clamp(32px,5.6vw,50px);line-height:1.08;margin:.2em auto .35em;max-width:640px;letter-spacing:.01em}
+.hook{max-width:560px;margin:0 auto 8px;font-size:17.5px;opacity:.94}
+.need{font-family:'JetBrains Mono',monospace;font-size:12.5px;opacity:.8;margin-top:14px}
+.board{width:260px;height:96px;margin:18px auto 0;display:block}
+.board .px{fill:var(--manila)}
+.board .sh{animation:land 6s ease-in-out infinite;opacity:0}
+.board .sh:nth-child(2){animation-delay:.35s}.board .sh:nth-child(3){animation-delay:.7s}.board .sh:nth-child(4){animation-delay:1.05s}.board .sh:nth-child(5){animation-delay:1.4s}
+@keyframes land{0%,30%{opacity:0;transform:translateY(-6px)}45%,85%{opacity:1;transform:translateY(0)}100%{opacity:0}}
+h2{font-family:'Special Elite',serif;font-weight:400;font-size:25px;margin:0 0 6px;letter-spacing:.01em}
+.card{background:#fff;border:1px solid var(--ink-line);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px;margin:28px 0}
+.chunkhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chunklabel{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--stamp);font-weight:700}
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--ink-soft);color:var(--ink);border-radius:999px;padding:3px 11px;white-space:nowrap}
+.chip.unv{color:var(--stamp)}
+pre{background:var(--ink);color:var(--manila);font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.6;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:14px 0}
+code{font-family:'JetBrains Mono',monospace;font-size:.92em;background:var(--ink-soft);padding:1px 5px;border-radius:5px}
+pre code{background:none;padding:0;font-size:inherit}
+.predict{border-left:4px solid var(--amber);background:rgba(201,139,31,.14);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.ptag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:4px;color:var(--amber)}
+button.reveal{background:var(--ink);color:var(--manila);border:none;border-radius:999px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;margin-top:6px}
+button.reveal:focus-visible{outline:3px solid var(--phosphor);outline-offset:2px}
+.answer{display:none;background:var(--ink-soft);border-radius:10px;padding:14px 16px;margin-top:12px}
+.answer.open{display:block}
+.see{display:none;border:2px solid var(--green);background:rgba(4,120,87,.08);border-radius:12px;padding:13px 16px;margin:14px 0}
+.see.open{display:block}
+.see .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
+.see pre{background:#0d3a2c;margin:10px 0 2px}
+.hinge{border:2px solid var(--stamp)}
+.part{margin:12px 0}
+.exits{display:grid;gap:14px}
+.exit{border:1px solid var(--ink-line);border-radius:12px;padding:14px 16px}
+.lvl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.lvl small{opacity:.65;letter-spacing:.06em}
+.teacher{background:var(--ink-soft);border:1px solid var(--ink-line);border-radius:14px;padding:6px 20px 16px;margin:34px 0;font-size:14.5px}
+.teacher summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px 0;font-weight:700;opacity:.85}
+.teacher table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+.teacher th,.teacher td{border:1px solid var(--ink-line);padding:7px 9px;text-align:left;vertical-align:top}
+.teacher th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.warn{color:var(--stamp);font-family:'JetBrains Mono',monospace;font-size:11px}
+.attr{font-size:12px;opacity:.75;margin-top:12px}
+.tracker{display:flex;align-items:center;gap:8px;margin:6px 0 0;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--ink-line)}
+.dot.done{background:var(--green);border-color:var(--green)}
+.tlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.foot{text-align:center;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin-top:40px}
+.foot a{color:inherit}
+@media (prefers-reduced-motion: reduce){.board .sh{animation:none;opacity:1}}
+@media print{.answer,.see{display:block!important}button.reveal{display:none}.hero{border-bottom:3px solid #000}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Secret Spy Academy &middot; Cryptography Wing &middot; Side Mission</div>
+  <h1>Attack at Dawn</h1>
+  <p class="hook">The words type themselves onto the board in pixel letters. One second later the same message lands beneath them wearing shift 3 and a font made of shapes. Two fonts, one wheel, and every line is one you already own.</p>
+  <svg class="board" viewBox="0 0 260 96" aria-hidden="true">
+    <g class="px">
+      <rect x="24" y="8" width="7" height="7"/><rect x="16" y="16" width="7" height="7"/><rect x="32" y="16" width="7" height="7"/><rect x="16" y="24" width="7" height="7"/><rect x="24" y="24" width="7" height="7"/><rect x="32" y="24" width="7" height="7"/><rect x="16" y="32" width="7" height="7"/><rect x="32" y="32" width="7" height="7"/><rect x="16" y="40" width="7" height="7"/><rect x="32" y="40" width="7" height="7"/>
+      <rect x="56" y="8" width="7" height="7"/><rect x="64" y="8" width="7" height="7"/><rect x="72" y="8" width="7" height="7"/><rect x="64" y="16" width="7" height="7"/><rect x="64" y="24" width="7" height="7"/><rect x="64" y="32" width="7" height="7"/><rect x="64" y="40" width="7" height="7"/>
+      <rect x="96" y="8" width="7" height="7"/><rect x="104" y="8" width="7" height="7"/><rect x="112" y="8" width="7" height="7"/><rect x="104" y="16" width="7" height="7"/><rect x="104" y="24" width="7" height="7"/><rect x="104" y="32" width="7" height="7"/><rect x="104" y="40" width="7" height="7"/>
+      <rect x="144" y="8" width="7" height="7"/><rect x="136" y="16" width="7" height="7"/><rect x="152" y="16" width="7" height="7"/><rect x="136" y="24" width="7" height="7"/><rect x="144" y="24" width="7" height="7"/><rect x="152" y="24" width="7" height="7"/><rect x="136" y="32" width="7" height="7"/><rect x="152" y="32" width="7" height="7"/><rect x="136" y="40" width="7" height="7"/><rect x="152" y="40" width="7" height="7"/>
+      <rect x="184" y="8" width="7" height="7"/><rect x="192" y="8" width="7" height="7"/><rect x="176" y="16" width="7" height="7"/><rect x="176" y="24" width="7" height="7"/><rect x="176" y="32" width="7" height="7"/><rect x="184" y="40" width="7" height="7"/><rect x="192" y="40" width="7" height="7"/>
+      <rect x="216" y="8" width="7" height="7"/><rect x="232" y="8" width="7" height="7"/><rect x="216" y="16" width="7" height="7"/><rect x="224" y="16" width="7" height="7"/><rect x="216" y="24" width="7" height="7"/><rect x="216" y="32" width="7" height="7"/><rect x="224" y="32" width="7" height="7"/><rect x="216" y="40" width="7" height="7"/><rect x="232" y="40" width="7" height="7"/>
+    </g>
+    <g class="shapes">
+      <circle class="sh" cx="28" cy="76" r="9" fill="#5AC878"/>
+      <polygon class="sh" points="68,66 58,85 78,85" fill="#3CBEC8"/>
+      <polygon class="sh" points="108,66 98,85 118,85" fill="#3CBEC8"/>
+      <circle class="sh" cx="148" cy="76" r="9" fill="#5AC878"/>
+      <circle class="sh" cx="188" cy="76" r="9" fill="#466EF0"/>
+    </g>
+  </svg>
+  <p class="need">YOU'LL NEED: pygame working &middot; attack_at_dawn_pygame.py saved in your folder &middot; Day 3's First Light run at least once &middot; your Field Notebook</p>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h2>Mission target</h2>
+  <p><strong>I can trace a letter through the Cipher Wheel and then through the key card, and name the shape it becomes.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
+  <p><strong>I can combine two routines I already own, the wheel and the glyph, into one new program, and change it one line at a time.</strong> <span class="chip unv">E5-PRO-PD-?? &#9888;</span></p>
+  <p style="margin:6px 0 0">Clearance required: Day 2 Drill 11 (the wheel spelled with <code>%</code>), Day 3 Drill 2 (a <code>def</code> with briefcases), Day 3 Drill 3 (the glyph), and Day 3's First Light. Nothing in this mission debuts a new law; one drawing call, <code>pygame.draw.polygon</code>, is the only mark you have not typed before.</p>
+  <div class="tracker" aria-label="chunk progress">
+    <span class="tlabel">Chunks explored</span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span>
+  </div>
+</section>
+
+<!-- DRILL 1 -->
+<section class="card" data-chunk="1">
+  <div class="chunkhead"><span class="chunklabel">Drill 1 &middot; The wheel, in terminal country</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Yesterday's machine, today's message</h2>
+  <p>Before any light, the words go through the Cipher Wheel exactly as Day 2 left it: the slot search, the shift, <code>%</code> for the wrap, the tally on text. Type this in the terminal first. The window will use these same lines, untouched.</p>
+  <pre>rack = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+message = "ATTACK AT DAWN"
+shift = 3
+result = ""
+for letter in message:
+    slot = 0
+    for i in range(27):
+        if rack[i] == letter:
+            slot = i
+    slot = (slot + shift) % 27
+    result = result + rack[slot]
+print("Plain:", message)
+print("Coded:", result)
+</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    The message has two spaces. What does each one become, and why is the answer the same one you gave on Day 2? Then: A is slot 0. What must the first letter of the coded text be?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Both spaces become <strong>C</strong>: the space is slot 26, plus 3 is 29, and <code>% 27</code> brings it to 2, the same wrap Drill 4 crashed on and Drill 11 spelled in one symbol. A, slot 0, plus 3 is slot 3, <strong>D</strong>. So the coded text opens with D and shows a C wherever the message had a space. Fourteen letters in, fourteen letters out; the shape font will paint one shape per letter, so the two rows will line up column for column.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Plain: ATTACK AT DAWN
+Coded: DWWDFNCDWCGDZQ
+</pre>
+  </div>
+</section>
+
+<!-- DRILL 2 -->
+<section class="card" data-chunk="2">
+  <div class="chunkhead"><span class="chunklabel">Drill 2 &middot; Three shelves of nine</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Where a letter lives decides what it looks like</h2>
+  <p>A rack of 27 is three shelves of nine. The column, <code>slot % 9</code>, picks the color from a rack of nine names. The shelf picks the shape with a height-band gate you have used since the Safe House: slots 0 to 8 are circles, 9 to 17 squares, 18 to 26 triangles. Run it on DAWN.</p>
+  <pre>rack = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+names = ["red", "orange", "yellow", "green", "teal", "blue", "purple", "pink", "white"]
+for letter in "DAWN":
+    slot = 0
+    for i in range(27):
+        if rack[i] == letter:
+            slot = i
+    shape = "triangle"
+    if slot &lt; 9:
+        shape = "circle"
+    elif slot &lt; 18:
+        shape = "square"
+    print(letter, slot, names[slot % 9], shape)
+</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    W is slot 22 and N is slot 13. Take nines away from each until you can't: what is left? Which shelf is each on? Will W and N share a color, a shape, both, or neither?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">22 leaves <strong>4</strong> after two nines; 13 leaves <strong>4</strong> after one. Same column, so the same color: teal. Different shelves: 13 sits on the second shelf (squares) and 22 on the third (triangles). Same color, different shape. This is Day 2's clock arithmetic with a new job: nine is one shelf, and the remainder is how far along the shelf the letter sits. Every one of the 27 slots gets its own pairing, because three shelves times nine columns is exactly 27.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>D 3 green circle
+A 0 red circle
+W 22 teal triangle
+N 13 teal square
+</pre>
+  </div>
+</section>
+
+<!-- DRILL 3 -->
+<section class="card" data-chunk="3">
+  <div class="chunkhead"><span class="chunklabel">Drill 3 &middot; The glyph rack</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>A letter is five strings of three marks</h2>
+  <p>Day 3 Drill 3 painted a T. Here is D, the first letter of the coded text, in the same dialect: <code>#</code> is ink, <code>.</code> is air, and the painter walks rows and columns with two loops and one gate. The file keeps all 27 letters in one list called <code>glyphs</code>, one rack per slot, so <code>glyphs[slot]</code> hands the painter the right five strings.</p>
+  <pre>rows = ["##.", "#.#", "#.#", "#.#", "##."]
+for r in range(5):
+    line = ""
+    for c in range(3):
+        if rows[r][c] == "#":
+            line = line + "#"
+        else:
+            line = line + " "
+    print(line)
+</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Sketch the five printed lines before you run. Then: the space is slot 26 of the glyph rack. What are its five strings, and what does the painter do when it meets them?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">A D, three marks wide and five tall. The space's rack is five strings of <code>"..."</code>: the gate never fires, nothing is painted, and the pen still moves on 32 pixels. That is how the gap between ATTACK and AT reaches the board without a drop of ink. Two of the printed lines end in a space you cannot see; the terminal does not care, and neither will the window.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>## 
+# #
+# #
+# #
+## 
+</pre>
+  </div>
+</section>
+
+<!-- DRILL 4 -->
+<section class="card" data-chunk="4">
+  <div class="chunkhead"><span class="chunklabel">Drill 4 &middot; The two painters</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>Two routines, five briefcases and three</h2>
+  <p>These are the file's own lines. <code>draw_glyph</code> paints a letter from the glyph rack; <code>draw_shape</code> paints the same letter from the key card. Both begin with the slot search you typed in Drill 1, because both need to know where the letter lives before they can draw it. Read them side by side.</p>
+  <pre># A letter painted mark by mark: two loops and one gate (Day 3, Drill 3).
+def draw_glyph(letter, x, y, size, color):
+    slot = 0
+    for i in range(27):
+        if rack[i] == letter:
+            slot = i
+    rows = glyphs[slot]
+    for r in range(5):
+        for c in range(3):
+            if rows[r][c] == "#":
+                pygame.draw.rect(screen, color, (x + c * size, y + r * size, size - 1, size - 1))
+
+# A letter as a shape and a color: the column picks the color, the shelf picks the shape.
+def draw_shape(letter, x, y):
+    slot = 0
+    for i in range(27):
+        if rack[i] == letter:
+            slot = i
+    color = colors[slot % 9]
+    if slot &lt; 9:
+        pygame.draw.circle(screen, color, (x, y), 9)
+    elif slot &lt; 18:
+        pygame.draw.rect(screen, color, (x - 9, y - 9, 18, 18))
+    else:
+        pygame.draw.polygon(screen, color, [(x, y - 10), (x - 10, y + 8), (x + 10, y + 8)])</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Count the <code>#</code> marks in the A rack: how many squares does <code>draw_glyph</code> paint for one A? And <code>draw_shape</code> has three briefcases where <code>draw_glyph</code> has five. Which two are missing, and why can it do without them?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Ten</strong> squares: 1 + 2 + 3 + 2 + 2 across the five rows. The missing briefcases are <code>size</code> and <code>color</code>. A shape's color comes from the key card, <code>colors[slot % 9]</code>, and its size is written into the drawing itself: a circle of radius 9, an 18-by-18 square, a triangle 20 marks wide. The pixel painter must be told both, because the same rack of marks can be painted large or small, ink or phosphor; the shape painter has one job and one look. Nothing to run yet: both routines paint on a <code>screen</code> that exists only once the next drill opens the window.</div>
+</section>
+
+<!-- DRILL 5 -->
+<section class="card" data-chunk="5">
+  <div class="chunkhead"><span class="chunklabel">Drill 5 &middot; First light: the words appear</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>The watch loop, the key card, and a clock that counts letters</h2>
+  <p>Window country. Every frame the board is wiped, the key card is painted top right by the Cipher Grid's own nested loop, and then the words: <code>k</code> counts letters as the loop walks the message, and a letter is painted only while <code>k &lt; shown</code>. Below the flip, the frame clock: every fifteenth frame, <code>shown</code> grows by one. Run the file and watch only the top row for now.</p>
+  <pre>frame = 0
+shown = 0
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    screen.fill((16, 20, 36))
+
+    # the key card: the whole rack as shapes, three shelves of nine
+    pygame.draw.rect(screen, (60, 70, 100), (640, 20, 226, 78), 1)
+    for shelf in range(3):
+        for column in range(9):
+            draw_shape(rack[shelf * 9 + column], 656 + column * 24, 36 + shelf * 24)
+
+    # top: the words, one letter every quarter second
+    x = 30
+    k = 0
+    for letter in message:
+        if k &lt; shown:
+            draw_glyph(letter, x, 120, 8, (235, 235, 235))
+        x = x + 32
+        k = k + 1
+
+    pygame.display.flip()
+
+    # the frame clock: one more letter every quarter second
+    frame = frame + 1
+    if frame % 15 == 0:
+        shown = shown + 1
+    clock.tick(60)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Sixty frames a second, one letter every fifteen frames. How many seconds until the N of DAWN is on the board? And why is the gate <code>k &lt; shown</code> instead of <code>k == shown</code>?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Fourteen letters times fifteen frames is 210 frames: <strong>three and a half seconds</strong>. The gate is <code>k &lt; shown</code> because the board is wiped by <code>screen.fill</code> sixty times a second; a letter painted only on the frame when <code>k == shown</code> would show for one quarter second and vanish. Every letter that has already arrived must be repainted every frame. That is the repaint rule from Day 3, and it is why <code>shown</code> can simply keep counting forever: once it passes 14, every letter is already on the board and the gate stays true for all of them.</div>
+  <div class="see"><span class="tag">You should see</span>
+    A dark 900 by 300 window titled Attack at Dawn. The key card sits top right: nine colors across, circles then squares then triangles down. ATTACK AT DAWN types itself across the board in white pixel letters, one every quarter second, and holds. The terminal shows the two lines from Drill 1 and then waits. Closing the window returns the terminal.
+  </div>
+</section>
+
+<!-- DRILL 6 -->
+<section class="card" data-chunk="6">
+  <div class="chunkhead"><span class="chunklabel">Drill 6 &middot; The tally and the pause</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Counting the message the long way, then waiting one second</h2>
+  <p>The shapes must wait for the words. To know when the words are done, the program needs the length of the message, and this week counts with a tally: walk the message, add one per letter. Then the coded row paints a shape only while <code>k &lt; shown - length - 3</code>, so the shapes start late and land one per tick, each directly under its letter. The tally sits above the watch loop, measured once; the coded row sits inside it, right after the words, repainted every frame.</p>
+  <pre># how long is the message? count it the long way, with a tally
+length = 0
+for letter in message:
+    length = length + 1
+
+    # below: the coded message as shapes, one second after the last letter lands
+    x = 42
+    k = 0
+    for letter in result:
+        if k &lt; shown - length - 3:
+            draw_shape(letter, x, 235)
+        x = x + 32
+        k = k + 1</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    <code>shown</code> counts up forever. The last letter lands when <code>shown</code> reaches 14. At what value of <code>shown</code> does the first shape land, and how many seconds after the last letter is that? At what value is the board full?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">The first shape is <code>k = 0</code>, and <code>0 &lt; shown - 14 - 3</code> first comes true at <code>shown = 18</code>: four ticks after the last letter, sixty frames, <strong>exactly one second</strong>. The fourteenth shape is <code>k = 13</code>, true from <code>shown = 31</code>, frame 465, seven and three-quarter seconds in; after that the picture holds until you close it. The <code>- 3</code> is the pause, and it is a number you can change: <code>- 0</code> makes the first shape land the tick after the last letter. Why not ask Python for the length? Because <code>len</code> is not on this week's rack, and the tally is a machine you built yourself on Day 2. You will meet <code>len</code> soon enough, and when you do, you will already know what it counts.</div>
+  <div class="see"><span class="tag">You should see</span>
+    After the words hold for one second, shapes land beneath them, one every quarter second: green circle, teal triangle, teal triangle, green circle, blue circle, teal square, yellow circle, green circle, teal triangle, yellow circle, purple circle, green circle, pink triangle, pink square. Read the key card and you can turn each one back into DWWDFNCDWCGDZQ.
+  </div>
+</section>
+
+<!-- DRILL 7 -->
+<section class="card" data-chunk="7">
+  <div class="chunkhead"><span class="chunklabel">Drill 7 &middot; Sabotage drill: one silent, one loud</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>Crash it, read it, repair it</h2>
+  <p>Two sabotages, one change per run, repair between them. <strong>A:</strong> in <code>draw_glyph</code>, change the gate to look for <code>X</code> instead of <code>#</code>. <strong>B:</strong> in the glyph rack, shorten D's first string from <code>"##."</code> to <code>"##"</code>, two marks instead of three.</p>
+  <pre># Sabotage A, line 73:
+            if rows[r][c] == "X":
+
+# Sabotage B, in the glyph rack:
+    ["##", "#.#", "#.#", "#.#", "##."],  # D</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    One sabotage is silent and one is loud. Which is which? For the loud one: does the program crash at once, or partway through the words? And does either sabotage stop the shapes?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>A is silent.</strong> No rack string contains an X, so the gate never fires, nothing is painted, and the board stays dark while the program runs on happily; the shapes still land on schedule, because <code>draw_shape</code> never opens the glyph rack. <strong>B is loud, and late.</strong> ATTACK AT is already on the board when D's turn comes; the painter asks for mark 2 of a string that has only marks 0 and 1, and Python stops at line 73 with <code>IndexError: string index out of range</code>, 165 frames in, two and three-quarter seconds. A silent failure is the more dangerous of the two: nothing tells you. Repair both before the Build.</div>
+  <div class="see"><span class="tag">You should see (sabotage B; the folder before the file name is your own)</span>
+    <pre>Plain: ATTACK AT DAWN
+Coded: DWWDFNCDWCGDZQ
+Traceback (most recent call last):
+  File "attack_at_dawn_pygame.py", line 116, in &lt;module&gt;
+    draw_glyph(letter, x, 120, 8, (235, 235, 235))
+  File "attack_at_dawn_pygame.py", line 73, in draw_glyph
+    if rows[r][c] == "#":
+       ~~~~~~~^^^
+IndexError: string index out of range</pre>
+  </div>
+</section>
+
+<!-- HINGE -->
+<section class="card hinge" data-chunk="8">
+  <div class="chunkhead"><span class="chunklabel">Hinge question &middot; stop here until you're sure</span></div>
+  <h2>Why is there no white triangle in the coded row?</h2>
+  <p>Say it to a classmate, then check. The white triangle is the last glyph on the key card. The message has two spaces, and spaces are white triangles. Yet the coded row has none. Give both halves of the reason, and name the one plain letter that <em>would</em> put a white triangle there.</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">The white triangle is slot 26, the space. Half one, from Day 2: the message's spaces went through the wheel and came out as C, slot 2, so they are yellow circles now. Half two, from the key card: a white triangle in the coded row would mean a space in the <em>coded</em> text, and under shift 3 only one plain letter lands on slot 26: slot 23, <strong>X</strong>. ATTACK AT DAWN has no X, so the coded text has no space, so the coded row has no white triangle. Type a message with an X in it and watch one appear. If both halves came out of your mouth in order, the mission is yours.</div>
+</section>
+
+<!-- THE BUILD -->
+<section class="card">
+  <h2>Field Mission: run it, own it, redesign it</h2>
+  <p>Here is the whole file, every line. You have already read its stations; now run what you have read, then make it yours one change at a time.</p>
+  <p style="margin:6px 0 0"><a href="attack_at_dawn_pygame.py">attack_at_dawn_pygame.py</a> &middot; 135 lines, 29 of them the glyph rack</p>
+  <pre># ATTACK AT DAWN
+# The words appear in pixel letters. Then the coded version appears as shapes.
+# Words in the terminal, play in the window. No pygame.font: a letter is a rack of marks.
+
+import pygame
+
+rack = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+message = "ATTACK AT DAWN"
+shift = 3
+
+# --- terminal country: the Cipher Wheel, character for character ---
+result = ""
+for letter in message:
+    slot = 0
+    for i in range(27):
+        if rack[i] == letter:
+            slot = i
+    slot = (slot + shift) % 27
+    result = result + rack[slot]
+print("Plain:", message)
+print("Coded:", result)
+
+# --- the glyph rack: one letter per slot, five strings of three marks; # is ink, . is air ---
+glyphs = [
+    [".#.", "#.#", "###", "#.#", "#.#"],  # A
+    ["##.", "#.#", "##.", "#.#", "##."],  # B
+    [".##", "#..", "#..", "#..", ".##"],  # C
+    ["##.", "#.#", "#.#", "#.#", "##."],  # D
+    ["###", "#..", "##.", "#..", "###"],  # E
+    ["###", "#..", "##.", "#..", "#.."],  # F
+    [".##", "#..", "#.#", "#.#", ".##"],  # G
+    ["#.#", "#.#", "###", "#.#", "#.#"],  # H
+    ["###", ".#.", ".#.", ".#.", "###"],  # I
+    ["..#", "..#", "..#", "#.#", ".#."],  # J
+    ["#.#", "##.", "#..", "##.", "#.#"],  # K
+    ["#..", "#..", "#..", "#..", "###"],  # L
+    ["#.#", "###", "#.#", "#.#", "#.#"],  # M
+    ["##.", "#.#", "#.#", "#.#", "#.#"],  # N
+    [".#.", "#.#", "#.#", "#.#", ".#."],  # O
+    ["##.", "#.#", "##.", "#..", "#.."],  # P
+    [".#.", "#.#", "#.#", ".#.", "..#"],  # Q
+    ["##.", "#.#", "##.", "#.#", "#.#"],  # R
+    [".##", "#..", ".#.", "..#", "##."],  # S
+    ["###", ".#.", ".#.", ".#.", ".#."],  # T
+    ["#.#", "#.#", "#.#", "#.#", "###"],  # U
+    ["#.#", "#.#", "#.#", "#.#", ".#."],  # V
+    ["#.#", "#.#", "#.#", "###", "#.#"],  # W
+    ["#.#", "#.#", ".#.", "#.#", "#.#"],  # X
+    ["#.#", "#.#", ".#.", ".#.", ".#."],  # Y
+    ["###", "..#", ".#.", "#..", "###"],  # Z
+    ["...", "...", "...", "...", "..."],  # space
+]
+
+# --- the color rack: nine colors, one per column of the key card ---
+colors = [(230, 60, 60), (240, 140, 40), (250, 210, 60),      # red, orange, yellow
+          (90, 200, 90), (60, 190, 200), (70, 110, 240),      # green, teal, blue
+          (150, 90, 230), (240, 100, 180), (235, 235, 235)]   # purple, pink, white
+
+pygame.init()
+screen = pygame.display.set_mode((900, 300))
+pygame.display.set_caption("Attack at Dawn")
+clock = pygame.time.Clock()
+
+# A letter painted mark by mark: two loops and one gate (Day 3, Drill 3).
+def draw_glyph(letter, x, y, size, color):
+    slot = 0
+    for i in range(27):
+        if rack[i] == letter:
+            slot = i
+    rows = glyphs[slot]
+    for r in range(5):
+        for c in range(3):
+            if rows[r][c] == "#":
+                pygame.draw.rect(screen, color, (x + c * size, y + r * size, size - 1, size - 1))
+
+# A letter as a shape and a color: the column picks the color, the shelf picks the shape.
+def draw_shape(letter, x, y):
+    slot = 0
+    for i in range(27):
+        if rack[i] == letter:
+            slot = i
+    color = colors[slot % 9]
+    if slot &lt; 9:
+        pygame.draw.circle(screen, color, (x, y), 9)
+    elif slot &lt; 18:
+        pygame.draw.rect(screen, color, (x - 9, y - 9, 18, 18))
+    else:
+        pygame.draw.polygon(screen, color, [(x, y - 10), (x - 10, y + 8), (x + 10, y + 8)])
+
+# how long is the message? count it the long way, with a tally
+length = 0
+for letter in message:
+    length = length + 1
+
+frame = 0
+shown = 0
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    screen.fill((16, 20, 36))
+
+    # the key card: the whole rack as shapes, three shelves of nine
+    pygame.draw.rect(screen, (60, 70, 100), (640, 20, 226, 78), 1)
+    for shelf in range(3):
+        for column in range(9):
+            draw_shape(rack[shelf * 9 + column], 656 + column * 24, 36 + shelf * 24)
+
+    # top: the words, one letter every quarter second
+    x = 30
+    k = 0
+    for letter in message:
+        if k &lt; shown:
+            draw_glyph(letter, x, 120, 8, (235, 235, 235))
+        x = x + 32
+        k = k + 1
+
+    # below: the coded message as shapes, one second after the last letter lands
+    x = 42
+    k = 0
+    for letter in result:
+        if k &lt; shown - length - 3:
+            draw_shape(letter, x, 235)
+        x = x + 32
+        k = k + 1
+
+    pygame.display.flip()
+
+    # the frame clock: one more letter every quarter second
+    frame = frame + 1
+    if frame % 15 == 0:
+        shown = shown + 1
+    clock.tick(60)</pre>
+  <div class="part"><strong>Part A, the run (window):</strong> run the file. Watch the words land, count the one-second pause, watch the shapes. Then pick one letter of ATTACK AT DAWN and trace it on paper: through the wheel to its coded letter, through the key card to its shape. The T of AT becomes W, slot 22, a teal triangle. Find it on the board.</div>
+  <div class="part"><strong>Part B, your own message (terminal + window):</strong> replace the two lines at the top with the intake from Day 2: <code>message = input("Message (capitals and spaces): ")</code> and <code>shift = int(input("Shift (1 to 26): "))</code>. Up to 27 characters fits the board. Before the shapes land, name the shape and color of the first coded letter from the key card. One change per run.</div>
+  <div class="part"><strong>Part C, the redesign (data, not logic):</strong> three marks wide is a hard limit, and M, N, and W are the letters it punishes. Redraw N in the glyph rack so DAWN reads at a glance. Change only the five strings; if the painter crashes, you know from Drill 7 exactly what you did.</div>
+  <div class="part"><strong>Part D, the crack (stretch):</strong> a symbol font is not a cipher; anyone holding this file reads it. The key is the shift. Trade screenshots of a long coded row with a classmate, count the most common shape, and read its letter off the key card: that letter is E in disguise, and E's slot is 4, so the shift is the difference (going around the wheel if you pass slot 0). Sherlock Holmes cracked stick figures this way in <em>The Adventure of the Dancing Men</em>, and Day 2 Drill 14 is the same weapon aimed at letters.</div>
+</section>
+
+<!-- EXITS -->
+<section class="card">
+  <h2>Choose your exit gate</h2>
+  <div class="exits">
+    <div class="exit"><span class="lvl" style="color:var(--amber)">Floor <small>&middot; approaching the standard</small></span>
+      <p style="margin:6px 0 0">The file runs, both rows land, and you can trace one letter of ATTACK AT DAWN through the wheel and the key card on paper, ending at the shape you saw on the board.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
+      <p style="margin:6px 0 0">Your own message comes in through <code>input()</code>, and you can name the shape and color of any coded letter from the key card before its shape lands, using <code>slot % 9</code> and the shelf gate in your head.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--stamp)">Stretch <small>&middot; exceeds the standard</small></span>
+      <p style="margin:6px 0 0">Redesign N and W in the glyph rack so DAWN reads at a glance, or run Part D's crack on a classmate's screenshot and hand back their shift without being told.</p></div>
+  </div>
+</section>
+
+<!-- TEACHER PANEL -->
+<details class="teacher">
+  <summary>Standards, pacing &amp; evidence (teacher panel)</summary>
+  <p><strong>What this mission is.</strong> The Shape Font: Day 2's wheel (Drill 11 verbatim, in terminal country) feeding two painters in window country. <code>draw_glyph</code> is the Console's own no-font trick, five strings of three marks, so Day 3 Drill 3's T sits in the rack unchanged. <code>draw_shape</code> is the cheap font: <code>slot % 9</code> for the column, a flat <code>&lt;</code> gate for the shelf, 3 × 9 = 27 unique glyphs. The message is hardcoded so the demo is deterministic; Part B swaps in the Day 2 intake.</p>
+  <p><strong>Deliberate calls.</strong> (1) The message length is a tally, not <code>len()</code>; <code>len</code> is off this week's rack and the tally is a machine the recruits built. (2) The pause is <code>- 3</code>, chosen so the first shape lands exactly 60 frames after the last letter; the drill asks recruits to derive that. (3) <code>pygame.draw.polygon</code> is the one new call, introduced as three corners in a list. (4) Three-mark-wide glyphs are legibly imperfect on purpose: Part C is Day 3 Drill 3's design exercise with stakes. (5) The shape font is presented as a font, not a cipher; the key is the shift (Kerckhoffs, as on the Day 2 panel), and Part D's crack proves it.</p>
+  <p><strong>Laws honored.</strong> Flat gates only; every window uses <code>while running:</code> + QUIT listener + <code>clock.tick(60)</code> and never self-closes; no <code>pygame.font</code>, <code>return</code> values, dicts, classes, <code>break</code>, <code>try/except</code>, <code>//</code>, <code>and</code>, slicing, <code>append</code>, <code>len</code>, mouse, or KEYDOWN. Words in the terminal, play in the window; the pixel banner is the lawful loophole. One change per run. Every output in every green box was produced by running the drill, and the timing claims (210, 270, 465 frames; the sabotage's frame 165) were measured from painted frames.</p>
+  <table>
+    <tr><th>Code</th><th>Standard (verbatim)</th><th>Chunk(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
+    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>1, 2, 3, 6; gated by the hinge</td><td>Addressed</td><td>Slot, column, and shelf traced by hand in Drill 2; the shown/length clock derived in Drill 6; the hinge's two-part answer.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>4, 5, 7, build</td><td>Addressed</td><td>Two known routines combined into a new program; sabotage A and B diagnosed and repaired; Parts B and C modify the file one change per run.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+  </table>
+  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
+</details>
+
+<p class="foot"><a href="spy_academy_hub.html">Back to HQ</a> &middot; Read it, trace it, then run it</p>
+
+</main>
+<script>
+function reveal(btn){
+  if(!btn.dataset.label){ btn.dataset.label = btn.textContent; }
+  var a = btn.nextElementSibling;
+  var open = a.classList.toggle('open');
+  btn.textContent = open ? 'Hide' : btn.dataset.label;
+  var see = a.nextElementSibling;
+  if(see && see.classList.contains('see')){ see.classList.toggle('open', open); }
+  var card = btn.closest('[data-chunk]');
+  if(card){ var d = document.getElementById('d'+card.getAttribute('data-chunk')); if(d) d.classList.add('done'); }
+}
+</script>
+</body>
+</html>
